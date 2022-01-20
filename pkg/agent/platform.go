@@ -20,8 +20,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/litmuschaos/litmusctl/pkg/k8s"
-	"github.com/litmuschaos/litmusctl/pkg/utils"
+	"github.com/chaosnative/chaosctl/pkg/k8s"
+	"github.com/chaosnative/chaosctl/pkg/utils"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 

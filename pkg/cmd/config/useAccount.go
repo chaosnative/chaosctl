@@ -17,9 +17,9 @@ package config
 
 import (
 	"fmt"
-	"github.com/litmuschaos/litmusctl/pkg/config"
-	"github.com/litmuschaos/litmusctl/pkg/types"
-	"github.com/litmuschaos/litmusctl/pkg/utils"
+	"github.com/chaosnative/chaosctl/pkg/config"
+	"github.com/chaosnative/chaosctl/pkg/types"
+	"github.com/chaosnative/chaosctl/pkg/utils"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -27,8 +27,8 @@ import (
 // useAccountCmd represents the useAccount command
 var useAccountCmd = &cobra.Command{
 	Use:   "use-account",
-	Short: "Sets the current-account and current-username in a litmusconfig file",
-	Long:  `Sets the current-account and current-username in a litmusconfig file`,
+	Short: "Sets the current-account and current-username in a chaosconfig file",
+	Long:  `Sets the current-account and current-username in a chaosconfig file`,
 	Run: func(cmd *cobra.Command, args []string) {
 		configFilePath := utils.GetLitmusConfigPath(cmd)
 
@@ -36,7 +36,7 @@ var useAccountCmd = &cobra.Command{
 		utils.PrintError(err)
 
 		if endpoint == "" {
-			utils.White_B.Print("\nHost endpoint where litmus is installed: ")
+			utils.White_B.Print("\nHost endpoint where ChaosNative is installed: ")
 			fmt.Scanln(&endpoint)
 
 			for endpoint == "" {

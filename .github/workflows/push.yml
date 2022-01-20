@@ -41,7 +41,7 @@ jobs:
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF##*/})"
         id: tag
 
-      - name: Building litmusctl
+      - name: Building chaosctl
         run: |
           git checkout ${GITHUB_REF##*/}
           make TAG=${{ steps.tag.outputs.branch }} build
@@ -53,6 +53,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Copy binaries to the litmusctl s3 bucket
+      - name: Copy binaries to the chaosctl s3 bucket
         run: |
           aws s3 sync platforms-${{ steps.tag.outputs.branch }} s3://${{ secrets.AWS_S3_BUCKET }}

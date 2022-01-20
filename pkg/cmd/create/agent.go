@@ -20,11 +20,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/litmuschaos/litmusctl/pkg/agent"
-	"github.com/litmuschaos/litmusctl/pkg/apis"
-	"github.com/litmuschaos/litmusctl/pkg/k8s"
-	"github.com/litmuschaos/litmusctl/pkg/types"
-	"github.com/litmuschaos/litmusctl/pkg/utils"
+	"github.com/chaosnative/chaosctl/pkg/agent"
+	"github.com/chaosnative/chaosctl/pkg/apis"
+	"github.com/chaosnative/chaosctl/pkg/k8s"
+	"github.com/chaosnative/chaosctl/pkg/types"
+	"github.com/chaosnative/chaosctl/pkg/utils"
 
 	"github.com/spf13/cobra"
 )
@@ -35,12 +35,12 @@ var agentCmd = &cobra.Command{
 	Short: `Create an external agent.
 	Example(s):
 	#create an agent
-	litmusctl create agent --agent-name="new-agent" --non-interactive
+	chaosctl create agent --agent-name="new-agent" --non-interactive
 
 	#create an agent within a project
-	litmusctl create agent --agent-name="new-agent" --project-id="d861b650-1549-4574-b2ba-ab754058dd04" --non-interactive
+	chaosctl create agent --agent-name="new-agent" --project-id="d861b650-1549-4574-b2ba-ab754058dd04" --non-interactive
 	
-	Note: The default location of the config file is $HOME/.litmusconfig, and can be overridden by a --config flag
+	Note: The default location of the config file is $HOME/.chaosconfig, and can be overridden by a --config flag
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		credentials, err := utils.GetCredentials(cmd)
@@ -263,7 +263,7 @@ var agentCmd = &cobra.Command{
 		k8s.WatchPod(k8s.WatchPodParams{Namespace: newAgent.Namespace, Label: utils.ChaosAgentLabel}, &kubeconfig)
 
 		utils.White_B.Println("\n🚀 Agent Connection Successful!! 🎉")
-		utils.White_B.Println("👉 Litmus agents can be accessed here: " + fmt.Sprintf("%s/%s", credentials.Endpoint, utils.ChaosAgentPath))
+		utils.White_B.Println("👉 ChaosNative Cloud agents can be accessed here: " + fmt.Sprintf("%s/%s", credentials.Endpoint, utils.ChaosAgentPath))
 	},
 }
 
@@ -274,7 +274,7 @@ func init() {
 	agentCmd.Flags().StringP("kubeconfig", "k", "", "Set to pass kubeconfig file if it is not in the default location ($HOME/.kube/config)")
 	agentCmd.Flags().String("tolerations", "", "Set to pass kubeconfig file if it is not in the default location ($HOME/.kube/config)")
 
-	agentCmd.Flags().String("project-id", "", "Set the project-id to install agent for the particular project. To see the projects, apply litmusctl get projects")
+	agentCmd.Flags().String("project-id", "", "Set the project-id to install agent for the particular project. To see the projects, apply chaosctl get projects")
 	agentCmd.Flags().String("installation-mode", "cluster", "Set the installation mode for the kind of agent | Supported=cluster/namespace")
 	agentCmd.Flags().String("agent-name", "", "Set the agent name")
 	agentCmd.Flags().String("agent-description", "---", "Set the agent description")

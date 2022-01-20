@@ -17,8 +17,8 @@ package get
 
 import (
 	"fmt"
-	"github.com/litmuschaos/litmusctl/pkg/apis"
-	"github.com/litmuschaos/litmusctl/pkg/utils"
+	"github.com/chaosnative/chaosctl/pkg/apis"
+	"github.com/chaosnative/chaosctl/pkg/utils"
 	"github.com/spf13/cobra"
 	"os"
 	"text/tabwriter"
@@ -81,7 +81,7 @@ var agentsCmd = &cobra.Command{
 func init() {
 	GetCmd.AddCommand(agentsCmd)
 
-	agentsCmd.Flags().String("project-id", "", "Set the project-id. To retrieve projects. Apply `litmusctl get projects`")
+	agentsCmd.Flags().String("project-id", "", "Set the project-id. To retrieve projects. Apply `chaosctl get projects`")
 
 	agentsCmd.Flags().StringP("output", "o", "", "Output format. One of:\njson|yaml")
 }

@@ -16,7 +16,7 @@ limitations under the License.
 package version
 
 import (
-	"github.com/litmuschaos/litmusctl/pkg/utils"
+	"github.com/chaosnative/chaosctl/pkg/utils"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -25,9 +25,9 @@ import (
 // versionCmd represents the version command
 var VersionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "Displays the version of litmusctl",
+	Short: "Displays the version of chaosctl",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		utils.White_B.Println("Litmusctl version: ", os.Getenv("CLIVersion"))
+		utils.White_B.Println("ChaosCtl version: ", os.Getenv("CLIVersion"))
 	},
 }

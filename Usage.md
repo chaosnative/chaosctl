@@ -1,27 +1,24 @@
-# Usage: Litmusctl v0.3.0 (Non-Interactive mode)
-> Notes:
-> * For litmusctl v0.3.0 or latest
-> * Compatible with Litmus 2.0.0-Beta9 or latest
+# Usage: ChaosCTL v0.3.0 (Non-Interactive mode)
 
-### litmusctl Syntax
-`litmusctl` has a syntax to use as follows:
+### chaosctl Syntax
+`chaosctl` has a syntax to use as follows:
 
 ```shell
-litmusctl [command] [TYPE] [flags]
+chaosctl [command] [TYPE] [flags]
 ```
 * Command: refers to what you do want to perform (create, get and config)
 * Type: refers to the feature type you are performing a command against (agent, project etc.)
 * Flags: It takes some additional information for resource operations. For example, `--installation-mode` allows you to specify an installation mode.
 
-Litmusctl is using the `.litmusconfig` config file to manage multiple accounts
+chaosctl is using the `.chaosconfig` config file to manage multiple accounts
 1. If the --config flag is set, then only the given file is loaded. The flag may only be set once and no merging takes place.
-2. Otherwise, the ${HOME}/.litmusconfig file is used, and no merging takes place.
+2. Otherwise, the ${HOME}/.chaosconfig file is used, and no merging takes place.
 
-Litmusctl supports both interactive and non-interactive(flag based) modes.
-> Only `litmusctl create agent`  command needs --non-interactive flag, other commands don't need this flag to be in non-interactive mode. If mandatory flags aren't passed, then litmusctl takes input in an interactive mode.
+chaosctl supports both interactive and non-interactive(flag based) modes.
+> Only `chaosctl create agent`  command needs --non-interactive flag, other commands don't need this flag to be in non-interactive mode. If mandatory flags aren't passed, then chaosctl takes input in an interactive mode.
 
 ### Installation modes
-Litmusctl can install an agent in two different modes.
+chaosctl can install an agent in two different modes.
 * cluster mode: With this mode, the agent can run the chaos in any namespace. It installs appropriate cluster roles and cluster role bindings to achieve this mode. It can be enabled by passing a flag `--installation-mode=cluster`
 
 * namespace mode: With this mode, the agent can run the chaos in its namespace. It installs appropriate roles and role bindings to achieve this mode. It can be enabled by passing a flag `--installation-mode=namespace`
@@ -30,24 +27,24 @@ Note: With namespace mode, the user needs to create the namespace to install the
 
 ### Minimal steps to create an agent
 
-* To setup an account with litmusctl
+* To setup an account with chaosctl
 ```shell
-litmusctl config set-account --endpoint="" --username="" --password=""
+chaosctl config set-account --endpoint="" --username="" --password=""
 ```
 
 * To create an agent without a project
 >Note: If the user doesn't have any project, it will create a random project and add the agent in that random project.
 ```shell
-litmusctl create agent --agent-name="" --non-interactive
+chaosctl create agent --agent-name="" --non-interactive
 ```
 
 ### Or,
 
 * To create an agent with an existing project
-> Note: To get `project-id`. Apply `litmusctl get projects`
+> Note: To get `project-id`. Apply `chaosctl get projects`
 
 ```shell
-litmusctl create agent --agent-name="" --project-id="" --non-interactive
+chaosctl create agent --agent-name="" --project-id="" --non-interactive
 ```
 
 ### Flags for `create agent` command
@@ -133,16 +130,16 @@ litmusctl create agent --agent-name="" --project-id="" --non-interactive
         <td>--config</td>
         <td></td>
         <td>String</td>
-        <td>config file (default is $HOME/.litmusctl)</td>
+        <td>config file (default is $HOME/.chaosconfig)</td>
     </tr>
 </table>
 
 
 ### Additional commands
 
-* To view the current configuration of `.litmusconfig`, type:
+* To view the current configuration of `.chaosconfig`, type:
 ```shell
-litmusctl config view
+chaosctl config view
 ```
 
 **Output:**
@@ -162,10 +159,10 @@ current-user: litmus-user
 kind: Config
 ```
 
-* To get an overview of the accounts available within `.litmusconfig`, use the `config get-accounts` command:
+* To get an overview of the accounts available within `.chaosconfig`, use the `config get-accounts` command:
 
 ```shell
-litmusctl config get-accounts
+chaosctl config get-accounts
 ```
 
 **Output:**
@@ -178,17 +175,17 @@ CURRENT  ENDPOINT                         USERNAME  EXPIRESIN
 
 * To alter the current account use the `use-account` command with the --endpoint and --username flags:
 ```shell
-litmusctl config use-account --endpoint="" --username=""
+chaosctl config use-account --endpoint="" --username=""
 ```
 
 * To create a project, apply the following command with the `--name` flag:
 ```shell
-litmusctl create project --name=""
+chaosctl create project --name=""
 ```
 
 * To view all the projects with the user, use the `get projects` command.
 ```shell
-litmusctl get projects
+chaosctl get projects
 ```
 
 **Output:**
@@ -202,7 +199,7 @@ PROJECT ID                                PROJECT NAME       CREATEDAT
 
 * To get an overview of the agents available within a project, issue the following command.
 ```shell
-litmusctl get agents --project-id=""
+chaosctl get agents --project-id=""
 ```
 
 **Output:**
@@ -214,6 +211,6 @@ AGENTID                                AGENTNAME          STATUS
 ```
 
 
-For more information related to flags, Use `litmusctl --help`.
+For more information related to flags, Use `chaosctl --help`.
 
 ----

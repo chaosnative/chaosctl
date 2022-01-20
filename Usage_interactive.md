@@ -1,37 +1,32 @@
-# Usage: Litmusctl v0.3.0 (Interactive mode)
+# Usage: Chaosctl (Interactive mode)
 
-> Notes:
->
-> - For litmusctl v0.3.0 or latest
-> - Compatible with Litmus 2.0.0 or latest
+### chaosctl Syntax
 
-### litmusctl Syntax
-
-`litmusctl` has a syntax to use as follows:
+`chaosctl` has a syntax to use as follows:
 
 ```shell
-litmusctl [command] [TYPE] [flags]
+chaosctl [command] [TYPE] [flags]
 ```
 
 - Command: refers to what you do want to perform (create, get and config)
 - Type: refers to the feature type you are performing a command against (agent, project etc.)
 - Flags: It takes some additional information for resource operations. For example, `--installation-mode` allows you to specify an installation mode.
 
-Litmusctl is using the `.litmusconfig` config file to manage multiple accounts
+chaosctl is using the `.chaosconfig` config file to manage multiple accounts
 
 1. If the --config flag is set, then only the given file is loaded. The flag may only be set once and no merging takes place.
-2. Otherwise, the ${HOME}/.litmusconfig file is used, and no merging takes place.
+2. Otherwise, the ${HOME}/.chaosconfig file is used, and no merging takes place.
 
-Litmusctl supports both interactive and non-interactive(flag based) modes.
+chaosctl supports both interactive and non-interactive(flag based) modes.
 
-> Only `litmusctl create agent` command needs --non-interactive flag, other commands don't need this flag to be in non-interactive mode. If mandatory flags aren't passed, then litmusctl takes input in an interactive mode.
+> Only `chaosctl create agent` command needs --non-interactive flag, other commands don't need this flag to be in non-interactive mode. If mandatory flags aren't passed, then chaosctl takes input in an interactive mode.
 
 ### Steps to create an agent
 
-- To setup an account with litmusctl
+- To setup an account with chaosctl
 
 ```shell
-litmusctl config set-account
+chaosctl config set-account
 ```
 
 Next, you need to enter ChaosCenter details to login into your ChaosCenter account. Fields to be filled in:
@@ -54,7 +49,7 @@ account.username/admin configured
 - To create an agent in a cluster mode
 
 ```shell
-litmusctl create agent
+chaosctl create agent
 ```
 
 There will be a list of existing projects displayed on the terminal. Select the desired project by entering the sequence number indicated against it.
@@ -68,7 +63,7 @@ Select a project [Range: 1-1]: 1
 
 Next, select the installation mode based on your requirement by entering the sequence number indicated against it.
 
-Litmusctl can install an agent in two different modes.
+Chaosctl can install an agent in two different modes.
 
 - cluster mode: With this mode, the agent can run the chaos in any namespace. It installs appropriate cluster roles and cluster role bindings to achieve this mode.
 
@@ -115,7 +110,7 @@ Fields to be filled in <br />
     </tr>
     <tr>
         <td>Enter the namespace:</td>
-        <td>You can either enter an existing namespace or enter a new namespace. In cases where the namespace does not exist, litmusctl creates it for you</td>
+        <td>You can either enter an existing namespace or enter a new namespace. In cases where the namespace does not exist, chaosctl creates it for you</td>
     </tr>
     <tr>
         <td>Enter service account:</td>
@@ -180,10 +175,10 @@ To verify, if the connection process was successful you can view the list of con
 
 ### Additional commands
 
-- To view the current configuration of `.litmusconfig`, type:
+- To view the current configuration of `.chaosconfig`, type:
 
 ```shell
-litmusctl config view
+chaosctl config view
 ```
 
 **Output:**
@@ -204,10 +199,10 @@ current-user: litmus-user
 kind: Config
 ```
 
-- To get an overview of the accounts available within `.litmusconfig`, use the `config get-accounts` command:
+- To get an overview of the accounts available within `.chaosconfig`, use the `config get-accounts` command:
 
 ```shell
-litmusctl config get-accounts
+chaosctl config get-accounts
 ```
 
 **Output:**
@@ -221,7 +216,7 @@ CURRENT  ENDPOINT                         USERNAME  EXPIRESIN
 - To alter the current account use the `use-account` command:
 
 ```shell
-litmusctl config use-account
+chaosctl config use-account
 
 Host endpoint where litmus is installed: https://preview.litmuschaos.io
 
@@ -231,7 +226,7 @@ Username: admin
 - To create a project, apply the following command :
 
 ```shell
-litmusctl create project
+chaosctl create project
 
 Enter a project name: new
 ```
@@ -239,7 +234,7 @@ Enter a project name: new
 - To view all the projects with the user, use the `get projects` command.
 
 ```shell
-litmusctl get projects
+chaosctl get projects
 ```
 
 **Output:**
@@ -253,7 +248,7 @@ PROJECT ID                                PROJECT NAME       CREATEDAT
 - To get an overview of the agents available within a project, issue the following command.
 
 ```shell
-litmusctl get agents
+chaosctl get agents
 
 Enter the Project ID: 50addd40-8767-448c-a91a-5071543a2d8e
 ```
@@ -266,4 +261,4 @@ AGENTID                                AGENTNAME          STATUS
 13dsf3d1-5324-54af-4g23-5331g5v2364f   agent-2            INACTIVE
 ```
 
-For more information related to flags, Use `litmusctl --help`.
+For more information related to flags, Use `chaosctl --help`.

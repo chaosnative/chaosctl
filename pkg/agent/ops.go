@@ -21,10 +21,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/litmuschaos/litmusctl/pkg/apis"
-	"github.com/litmuschaos/litmusctl/pkg/k8s"
-	"github.com/litmuschaos/litmusctl/pkg/types"
-	"github.com/litmuschaos/litmusctl/pkg/utils"
+	"github.com/chaosnative/chaosctl/pkg/apis"
+	"github.com/chaosnative/chaosctl/pkg/k8s"
+	"github.com/chaosnative/chaosctl/pkg/types"
+	"github.com/chaosnative/chaosctl/pkg/utils"
 )
 
 func PrintExistingAgents(agent apis.AgentData) {

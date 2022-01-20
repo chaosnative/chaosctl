@@ -17,8 +17,8 @@ package create
 
 import (
 	"fmt"
-	"github.com/litmuschaos/litmusctl/pkg/apis"
-	"github.com/litmuschaos/litmusctl/pkg/utils"
+	"github.com/chaosnative/chaosctl/pkg/apis"
+	"github.com/chaosnative/chaosctl/pkg/utils"
 
 	"github.com/spf13/cobra"
 )
@@ -29,9 +29,9 @@ var projectCmd = &cobra.Command{
 	Short: `Create a project
 	Example:
 	#create a project
-	litmusctl create project --name new-proj
+	chaosctl create project --name new-proj
 
-	Note: The default location of the config file is $HOME/.litmusconfig, and can be overridden by a --config flag
+	Note: The default location of the config file is $HOME/.chaosconfig, and can be overridden by a --config flag
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
 		credentials, err := utils.GetCredentials(cmd)

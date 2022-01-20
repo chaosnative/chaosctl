@@ -22,11 +22,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/chaosnative/chaosctl/pkg/apis"
+	"github.com/chaosnative/chaosctl/pkg/config"
+	"github.com/chaosnative/chaosctl/pkg/types"
+	"github.com/chaosnative/chaosctl/pkg/utils"
 	"github.com/golang-jwt/jwt"
-	"github.com/litmuschaos/litmusctl/pkg/apis"
-	"github.com/litmuschaos/litmusctl/pkg/config"
-	"github.com/litmuschaos/litmusctl/pkg/types"
-	"github.com/litmuschaos/litmusctl/pkg/utils"
 	"github.com/spf13/cobra"
 	"golang.org/x/term"
 )
@@ -34,10 +34,10 @@ import (
 // setAccountCmd represents the setAccount command
 var setAccountCmd = &cobra.Command{
 	Use: "set-account",
-	Short: `Sets an account entry in litmusconfig.
+	Short: `Sets an account entry in chaosconfig.
 		Examples(s)
 		#set a new account
-		litmusctl config set-account  --endpoint "" --password "" --username ""
+		chaosctl config set-account  --endpoint "" --password "" --username ""
 		`,
 	Run: func(cmd *cobra.Command, args []string) {
 		configFilePath := utils.GetLitmusConfigPath(cmd)
@@ -159,7 +159,7 @@ var setAccountCmd = &cobra.Command{
 			utils.White_B.Printf("\naccount.username/%s configured", claims["username"].(string))
 
 		} else {
-			utils.Red.Println("\nError: some flags are missing. Run 'litmusctl config set-account --help' for usage. ")
+			utils.Red.Println("\nError: some flags are missing. Run 'chaosctl config set-account --help' for usage. ")
 		}
 	},
 }

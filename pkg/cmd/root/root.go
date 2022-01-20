@@ -19,13 +19,13 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/litmuschaos/litmusctl/pkg/cmd/upgrade"
-	"github.com/litmuschaos/litmusctl/pkg/cmd/version"
-	"github.com/litmuschaos/litmusctl/pkg/utils"
+	"github.com/chaosnative/chaosctl/pkg/cmd/upgrade"
+	"github.com/chaosnative/chaosctl/pkg/cmd/version"
+	"github.com/chaosnative/chaosctl/pkg/utils"
 
-	"github.com/litmuschaos/litmusctl/pkg/cmd/config"
-	"github.com/litmuschaos/litmusctl/pkg/cmd/create"
-	"github.com/litmuschaos/litmusctl/pkg/cmd/get"
+	"github.com/chaosnative/chaosctl/pkg/cmd/config"
+	"github.com/chaosnative/chaosctl/pkg/cmd/create"
+	"github.com/chaosnative/chaosctl/pkg/cmd/get"
 	"github.com/spf13/cobra"
 
 	"github.com/mitchellh/go-homedir"
@@ -36,9 +36,9 @@ var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "litmusctl",
-	Short: "Litmusctl controls the litmuschaos agent plane",
-	Long:  `Litmusctl controls the litmuschaos agent plane. ` + "\n" + ` Find more information at: https://github.com/litmuschaos/litmusctl`,
+	Use:   "chaosctl",
+	Short: "ChaosCTL controls the ChaosNative cloud agent plane",
+	Long:  `ChaosCTL controls the ChaosNative cloud agent plane. ` + "\n" + ` Find more information at: https://github.com/chaosnative/chaosctl`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -60,7 +60,7 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.litmusctl)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.chaosconfig)")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -73,7 +73,7 @@ func initConfig() {
 		home, err := homedir.Dir()
 		cobra.CheckErr(err)
 
-		// Search config in home directory with name ".litmusconfig" (without extension).
+		// Search config in home directory with name ".chaosconfig" (without extension).
 		viper.AddConfigPath(home)
 		viper.SetConfigName(utils.DefaultFileName)
 	}

@@ -16,7 +16,7 @@ limitations under the License.
 package utils
 
 const (
-	DefaultFileName = ".litmusconfig"
+	DefaultFileName = ".chaosconfig"
 
 	// Default username
 	DefaultUsername = "admin"
@@ -42,7 +42,7 @@ const (
 	// Label of subscriber agent being deployed
 	ChaosAgentLabel = "app=subscriber"
 
-	// Agent type is "external" for agents connected via litmusctl
+	// Agent type is "external" for agents connected via chaosctl
 	AgentType = "external"
 
 	// Default namespace for agent installation
