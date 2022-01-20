@@ -26,7 +26,7 @@ do
     GOOS=${platform_split[0]}
     GOARCH=${platform_split[1]}
     echo 'Building' $GOOS-$GOARCH
-    output_name='litmusctl-'$GOOS-$GOARCH
+    output_name='chaosctl-'$GOOS-$GOARCH
 
     env GOOS=$GOOS GOARCH=$GOARCH VERSION=$tag go build -ldflags "-X main.CLIVersion=$tag" -v -o platforms-$tag/$output_name $package
 
@@ -36,8 +36,8 @@ do
     fi
 
     cd platforms-$tag
-    mv $output_name litmusctl
-    tar -czvf $output_name-$tag.tar.gz litmusctl
-    rm -rf litmusctl
+    mv $output_name chaosctl
+    tar -czvf $output_name-$tag.tar.gz chaosctl
+    rm -rf chaosctl
     cd ..
 done
