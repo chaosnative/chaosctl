@@ -21,16 +21,16 @@ import (
 	"text/tabwriter"
 	"time"
 
-	"github.com/litmuschaos/litmusctl/pkg/config"
-	"github.com/litmuschaos/litmusctl/pkg/utils"
+	"github.com/chaosnative/chaosctl/pkg/config"
+	"github.com/chaosnative/chaosctl/pkg/utils"
 	"github.com/spf13/cobra"
 )
 
 // getAccountsCmd represents the getAccounts command
 var getAccountsCmd = &cobra.Command{
 	Use:   "get-accounts",
-	Short: "Display accounts defined in the litmusconfig",
-	Long:  `Display accounts defined in the litmusconfig`,
+	Short: "Display accounts defined in the chaosconfig",
+	Long:  `Display accounts defined in the chaosconfig`,
 	Run: func(cmd *cobra.Command, args []string) {
 		configFilePath := utils.GetLitmusConfigPath(cmd)
 

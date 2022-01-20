@@ -17,20 +17,20 @@ package config
 
 import (
 	"fmt"
-	"github.com/litmuschaos/litmusctl/pkg/utils"
+	"github.com/chaosnative/chaosctl/pkg/utils"
 	"io/ioutil"
 
 	"os"
 
-	"github.com/litmuschaos/litmusctl/pkg/config"
+	"github.com/chaosnative/chaosctl/pkg/config"
 	"github.com/spf13/cobra"
 )
 
 // viewCmd represents the view command
 var viewCmd = &cobra.Command{
 	Use:   "view",
-	Short: "Display litmusconfig settings or a specified litmusconfig file",
-	Long:  `Display litmusconfig settings or a specified litmusconfig file. `,
+	Short: "Display chaosconfig settings or a specified chaosconfig file",
+	Long:  `Display chaosconfig settings or a specified chaosconfig file. `,
 	Run: func(cmd *cobra.Command, args []string) {
 		configFilePath := utils.GetLitmusConfigPath(cmd)
 

@@ -25,14 +25,14 @@ var CreateCmd = &cobra.Command{
 	Short: `Create resources for LitmusChaos agent plane.
 		Examples:
 		#create a project
-		litmusctl create project --name new-proj
+		chaosctl create project --name new-proj
 
 		#create an agent
-		litmusctl create agent --agent-name="new-agent" --non-interactive
+		chaosctl create agent --agent-name="new-agent" --non-interactive
 
 		#create an agent within a project
-		litmusctl create agent --agent-name="new-agent" --project-id="d861b650-1549-4574-b2ba-ab754058dd04" --non-interactive
+		chaosctl create agent --agent-name="new-agent" --project-id="d861b650-1549-4574-b2ba-ab754058dd04" --non-interactive
 		
-		Note: The default location of the config file is $HOME/.litmusconfig, and can be overridden by a --config flag
+		Note: The default location of the config file is $HOME/.chaosconfig, and can be overridden by a --config flag
 	`,
 }

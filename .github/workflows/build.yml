@@ -34,6 +34,6 @@ jobs:
         run: |
           make unused-package-check
 
-      - name: Building litmusctl
+      - name: Building chaosctl
         run: |
           make build

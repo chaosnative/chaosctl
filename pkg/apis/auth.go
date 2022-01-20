@@ -21,9 +21,9 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/litmuschaos/litmusctl/pkg/utils"
+	"github.com/chaosnative/chaosctl/pkg/utils"
 
-	"github.com/litmuschaos/litmusctl/pkg/types"
+	"github.com/chaosnative/chaosctl/pkg/types"
 )
 
 type Payload struct {

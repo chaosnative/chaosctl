@@ -16,7 +16,7 @@ limitations under the License.
 package k8s
 
 import (
-	"github.com/litmuschaos/litmusctl/pkg/utils"
+	"github.com/chaosnative/chaosctl/pkg/utils"
 	"os"
 	"path/filepath"
 

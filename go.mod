@@ -1,4 +1,4 @@
-module github.com/litmuschaos/litmusctl
+module github.com/chaosnative/chaosctl
 
 go 1.16
 

@@ -17,7 +17,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/litmuschaos/litmusctl/pkg/cmd/root"
+	"github.com/chaosnative/chaosctl/pkg/cmd/root"
 	"os"
 )
 

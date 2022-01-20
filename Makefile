@@ -6,7 +6,7 @@ build: ## Build the binary file
 .PHONY: unused-package-check
 unused-package-check:
 	@echo "------------------"
-	@echo "--> Check unused packages for the litmusctl"
+	@echo "--> Check unused packages for the ChaosCTL"
 	@echo "------------------"
 	@tidy=$$(go mod tidy); \
 	if [ -n "$${tidy}" ]; then \

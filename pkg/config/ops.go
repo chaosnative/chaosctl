@@ -20,7 +20,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/litmuschaos/litmusctl/pkg/types"
+	"github.com/chaosnative/chaosctl/pkg/types"
 	"gopkg.in/yaml.v2"
 )
 

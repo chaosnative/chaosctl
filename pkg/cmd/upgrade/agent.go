@@ -19,15 +19,15 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/litmuschaos/litmusctl/pkg/apis"
-	"github.com/litmuschaos/litmusctl/pkg/utils"
+	"github.com/chaosnative/chaosctl/pkg/apis"
+	"github.com/chaosnative/chaosctl/pkg/utils"
 	"github.com/spf13/cobra"
 )
 
 // createCmd represents the create command
 var agentCmd = &cobra.Command{
 	Use:   "agent",
-	Short: `Upgrades the LitmusChaos agent plane.`,
+	Short: `Upgrades the ChaosNative Cloud agent plane.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		credentials, err := utils.GetCredentials(cmd)
 		utils.PrintError(err)

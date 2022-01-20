@@ -26,7 +26,7 @@ import (
 
 	"k8s.io/client-go/util/homedir"
 
-	"github.com/litmuschaos/litmusctl/pkg/utils"
+	"github.com/chaosnative/chaosctl/pkg/utils"
 	authorizationv1 "k8s.io/api/authorization/v1"
 	v1 "k8s.io/api/core/v1"
 	k8serror "k8s.io/apimachinery/pkg/api/errors"
@@ -267,7 +267,7 @@ func ValidSA(namespace string, kubeconfig *string) (string, bool) {
 }
 
 // Token: Authorization token
-// EndPoint: Endpoint in .litmusconfig
+// EndPoint: Endpoint in .chaosconfig
 // YamlPath: Path of yaml file
 type ApplyYamlPrams struct {
 	Token    string
