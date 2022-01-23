@@ -19,6 +19,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/manifoldco/promptui"
 	"log"
 	"os"
 	"os/exec"
@@ -127,15 +128,24 @@ start:
 	var (
 		namespace string
 		nsExists  bool
+		err       error
 	)
 
 	if mode == "namespace" {
-		utils.White_B.Print("\nEnter the namespace (existing namespace) [Default: ", utils.DefaultNs, "]: ")
-		fmt.Scanln(&namespace)
+		prompt := promptui.Prompt{
+			Label: "Enter an existing namespace [Default: " + utils.DefaultNs + " ]:",
+		}
+
+		namespace, err = prompt.Run()
+		utils.PrintError(err)
 
 	} else if mode == "cluster" {
-		utils.White_B.Print("\nEnter the namespace (new or existing namespace) [Default: ", utils.DefaultNs, "]: ")
-		fmt.Scanln(&namespace)
+		prompt := promptui.Prompt{
+			Label: "Enter a new or existing namespace [Default: " + utils.DefaultNs + " ]:",
+		}
+
+		namespace, err = prompt.Run()
+		utils.PrintError(err)
 	} else {
 		utils.Red.Printf("\n 🚫 No mode selected \n")
 		os.Exit(1)
@@ -254,11 +264,17 @@ func SAExists(params SAExistsParams, kubeconfig *string) bool {
 // ValidSA gets a valid service account as input
 func ValidSA(namespace string, kubeconfig *string) (string, bool) {
 	var sa string
-	utils.White_B.Print("\nEnter service account [Default: ", utils.DefaultSA, "]: ")
-	fmt.Scanln(&sa)
+	prompt := promptui.Prompt{
+		Label: "Enter a service account [Default: " + utils.DefaultNs + " ]:",
+	}
+
+	sa, err := prompt.Run()
+	utils.PrintError(err)
+
 	if sa == "" {
 		sa = utils.DefaultSA
 	}
+
 	if SAExists(SAExistsParams{namespace, sa}, kubeconfig) {
 		utils.White_B.Print("\n👍 Using the existing service account")
 		return sa, true

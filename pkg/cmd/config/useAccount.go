@@ -16,10 +16,11 @@ limitations under the License.
 package config
 
 import (
-	"fmt"
+	"errors"
 	"github.com/chaosnative/chaosctl/pkg/config"
 	"github.com/chaosnative/chaosctl/pkg/types"
 	"github.com/chaosnative/chaosctl/pkg/utils"
+	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -36,8 +37,50 @@ var useAccountCmd = &cobra.Command{
 		utils.PrintError(err)
 
 		if endpoint == "" {
-			utils.White_B.Print("\nHost endpoint where ChaosNative is installed: ")
-			fmt.Scanln(&endpoint)
+			prompt := promptui.Select{
+				Label: "What's the product?",
+				Items: []string{"ChaosNative Cloud", "ChaosNative Enterprise"},
+			}
+
+			_, result, err := prompt.Run()
+
+			if err != nil {
+				utils.Red.Println(err)
+				return
+			}
+
+			if result == "ChaosNative Cloud" {
+				endpoint = utils.ChaosNativeCloudEndpoint
+			} else if result == "ChaosNative Enterprise" {
+				validate := func(input string) error {
+					if utils.IsValidUrl(input) {
+						return nil
+					} else {
+						return errors.New("Not a valid URL")
+					}
+				}
+
+				templates := &promptui.PromptTemplates{
+					Prompt:  "{{ . }} ",
+					Valid:   "{{ . | green }} ",
+					Invalid: "{{ . | red }} ",
+					Success: "{{ . | bold }} ",
+				}
+
+				prompt := promptui.Prompt{
+					Label:     "ChaosNative Enterprise Endpoint",
+					Templates: templates,
+					Validate:  validate,
+				}
+
+				endpoint, err = prompt.Run()
+
+				if err != nil {
+					utils.Red.Println("Prompt failed %v\n", err)
+					return
+				}
+
+			}
 
 			for endpoint == "" {
 				utils.Red.Println("\n⛔ Host URL can't be empty!!")
@@ -49,11 +92,18 @@ var useAccountCmd = &cobra.Command{
 		utils.PrintError(err)
 
 		if username == "" {
-			utils.White_B.Print("\nUsername: ")
-			fmt.Scanln(&username)
+			prompt := promptui.Prompt{
+				Label: "What's the AccessID?",
+			}
+
+			username, err = prompt.Run()
+			if err != nil {
+				utils.Red.Println(err)
+				os.Exit(1)
+			}
 
 			for username == "" {
-				utils.Red.Println("\n⛔ Username cannot be empty!!")
+				utils.Red.Println("\n⛔ AccessID cannot be empty!!")
 				os.Exit(1)
 			}
 		}

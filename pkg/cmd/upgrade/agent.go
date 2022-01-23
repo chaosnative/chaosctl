@@ -17,7 +17,8 @@ package upgrade
 
 import (
 	"context"
-	"fmt"
+	"github.com/manifoldco/promptui"
+	"os"
 
 	"github.com/chaosnative/chaosctl/pkg/apis"
 	"github.com/chaosnative/chaosctl/pkg/utils"
@@ -36,16 +37,30 @@ var agentCmd = &cobra.Command{
 		utils.PrintError(err)
 
 		if projectID == "" {
-			utils.White_B.Print("\nEnter the project ID: ")
-			fmt.Scanln(&projectID)
+			prompt := promptui.Prompt{
+				Label: "What's the ProjectID?",
+			}
+
+			projectID, err = prompt.Run()
+			if err != nil {
+				utils.Red.Println(err)
+				os.Exit(1)
+			}
 		}
 
 		cluster_id, err := cmd.Flags().GetString("cluster-id")
 		utils.PrintError(err)
 
 		if cluster_id == "" {
-			utils.White_B.Print("\nEnter the cluster ID: ")
-			fmt.Scanln(&cluster_id)
+			prompt := promptui.Prompt{
+				Label: "What's the ClusterID?",
+			}
+
+			cluster_id, err = prompt.Run()
+			if err != nil {
+				utils.Red.Println(err)
+				os.Exit(1)
+			}
 		}
 
 		_, err = apis.UpgradeAgent(context.Background(), credentials, projectID, cluster_id)

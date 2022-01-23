@@ -16,9 +16,9 @@ limitations under the License.
 package create
 
 import (
-	"fmt"
 	"github.com/chaosnative/chaosctl/pkg/apis"
 	"github.com/chaosnative/chaosctl/pkg/utils"
+	"github.com/manifoldco/promptui"
 
 	"github.com/spf13/cobra"
 )
@@ -41,11 +41,18 @@ var projectCmd = &cobra.Command{
 		utils.PrintError(err)
 
 		if projectName == "" {
-			utils.White_B.Print("\nEnter a project name: ")
-			fmt.Scanln(&projectName)
+			prompt := promptui.Prompt{
+				Label: "Enter a project name",
+			}
+
+			projectName, err = prompt.Run()
+			utils.PrintError(err)
 		}
 
-		_, err = apis.CreateProjectRequest(projectName, credentials)
+		userDetails, err := apis.GetProjectDetails(credentials)
+		utils.PrintError(err)
+
+		_, err = apis.CreateProjectRequest(userDetails.Data.ID, projectName, credentials)
 		utils.PrintError(err)
 	},
 }

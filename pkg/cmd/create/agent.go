@@ -57,19 +57,16 @@ var agentCmd = &cobra.Command{
 		newAgent.ProjectId, err = cmd.Flags().GetString("project-id")
 		utils.PrintError(err)
 
+		userDetails, err := apis.GetProjectDetails(credentials)
+		utils.PrintError(err)
+
+		// If projectID is not passed, then it creates a random project
 		if newAgent.ProjectId == "" {
-			userDetails, err := apis.GetProjectDetails(credentials)
-			utils.PrintError(err)
-
-			var (
-				userID        = userDetails.Data.ID
-				projectExists = false
-			)
-
+			var projectExists = false
 		outerloop:
 			for _, project := range userDetails.Data.Projects {
 				for _, member := range project.Members {
-					if (member.UserID == userID) && (member.Role == "Owner" || member.Role == "Editor") {
+					if (member.UserID == userDetails.Data.ID) && (member.Role == "Admin" || member.Role == "Editor") {
 						projectExists = true
 						break outerloop
 					}
@@ -78,7 +75,7 @@ var agentCmd = &cobra.Command{
 
 			if !projectExists {
 				utils.White_B.Print("Creating a random project...")
-				newAgent.ProjectId = agent.CreateRandomProject(credentials)
+				newAgent.ProjectId = agent.CreateRandomProject(userDetails.Data.ID, credentials)
 			}
 		}
 
@@ -200,16 +197,13 @@ var agentCmd = &cobra.Command{
 			}
 
 			if isAgentExist {
-				agent.PrintExistingAgents(agents)
+				utils.Red.Print("Agent name already exist")
 				os.Exit(1)
 			}
 
 		} else {
-			userDetails, err := apis.GetProjectDetails(credentials)
-			utils.PrintError(err)
 
 			if newAgent.ProjectId == "" {
-				// Fetch project id
 				newAgent.ProjectId = agent.GetProjectID(userDetails)
 			}
 
@@ -237,12 +231,11 @@ var agentCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		path := fmt.Sprintf("%s/%s/%s.yaml", credentials.Endpoint, utils.ChaosYamlPath, agent.Data.UserAgentReg.Token)
-		utils.White_B.Print("Applying YAML:\n", path)
-
-		// Print error message in case Data field is null in response
-		if (agent.Data == apis.AgentConnect{}) {
-			utils.White_B.Print("\n🚫 Agent connection failed: " + agent.Errors[0].Message + "\n")
+		if agent.Data.UserAgentReg.Token != "" {
+			path := fmt.Sprintf("%s/%s/%s.yaml", credentials.Endpoint, utils.ChaosYamlPath, agent.Data.UserAgentReg.Token)
+			utils.White_B.Print("Applying YAML:\n", path)
+		} else {
+			utils.Red.Print("\n🚫 Token Generation failed, Agent installation failed:  " + agent.Errors[0].Message + "\n")
 			os.Exit(1)
 		}
 
@@ -253,7 +246,7 @@ var agentCmd = &cobra.Command{
 			YamlPath: utils.ChaosYamlPath,
 		}, kubeconfig, false)
 		if err != nil {
-			utils.White_B.Print("\n❌ Failed in applying connection yaml: \n" + yamlOutput)
+			utils.Red.Print("\n❌ Failed in applying connection yaml: \n" + yamlOutput)
 			os.Exit(1)
 		}
 
@@ -263,7 +256,7 @@ var agentCmd = &cobra.Command{
 		k8s.WatchPod(k8s.WatchPodParams{Namespace: newAgent.Namespace, Label: utils.ChaosAgentLabel}, &kubeconfig)
 
 		utils.White_B.Println("\n🚀 Agent Connection Successful!! 🎉")
-		utils.White_B.Println("👉 ChaosNative Cloud agents can be accessed here: " + fmt.Sprintf("%s/%s", credentials.Endpoint, utils.ChaosAgentPath))
+		utils.White_B.Println("👉 Agents can be accessed here: " + fmt.Sprintf("%s/%s", credentials.Endpoint, utils.ChaosAgentPath))
 	},
 }
 
