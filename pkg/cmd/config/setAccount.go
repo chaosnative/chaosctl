@@ -98,7 +98,7 @@ var setAccountCmd = &cobra.Command{
 				authInput.Endpoint, err = prompt.Run()
 
 				if err != nil {
-					utils.Red.Println("Prompt failed %v\n", err)
+					utils.Red.Printf("Prompt failed %v\n", err)
 					return
 				}
 
@@ -141,7 +141,7 @@ var setAccountCmd = &cobra.Command{
 
 			authInput.Password, err = prompt.Run()
 			if err != nil {
-				utils.Red.Println("Prompt failed %v\n", err)
+				utils.Red.Printf("Prompt failed %v\n", err)
 				return
 			}
 
