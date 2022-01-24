@@ -138,7 +138,10 @@ start:
 		}
 
 		namespace, err = prompt.Run()
-		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+		if err != nil {
+			utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+			os.Exit(1)
+		}
 
 	} else if mode == "cluster" {
 		prompt := promptui.Prompt{
@@ -146,7 +149,10 @@ start:
 		}
 
 		namespace, err = prompt.Run()
-		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+		if err != nil {
+			utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+			os.Exit(1)
+		}
 	} else {
 		utils.Red.Printf("\n 🚫 No mode selected \n")
 		os.Exit(1)
@@ -270,7 +276,10 @@ func ValidSA(namespace string, kubeconfig *string) (string, bool) {
 	}
 
 	sa, err := prompt.Run()
-	utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+	if err != nil {
+		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+		os.Exit(1)
+	}
 
 	if sa == "" {
 		sa = utils.DefaultSA

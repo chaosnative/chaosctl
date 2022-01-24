@@ -125,6 +125,7 @@ var setAccountCmd = &cobra.Command{
 			authInput.Username, err = prompt.Run()
 			if err != nil {
 				utils.Red.Println(err)
+				os.Exit(1)
 			}
 
 			if authInput.Username == "" {

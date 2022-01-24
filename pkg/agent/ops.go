@@ -40,7 +40,10 @@ func GetProjectID(u apis.ProjectDetails) string {
 	}
 
 	counter, _, err := prompt.Run()
-	utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+	if err != nil {
+		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+		os.Exit(1)
+	}
 
 	return u.Data.Projects[counter].ID
 }
@@ -54,7 +57,10 @@ func GetModeType() string {
 	}
 
 	counter, _, err := prompt.Run()
-	utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+	if err != nil {
+		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+		os.Exit(1)
+	}
 
 	if counter == 0 {
 		return "cluster"
@@ -81,7 +87,10 @@ AGENT_NAME:
 	}
 
 	newAgent.AgentName, err = prompt.Run()
-	utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+	if err != nil {
+		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+		os.Exit(1)
+	}
 
 	if newAgent.AgentName == "" {
 		utils.Red.Println("⛔ Agent name cannot be empty. Please enter a valid name.")
@@ -112,7 +121,10 @@ AGENT_NAME:
 	}
 
 	newAgent.Description, err = prompt.Run()
-	utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+	if err != nil {
+		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+		os.Exit(1)
+	}
 
 	nodeSelector := promptui.Select{
 		Label: "Do you want NodeSelectors added to the agent deployments?",
@@ -130,7 +142,10 @@ AGENT_NAME:
 		if ok := utils.CheckKeyValueFormat(newAgent.NodeSelector); !ok {
 			os.Exit(1)
 		}
-		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+		if err != nil {
+			utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+			os.Exit(1)
+		}
 	}
 
 	toleration := promptui.Select{
@@ -147,7 +162,10 @@ AGENT_NAME:
 		}
 
 		result, err := prompt.Run()
-		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+		if err != nil {
+			utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+			os.Exit(1)
+		}
 
 		nts, err := strconv.Atoi(result)
 		utils.PrintError(err)
@@ -160,11 +178,17 @@ AGENT_NAME:
 
 			prompt.Label = "TolerationSeconds: (Press Enter to ignore)"
 			ts, err := prompt.Run()
-			utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+			if err != nil {
+				utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+				os.Exit(1)
+			}
 
 			prompt.Label = "Operator"
 			operator, err := prompt.Run()
-			utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+			if err != nil {
+				utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+				os.Exit(1)
+			}
 
 			if operator != "" {
 				str += "operator : \\\"" + operator + "\\\" "
@@ -172,7 +196,10 @@ AGENT_NAME:
 
 			prompt.Label = "Effect"
 			effect, err := prompt.Run()
-			utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+			if err != nil {
+				utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+				os.Exit(1)
+			}
 
 			if effect != "" {
 				str += "effect: \\\"" + effect + "\\\" "
@@ -184,7 +211,10 @@ AGENT_NAME:
 
 			prompt.Label = "Key"
 			key, err := prompt.Run()
-			utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+			if err != nil {
+				utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+				os.Exit(1)
+			}
 
 			if key != "" {
 				str += "key: \\\"" + key + "\\\" "
@@ -192,7 +222,10 @@ AGENT_NAME:
 
 			prompt.Label = "Value"
 			value, err := prompt.Run()
-			utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+			if err != nil {
+				utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+				os.Exit(1)
+			}
 
 			if key != "" {
 				str += "value: \\\"" + value + "\\\" "
@@ -274,7 +307,10 @@ func ConfirmInstallation() {
 	}
 
 	decision, _, err := prompt.Run()
-	utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+	if err != nil {
+		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+		os.Exit(1)
+	}
 
 	if decision == 0 {
 		utils.White_B.Println("👍 Continuing agent connection!!")

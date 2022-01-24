@@ -19,6 +19,7 @@ import (
 	"context"
 	"errors"
 	"github.com/manifoldco/promptui"
+	"os"
 	"strings"
 
 	"github.com/chaosnative/chaosctl/pkg/k8s"
@@ -46,7 +47,10 @@ func GetPlatformName(kubeconfig *string) string {
 		}
 
 		index, result, err = prompt.Run()
-		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+		if err != nil {
+			utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+			os.Exit(1)
+		}
 
 		if index == -1 {
 			items = append(items, result)

@@ -20,6 +20,7 @@ import (
 	"github.com/chaosnative/chaosctl/pkg/apis"
 	"github.com/chaosnative/chaosctl/pkg/utils"
 	"github.com/manifoldco/promptui"
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -47,7 +48,10 @@ var projectCmd = &cobra.Command{
 			}
 
 			projectName, err = prompt.Run()
-			utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+			if err != nil {
+				utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+				os.Exit(1)
+			}
 		}
 
 		userDetails, err := apis.GetProjectDetails(credentials)
