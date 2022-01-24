@@ -60,7 +60,7 @@ var setAccountCmd = &cobra.Command{
 
 		if authInput.Endpoint == "" {
 			prompt := promptui.Select{
-				Label: "What's the product?",
+				Label: "What's the product name?",
 				Items: []string{"ChaosNative Cloud", "ChaosNative Enterprise"},
 			}
 

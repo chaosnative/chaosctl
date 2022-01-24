@@ -38,7 +38,7 @@ var useAccountCmd = &cobra.Command{
 
 		if endpoint == "" {
 			prompt := promptui.Select{
-				Label: "What's the product?",
+				Label: "What's the product name?",
 				Items: []string{"ChaosNative Cloud", "ChaosNative Enterprise"},
 			}
 
