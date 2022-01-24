@@ -76,7 +76,7 @@ var useAccountCmd = &cobra.Command{
 				endpoint, err = prompt.Run()
 
 				if err != nil {
-					utils.Red.Printf("Prompt failed %v\n", err)
+					utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 					return
 				}
 
@@ -98,7 +98,7 @@ var useAccountCmd = &cobra.Command{
 
 			username, err = prompt.Run()
 			if err != nil {
-				utils.Red.Println(err)
+				utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 				os.Exit(1)
 			}
 

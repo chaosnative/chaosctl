@@ -17,6 +17,7 @@ package agent
 
 import (
 	"context"
+	"errors"
 	"github.com/manifoldco/promptui"
 	"strings"
 
@@ -45,7 +46,7 @@ func GetPlatformName(kubeconfig *string) string {
 		}
 
 		index, result, err = prompt.Run()
-		utils.PrintError(err)
+		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 
 		if index == -1 {
 			items = append(items, result)

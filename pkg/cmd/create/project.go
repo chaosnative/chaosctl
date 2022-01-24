@@ -16,6 +16,7 @@ limitations under the License.
 package create
 
 import (
+	"errors"
 	"github.com/chaosnative/chaosctl/pkg/apis"
 	"github.com/chaosnative/chaosctl/pkg/utils"
 	"github.com/manifoldco/promptui"
@@ -46,7 +47,7 @@ var projectCmd = &cobra.Command{
 			}
 
 			projectName, err = prompt.Run()
-			utils.PrintError(err)
+			utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 		}
 
 		userDetails, err := apis.GetProjectDetails(credentials)

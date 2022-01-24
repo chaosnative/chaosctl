@@ -16,6 +16,7 @@ limitations under the License.
 package agent
 
 import (
+	"errors"
 	"github.com/chaosnative/chaosctl/pkg/apis"
 	"github.com/chaosnative/chaosctl/pkg/k8s"
 	"github.com/chaosnative/chaosctl/pkg/types"
@@ -39,7 +40,7 @@ func GetProjectID(u apis.ProjectDetails) string {
 	}
 
 	counter, _, err := prompt.Run()
-	utils.PrintError(err)
+	utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 
 	return u.Data.Projects[counter].ID
 }
@@ -53,7 +54,7 @@ func GetModeType() string {
 	}
 
 	counter, _, err := prompt.Run()
-	utils.PrintError(err)
+	utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 
 	if counter == 0 {
 		return "cluster"
@@ -80,7 +81,7 @@ AGENT_NAME:
 	}
 
 	newAgent.AgentName, err = prompt.Run()
-	utils.PrintError(err)
+	utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 
 	if newAgent.AgentName == "" {
 		utils.Red.Println("⛔ Agent name cannot be empty. Please enter a valid name.")
@@ -111,7 +112,7 @@ AGENT_NAME:
 	}
 
 	newAgent.Description, err = prompt.Run()
-	utils.PrintError(err)
+	utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 
 	nodeSelector := promptui.Select{
 		Label: "Do you want NodeSelectors added to the agent deployments?",
@@ -119,7 +120,7 @@ AGENT_NAME:
 	}
 
 	counter, _, err := nodeSelector.Run()
-	utils.PrintError(err)
+	utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 
 	if counter == 0 {
 		prompt := promptui.Prompt{
@@ -129,7 +130,7 @@ AGENT_NAME:
 		if ok := utils.CheckKeyValueFormat(newAgent.NodeSelector); !ok {
 			os.Exit(1)
 		}
-		utils.PrintError(err)
+		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 	}
 
 	toleration := promptui.Select{
@@ -138,7 +139,7 @@ AGENT_NAME:
 	}
 
 	counter, _, err = toleration.Run()
-	utils.PrintError(err)
+	utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 
 	if counter == 0 {
 		prompt := promptui.Prompt{
@@ -146,7 +147,7 @@ AGENT_NAME:
 		}
 
 		result, err := prompt.Run()
-		utils.PrintError(err)
+		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 
 		nts, err := strconv.Atoi(result)
 		utils.PrintError(err)
@@ -159,11 +160,11 @@ AGENT_NAME:
 
 			prompt.Label = "TolerationSeconds: (Press Enter to ignore)"
 			ts, err := prompt.Run()
-			utils.PrintError(err)
+			utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 
 			prompt.Label = "Operator"
 			operator, err := prompt.Run()
-			utils.PrintError(err)
+			utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 
 			if operator != "" {
 				str += "operator : \\\"" + operator + "\\\" "
@@ -171,7 +172,7 @@ AGENT_NAME:
 
 			prompt.Label = "Effect"
 			effect, err := prompt.Run()
-			utils.PrintError(err)
+			utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 
 			if effect != "" {
 				str += "effect: \\\"" + effect + "\\\" "
@@ -183,7 +184,7 @@ AGENT_NAME:
 
 			prompt.Label = "Key"
 			key, err := prompt.Run()
-			utils.PrintError(err)
+			utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 
 			if key != "" {
 				str += "key: \\\"" + key + "\\\" "
@@ -191,7 +192,7 @@ AGENT_NAME:
 
 			prompt.Label = "Value"
 			value, err := prompt.Run()
-			utils.PrintError(err)
+			utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 
 			if key != "" {
 				str += "value: \\\"" + value + "\\\" "
@@ -273,7 +274,7 @@ func ConfirmInstallation() {
 	}
 
 	decision, _, err := prompt.Run()
-	utils.PrintError(err)
+	utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 
 	if decision == 0 {
 		utils.White_B.Println("👍 Continuing agent connection!!")

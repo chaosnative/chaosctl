@@ -17,6 +17,7 @@ package upgrade
 
 import (
 	"context"
+	"errors"
 	"github.com/manifoldco/promptui"
 	"os"
 
@@ -43,7 +44,7 @@ var agentCmd = &cobra.Command{
 
 			projectID, err = prompt.Run()
 			if err != nil {
-				utils.Red.Println(err)
+				utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 				os.Exit(1)
 			}
 		}
@@ -58,7 +59,7 @@ var agentCmd = &cobra.Command{
 
 			cluster_id, err = prompt.Run()
 			if err != nil {
-				utils.Red.Println(err)
+				utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 				os.Exit(1)
 			}
 		}
