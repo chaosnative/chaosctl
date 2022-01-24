@@ -17,7 +17,9 @@ package agent
 
 import (
 	"context"
-	"fmt"
+	"errors"
+	"github.com/manifoldco/promptui"
+	"os"
 	"strings"
 
 	"github.com/chaosnative/chaosctl/pkg/k8s"
@@ -29,26 +31,33 @@ import (
 // - If input is given as "123abc", "abc" will be used for next user input. Buffer need to be read completely.
 // - String literals like "AWS" are used at multiple places. Need to be changed to constants.
 func GetPlatformName(kubeconfig *string) string {
-	var platform int
-	discoveredPlatform := DiscoverPlatform(kubeconfig)
-	utils.White_B.Println("\nPlatform List: ")
-	utils.White_B.Println(utils.PlatformList)
-	utils.White_B.Print("\nSelect a platform [Default: ", discoveredPlatform, "] [Range: 1-5]: ")
-	fmt.Scanln(&platform)
-	switch platform {
-	case 0:
-		return discoveredPlatform
-	case 1:
-		return "AWS"
-	case 2:
-		return "GKE"
-	case 3:
-		return "Openshift"
-	case 4:
-		return "Rancher"
-	default:
-		return utils.DefaultPlatform
+
+	items := []string{"AWS Elastic Kubernetes Service", "Google Kubernetes Service", "OpenShift", "Rancher"}
+	index := -1
+	var (
+		result string
+		err    error
+	)
+
+	for index < 0 {
+		prompt := promptui.SelectWithAdd{
+			Label:    "What's your Kubernetes Platform?",
+			Items:    items,
+			AddLabel: "Other",
+		}
+
+		index, result, err = prompt.Run()
+		if err != nil {
+			utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+			os.Exit(1)
+		}
+
+		if index == -1 {
+			items = append(items, result)
+		}
 	}
+
+	return result
 }
 
 // discoverPlatform determines the host platform and returns it

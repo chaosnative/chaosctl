@@ -16,9 +16,9 @@ limitations under the License.
 package get
 
 import (
-	"fmt"
 	"github.com/chaosnative/chaosctl/pkg/apis"
 	"github.com/chaosnative/chaosctl/pkg/utils"
+	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 	"os"
 	"text/tabwriter"
@@ -37,8 +37,15 @@ var agentsCmd = &cobra.Command{
 		utils.PrintError(err)
 
 		if projectID == "" {
-			utils.White_B.Print("\nEnter the Project ID: ")
-			fmt.Scanln(&projectID)
+			prompt := promptui.Prompt{
+				Label: "What's the ProjectID?",
+			}
+
+			projectID, err = prompt.Run()
+			if err != nil {
+				utils.Red.Println(err)
+				os.Exit(1)
+			}
 
 			for projectID == "" {
 				utils.Red.Println("⛔ Project ID can't be empty!!")

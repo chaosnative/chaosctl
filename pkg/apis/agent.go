@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 
 	"github.com/chaosnative/chaosctl/pkg/utils"
 
@@ -52,12 +53,14 @@ func GetAgentList(c types.Credentials, pid string) (AgentData, error) {
 	resp, err := SendRequest(SendRequestParams{Endpoint: c.Endpoint + utils.GQLAPIPath, Token: c.Token}, []byte(query), string(types.Post))
 	if err != nil {
 		utils.Red.Println("Error in getting agent list: ", err)
+		os.Exit(1)
 	}
 
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	if err != nil {
 		utils.Red.Println("Error in getting agent list: ", err)
+		os.Exit(1)
 	}
 
 	if resp.StatusCode == http.StatusOK {
@@ -65,6 +68,7 @@ func GetAgentList(c types.Credentials, pid string) (AgentData, error) {
 		err = json.Unmarshal(bodyBytes, &agent)
 		if err != nil {
 			utils.Red.Println("Error in getting agent list: ", err)
+			os.Exit(1)
 		}
 
 		if len(agent.Errors) > 0 {

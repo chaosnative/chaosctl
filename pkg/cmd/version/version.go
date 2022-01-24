@@ -28,6 +28,6 @@ var VersionCmd = &cobra.Command{
 	Short: "Displays the version of chaosctl",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		utils.White_B.Println("ChaosCtl version: ", os.Getenv("CLIVersion"))
+		utils.White_B.Println("ChaosCTL version: ", os.Getenv("CLIVersion"))
 	},
 }

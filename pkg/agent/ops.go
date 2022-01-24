@@ -16,73 +16,56 @@ limitations under the License.
 package agent
 
 import (
-	"fmt"
-	"os"
-	"strconv"
-	"strings"
-
+	"errors"
 	"github.com/chaosnative/chaosctl/pkg/apis"
 	"github.com/chaosnative/chaosctl/pkg/k8s"
 	"github.com/chaosnative/chaosctl/pkg/types"
 	"github.com/chaosnative/chaosctl/pkg/utils"
+	"github.com/manifoldco/promptui"
+	"os"
+	"strconv"
 )
-
-func PrintExistingAgents(agent apis.AgentData) {
-	utils.Red.Println("\nAgent with the given name already exists.")
-	// Print agent list if existing agent name is entered twice
-	utils.White_B.Println("\nConnected agents list:")
-
-	for i := range agent.Data.GetAgent {
-		utils.White_B.Println("-", agent.Data.GetAgent[i].AgentName)
-	}
-
-	utils.White_B.Println("\n❗ Please enter a different name.")
-}
 
 // GetProject display list of projects and returns the project id based on input
 func GetProjectID(u apis.ProjectDetails) string {
-	var pid int
-	utils.White_B.Println("Project list:")
-	for index := range u.Data.Projects {
-		utils.White_B.Printf("%d.  %s\n", index+1, u.Data.Projects[index].Name)
+	var projectNames []string
+	for _, v := range u.Data.Projects {
+		projectNames = append(projectNames, v.Name)
 	}
 
-repeat:
-	utils.White_B.Printf("\nSelect a project [Range: 1-%s]: ", fmt.Sprint(len(u.Data.Projects)))
-	fmt.Scanln(&pid)
-
-	for pid < 1 || pid > len(u.Data.Projects) {
-		utils.Red.Println("❗ Invalid Project. Please select a correct one.")
-		goto repeat
+	prompt := promptui.Select{
+		Label: "Select a project from the list",
+		Items: projectNames,
+		Size:  len(projectNames),
 	}
 
-	return u.Data.Projects[pid-1].ID
+	counter, _, err := prompt.Run()
+	if err != nil {
+		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+		os.Exit(1)
+	}
+
+	return u.Data.Projects[counter].ID
 }
 
 // GetMode gets mode of agent installation as input
 func GetModeType() string {
-repeat:
-	var (
-		cluster_no   = 1
-		namespace_no = 2
-		mode         = cluster_no
-	)
+	prompt := promptui.Select{
+		Label: "What's the installation mode?",
+		Items: []string{"Cluster", "Namespace"},
+		Size:  2,
+	}
 
-	utils.White_B.Println("\nInstallation Modes:\n1. Cluster\n2. Namespace")
-	utils.White_B.Print("\nSelect Mode [Default: ", utils.DefaultMode, "] [Range: 1-2]: ")
-	fmt.Scanln(&mode)
+	counter, _, err := prompt.Run()
+	if err != nil {
+		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+		os.Exit(1)
+	}
 
-	if mode == 1 {
+	if counter == 0 {
 		return "cluster"
-	}
-
-	if mode == 2 {
+	} else if counter == 1 {
 		return "namespace"
-	}
-
-	if (mode != cluster_no) || (mode != namespace_no) {
-		utils.Red.Println("🚫 Invalid mode. Please enter the correct mode")
-		goto repeat
 	}
 
 	return utils.DefaultMode
@@ -90,14 +73,25 @@ repeat:
 
 // GetAgentDetails take details of agent as input
 func GetAgentDetails(mode string, pid string, c types.Credentials, kubeconfig *string) (types.Agent, error) {
-	var newAgent types.Agent
+	var (
+		newAgent types.Agent
+		err      error
+	)
 	// Get agent name as input
 	utils.White_B.Println("\nEnter the details of the agent")
 	// Label for goto statement in case of invalid agent name
 
 AGENT_NAME:
-	utils.White_B.Print("\nAgent Name: ")
-	newAgent.AgentName = utils.Scanner()
+	prompt := promptui.Prompt{
+		Label: "What's the Agent Name?",
+	}
+
+	newAgent.AgentName, err = prompt.Run()
+	if err != nil {
+		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+		os.Exit(1)
+	}
+
 	if newAgent.AgentName == "" {
 		utils.Red.Println("⛔ Agent name cannot be empty. Please enter a valid name.")
 		goto AGENT_NAME
@@ -118,34 +112,62 @@ AGENT_NAME:
 	}
 
 	if isAgentExist {
-		PrintExistingAgents(agent)
 		goto AGENT_NAME
 	}
 
 	// Get agent description as input
-	utils.White_B.Print("\nAgent Description: ")
-	newAgent.Description = utils.Scanner()
+	prompt = promptui.Prompt{
+		Label: "Add your agent description",
+	}
 
-	utils.White_B.Print("\nDo you want NodeSelector to be added in the agent deployments (Y/N) (Default: N): ")
-	nodeSelectorDescision := utils.Scanner()
+	newAgent.Description, err = prompt.Run()
+	if err != nil {
+		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+		os.Exit(1)
+	}
 
-	if strings.ToLower(nodeSelectorDescision) == "y" {
-		utils.White_B.Print("\nEnter the NodeSelector (Format: key1=value1,key2=value2): ")
-		newAgent.NodeSelector = utils.Scanner()
+	nodeSelector := promptui.Select{
+		Label: "Do you want NodeSelectors added to the agent deployments?",
+		Items: []string{"Yes", "No"},
+	}
 
+	counter, _, err := nodeSelector.Run()
+	utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+
+	if counter == 0 {
+		prompt := promptui.Prompt{
+			Label: "Add your NodeSelector(s) (Format: key1=value1,key2=value2)",
+		}
+		newAgent.NodeSelector, err = prompt.Run()
 		if ok := utils.CheckKeyValueFormat(newAgent.NodeSelector); !ok {
+			os.Exit(1)
+		}
+		if err != nil {
+			utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 			os.Exit(1)
 		}
 	}
 
-	utils.White_B.Print("\nDo you want Tolerations to be added in the agent deployments? (Y/N) (Default: N): ")
-	tolerationDescision := utils.Scanner()
+	toleration := promptui.Select{
+		Label: "Do you want Tolerations added in the agent deployments??",
+		Items: []string{"Yes", "No"},
+	}
 
-	if strings.ToLower(tolerationDescision) == "y" {
-		utils.White_B.Print("\nHow many tolerations? ")
-		no_of_tolerations := utils.Scanner()
+	counter, _, err = toleration.Run()
+	utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 
-		nts, err := strconv.Atoi(no_of_tolerations)
+	if counter == 0 {
+		prompt := promptui.Prompt{
+			Label: "Add the toleration count",
+		}
+
+		result, err := prompt.Run()
+		if err != nil {
+			utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+			os.Exit(1)
+		}
+
+		nts, err := strconv.Atoi(result)
 		utils.PrintError(err)
 
 		str := "["
@@ -154,17 +176,30 @@ AGENT_NAME:
 
 			utils.White_B.Print("\nToleration count: ", tol+1)
 
-			utils.White_B.Print("\nTolerationSeconds: (Press Enter to ignore)")
-			ts := utils.Scanner()
+			prompt.Label = "TolerationSeconds: (Press Enter to ignore)"
+			ts, err := prompt.Run()
+			if err != nil {
+				utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+				os.Exit(1)
+			}
 
-			utils.White_B.Print("\nOperator: ")
-			operator := utils.Scanner()
+			prompt.Label = "Operator"
+			operator, err := prompt.Run()
+			if err != nil {
+				utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+				os.Exit(1)
+			}
+
 			if operator != "" {
 				str += "operator : \\\"" + operator + "\\\" "
 			}
 
-			utils.White_B.Print("\nEffect: ")
-			effect := utils.Scanner()
+			prompt.Label = "Effect"
+			effect, err := prompt.Run()
+			if err != nil {
+				utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+				os.Exit(1)
+			}
 
 			if effect != "" {
 				str += "effect: \\\"" + effect + "\\\" "
@@ -174,14 +209,24 @@ AGENT_NAME:
 				str += "tolerationSeconds: " + ts + " "
 			}
 
-			utils.White_B.Print("\nKey: ")
-			key := utils.Scanner()
+			prompt.Label = "Key"
+			key, err := prompt.Run()
+			if err != nil {
+				utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+				os.Exit(1)
+			}
+
 			if key != "" {
 				str += "key: \\\"" + key + "\\\" "
 			}
 
-			utils.White_B.Print("\nValue: ")
-			value := utils.Scanner()
+			prompt.Label = "Value"
+			value, err := prompt.Run()
+			if err != nil {
+				utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+				os.Exit(1)
+			}
+
 			if key != "" {
 				str += "value: \\\"" + value + "\\\" "
 			}
@@ -191,6 +236,7 @@ AGENT_NAME:
 		str += "]"
 
 		newAgent.Tolerations = str
+
 	}
 
 	// Get platform name as input
@@ -254,11 +300,19 @@ func Summary(agent types.Agent, kubeconfig *string) {
 }
 
 func ConfirmInstallation() {
-	var descision string
-	utils.White_B.Print("\n🤷 Do you want to continue with the above details? [Y/N]: ")
-	fmt.Scanln(&descision)
 
-	if strings.ToLower(descision) == "yes" || strings.ToLower(descision) == "y" {
+	prompt := promptui.Select{
+		Label: "Do you want to continue with the above details?",
+		Items: []string{"Yes", "No"},
+	}
+
+	decision, _, err := prompt.Run()
+	if err != nil {
+		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+		os.Exit(1)
+	}
+
+	if decision == 0 {
 		utils.White_B.Println("👍 Continuing agent connection!!")
 	} else {
 		utils.Red.Println("✋ Exiting agent connection!!")
@@ -266,13 +320,13 @@ func ConfirmInstallation() {
 	}
 }
 
-func CreateRandomProject(cred types.Credentials) string {
+func CreateRandomProject(userID string, cred types.Credentials) string {
 	rand, err := utils.GenerateRandomString(10)
 	utils.PrintError(err)
 
 	projectName := cred.Username + "-" + rand
 
-	project, err := apis.CreateProjectRequest(projectName, cred)
+	project, err := apis.CreateProjectRequest(userID, projectName, cred)
 	utils.PrintError(err)
 
 	return project.Data.ID

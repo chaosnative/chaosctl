@@ -41,11 +41,13 @@ type createProjectResponse struct {
 
 type createProjectPayload struct {
 	ProjectName string `json:"project_name"`
+	UserID      string `json:"user_id"`
 }
 
-func CreateProjectRequest(projectName string, cred types.Credentials) (createProjectResponse, error) {
+func CreateProjectRequest(userID string, projectName string, cred types.Credentials) (createProjectResponse, error) {
 	payloadBytes, err := json.Marshal(createProjectPayload{
 		ProjectName: projectName,
+		UserID:      userID,
 	})
 
 	if err != nil {
@@ -125,29 +127,40 @@ func ListProject(cred types.Credentials) (listProjectResponse, error) {
 }
 
 type ProjectDetails struct {
-	Data   Data `json:"data"`
-	Errors []struct {
-		Message string   `json:"message"`
-		Path    []string `json:"path"`
-	} `json:"errors"`
+	Data Data `json:"data"`
 }
 
 type Data struct {
-	ID       string    `json:"ID"`
-	Projects []Project `json:"Projects"`
+	ID         string    `json:"ID"`
+	Username   string    `json:"Username"`
+	CreatedAt  string    `json:"CreatedAt"`
+	UserStatus string    `json:"UserStatus"`
+	Email      string    `json:"Email"`
+	FirstName  string    `json:"FirstName"`
+	LastName   string    `json:"LastName"`
+	Projects   []Project `json:"Projects"`
 }
 
 type Member struct {
-	Role     string `json:"Role"`
-	UserID   string `json:"UserID"`
-	UserName string `json:"UserName"`
+	UserID     string `json:"UserID"`
+	Role       string `json:"Role"`
+	Invitation string `json:"Invitation"`
+	JoinedAt   string `json:"JoinedAt"`
 }
 
 type Project struct {
-	ID        string   `json:"ID"`
-	Name      string   `json:"Name"`
-	CreatedAt string   `json:"CreatedAt"`
-	Members   []Member `json:"Members"`
+	ID    string `json:"ID"`
+	Name  string `json:"Name"`
+	Owner struct {
+		AccID   string `json:"AccID"`
+		AccType string `json:"AccType"`
+	} `json:"Owner"`
+	Teams     []interface{} `json:"Teams"`
+	State     interface{}   `json:"State"`
+	CreatedAt string        `json:"CreatedAt"`
+	UpdatedAt string        `json:"UpdatedAt"`
+	RemovedAt string        `json:"RemovedAt"`
+	Members   []Member      `json:"Members"`
 }
 
 // GetProjectDetails fetches details of the input user
@@ -164,6 +177,7 @@ func GetProjectDetails(c types.Credentials) (ProjectDetails, error) {
 
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
+
 	if err != nil {
 		return ProjectDetails{}, err
 	}
@@ -173,9 +187,6 @@ func GetProjectDetails(c types.Credentials) (ProjectDetails, error) {
 		err = json.Unmarshal(bodyBytes, &project)
 		if err != nil {
 			return ProjectDetails{}, err
-		}
-		if len(project.Errors) > 0 {
-			return ProjectDetails{}, errors.New(project.Errors[0].Message)
 		}
 
 		return project, nil

@@ -16,7 +16,9 @@ limitations under the License.
 package config
 
 import (
+	"errors"
 	"fmt"
+	"github.com/manifoldco/promptui"
 	"net/url"
 	"os"
 	"strings"
@@ -28,7 +30,6 @@ import (
 	"github.com/chaosnative/chaosctl/pkg/utils"
 	"github.com/golang-jwt/jwt"
 	"github.com/spf13/cobra"
-	"golang.org/x/term"
 )
 
 // setAccountCmd represents the setAccount command
@@ -40,6 +41,7 @@ var setAccountCmd = &cobra.Command{
 		chaosctl config set-account  --endpoint "" --password "" --username ""
 		`,
 	Run: func(cmd *cobra.Command, args []string) {
+
 		configFilePath := utils.GetLitmusConfigPath(cmd)
 
 		var (
@@ -57,9 +59,52 @@ var setAccountCmd = &cobra.Command{
 		utils.PrintError(err)
 
 		if authInput.Endpoint == "" {
-			utils.White_B.Print("\nHost endpoint where litmus is installed: ")
-			fmt.Scanln(&authInput.Endpoint)
+			prompt := promptui.Select{
+				Label: "What's the product name?",
+				Items: []string{"ChaosNative Cloud", "ChaosNative Enterprise"},
+			}
 
+			_, result, err := prompt.Run()
+
+			if err != nil {
+				utils.Red.Println(err)
+				return
+			}
+
+			if result == "ChaosNative Cloud" {
+				authInput.Endpoint = utils.ChaosNativeCloudEndpoint
+			} else if result == "ChaosNative Enterprise" {
+				validate := func(input string) error {
+					if utils.IsValidUrl(input) {
+						return nil
+					} else {
+						return errors.New("Not a valid URL")
+					}
+				}
+
+				templates := &promptui.PromptTemplates{
+					Prompt:  "{{ . }} ",
+					Valid:   "{{ . | green }} ",
+					Invalid: "{{ . | red }} ",
+					Success: "{{ . | bold }} ",
+				}
+
+				prompt := promptui.Prompt{
+					Label:     "ChaosNative Enterprise Endpoint",
+					Templates: templates,
+					Validate:  validate,
+				}
+
+				authInput.Endpoint, err = prompt.Run()
+
+				if err != nil {
+					utils.Red.Printf("Prompt failed %v\n", err)
+					return
+				}
+
+			}
+
+			utils.White_B.Print(authInput.Endpoint)
 			for authInput.Endpoint == "" {
 				utils.Red.Println("\n⛔ Host URL can't be empty!!")
 				os.Exit(1)
@@ -73,24 +118,38 @@ var setAccountCmd = &cobra.Command{
 		}
 
 		if authInput.Username == "" {
-			utils.White_B.Print("\nUsername [Default: ", utils.DefaultUsername, "]: ")
-			fmt.Scanln(&authInput.Username)
+			prompt := promptui.Prompt{
+				Label: "What's the AccessID?",
+			}
+
+			authInput.Username, err = prompt.Run()
+			if err != nil {
+				utils.Red.Println(err)
+				os.Exit(1)
+			}
+
 			if authInput.Username == "" {
-				authInput.Username = utils.DefaultUsername
+				utils.Red.Println("\n⛔ AccessID cannot be empty!")
+				return
 			}
 		}
 
 		if authInput.Password == "" {
-			utils.White_B.Print("\nPassword: ")
-			pass, err := term.ReadPassword(0)
-			utils.PrintError(err)
-
-			if pass == nil {
-				utils.Red.Println("\n⛔ Password cannot be empty!")
-				os.Exit(1)
+			prompt := promptui.Prompt{
+				Label: "What's the AccessKey?",
+				Mask:  '*',
 			}
 
-			authInput.Password = string(pass)
+			authInput.Password, err = prompt.Run()
+			if err != nil {
+				utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+				return
+			}
+
+			if authInput.Password == "" {
+				utils.Red.Println("\n⛔ AccessKey cannot be empty!")
+				return
+			}
 		}
 
 		if authInput.Endpoint != "" && authInput.Username != "" && authInput.Password != "" {
@@ -156,7 +215,7 @@ var setAccountCmd = &cobra.Command{
 				err = config.UpdateLitmusCtlConfig(updateLitmusCtlConfig, configFilePath)
 				utils.PrintError(err)
 			}
-			utils.White_B.Printf("\naccount.username/%s configured", claims["username"].(string))
+			utils.White_B.Printf("\naccount.username/%s configured\n", claims["username"].(string))
 
 		} else {
 			utils.Red.Println("\nError: some flags are missing. Run 'chaosctl config set-account --help' for usage. ")
