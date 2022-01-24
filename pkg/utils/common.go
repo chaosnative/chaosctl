@@ -51,6 +51,7 @@ func Scanner() string {
 	}
 	return ""
 }
+
 func PrintError(err error) {
 	if err != nil {
 		Red.Println(err)

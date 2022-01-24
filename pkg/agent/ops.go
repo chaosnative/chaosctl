@@ -33,7 +33,7 @@ func GetProjectID(u apis.ProjectDetails) string {
 	}
 
 	prompt := promptui.Select{
-		Label: "What's the project?",
+		Label: "Select a project from the list",
 		Items: projectNames,
 		Size:  len(projectNames),
 	}
@@ -129,6 +129,7 @@ AGENT_NAME:
 		if ok := utils.CheckKeyValueFormat(newAgent.NodeSelector); !ok {
 			os.Exit(1)
 		}
+		utils.PrintError(err)
 	}
 
 	toleration := promptui.Select{
