@@ -134,7 +134,7 @@ start:
 
 	if mode == "namespace" {
 		prompt := promptui.Prompt{
-			Label: "Enter an existing namespace [Default: " + utils.DefaultNs + " ]:",
+			Label: "Enter an existing namespace [Default: " + utils.DefaultNs + " ]",
 		}
 
 		namespace, err = prompt.Run()
@@ -145,7 +145,7 @@ start:
 
 	} else if mode == "cluster" {
 		prompt := promptui.Prompt{
-			Label: "Enter a new or existing namespace [Default: " + utils.DefaultNs + " ]:",
+			Label: "Enter a new or existing namespace [Default: " + utils.DefaultNs + " ]",
 		}
 
 		namespace, err = prompt.Run()

@@ -32,7 +32,7 @@ import (
 // - String literals like "AWS" are used at multiple places. Need to be changed to constants.
 func GetPlatformName(kubeconfig *string) string {
 
-	items := []string{"AWS Elastic Kubernetes Service", "Google Kubernetes Service", "OpenShift", "Rancher", "Others"}
+	items := []string{"Others", "AWS Elastic Kubernetes Service", "Google Kubernetes Service", "OpenShift", "Rancher"}
 	var (
 		result string
 		err    error
