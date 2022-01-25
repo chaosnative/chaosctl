@@ -132,7 +132,10 @@ AGENT_NAME:
 	}
 
 	counter, _, err := nodeSelector.Run()
-	utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+	if err != nil {
+		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+		os.Exit(1)
+	}
 
 	if counter == 0 {
 		prompt := promptui.Prompt{
@@ -154,7 +157,10 @@ AGENT_NAME:
 	}
 
 	counter, _, err = toleration.Run()
-	utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+	if err != nil {
+		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+		os.Exit(1)
+	}
 
 	if counter == 0 {
 		prompt := promptui.Prompt{
