@@ -32,29 +32,22 @@ import (
 // - String literals like "AWS" are used at multiple places. Need to be changed to constants.
 func GetPlatformName(kubeconfig *string) string {
 
-	items := []string{"AWS Elastic Kubernetes Service", "Google Kubernetes Service", "OpenShift", "Rancher"}
-	index := -1
+	items := []string{"AWS Elastic Kubernetes Service", "Google Kubernetes Service", "OpenShift", "Rancher", "Others"}
 	var (
 		result string
 		err    error
 	)
 
-	for index < 0 {
-		prompt := promptui.SelectWithAdd{
-			Label:    "What's your Kubernetes Platform?",
-			Items:    items,
-			AddLabel: "Other",
-		}
+	prompt := promptui.Select{
+		Label: "What's your Kubernetes Platform?",
+		Items: items,
+		Size:  len(items),
+	}
 
-		index, result, err = prompt.Run()
-		if err != nil {
-			utils.Red.Println(errors.New("Prompt err:" + err.Error()))
-			os.Exit(1)
-		}
-
-		if index == -1 {
-			items = append(items, result)
-		}
+	_, result, err = prompt.Run()
+	if err != nil {
+		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+		os.Exit(1)
 	}
 
 	return result
