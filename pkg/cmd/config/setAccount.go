@@ -38,7 +38,7 @@ var setAccountCmd = &cobra.Command{
 	Short: `Sets an account entry in chaosconfig.
 		Examples(s)
 		#set a new account
-		chaosctl config set-account  --endpoint "" --password "" --username ""
+		chaosctl config set-account  --endpoint "" --access_id "" --access_key ""
 		`,
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -52,10 +52,10 @@ var setAccountCmd = &cobra.Command{
 		authInput.Endpoint, err = cmd.Flags().GetString("endpoint")
 		utils.PrintError(err)
 
-		authInput.Username, err = cmd.Flags().GetString("username")
+		authInput.Username, err = cmd.Flags().GetString("access_id")
 		utils.PrintError(err)
 
-		authInput.Password, err = cmd.Flags().GetString("password")
+		authInput.Password, err = cmd.Flags().GetString("access_key")
 		utils.PrintError(err)
 
 		if authInput.Endpoint == "" {
@@ -215,7 +215,7 @@ var setAccountCmd = &cobra.Command{
 				err = config.UpdateLitmusCtlConfig(updateLitmusCtlConfig, configFilePath)
 				utils.PrintError(err)
 			}
-			utils.White_B.Printf("\naccount.username/%s configured\n", claims["username"].(string))
+			utils.White_B.Printf("\naccount.accessID/%s configured\n", claims["username"].(string))
 
 		} else {
 			utils.Red.Println("\nError: some flags are missing. Run 'chaosctl config set-account --help' for usage. ")
@@ -227,6 +227,6 @@ func init() {
 	ConfigCmd.AddCommand(setAccountCmd)
 
 	setAccountCmd.Flags().StringP("endpoint", "e", "", "Account endpoint. Mandatory")
-	setAccountCmd.Flags().StringP("username", "u", "", "Account username. Mandatory")
-	setAccountCmd.Flags().StringP("password", "p", "", "Account password. Mandatory")
+	setAccountCmd.Flags().String("access_id", "", "User AccessID. Mandatory")
+	setAccountCmd.Flags().String("access_key", "", "User AccessKey. Mandatory")
 }

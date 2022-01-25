@@ -38,7 +38,7 @@ var getAccountsCmd = &cobra.Command{
 		utils.PrintError(err)
 
 		writer := tabwriter.NewWriter(os.Stdout, 0, 8, 1, '\t', tabwriter.AlignRight)
-		utils.White_B.Fprintln(writer, "CURRENT\tENDPOINT\tUSERNAME\tEXPIRESIN")
+		utils.White_B.Fprintln(writer, "CURRENT\tENDPOINT\tACCESSID\tEXPIRESIN")
 		for _, account := range obj.Accounts {
 			for _, user := range account.Users {
 				intTime, err := strconv.ParseInt(user.ExpiresIn, 10, 64)

@@ -25,10 +25,10 @@ var ConfigCmd = &cobra.Command{
 	Short: `It manages multiple litmusportal accounts within a system. 
 		Examples(s)
 		#set a new account
-		chaosctl config set-account  --endpoint "" --password "" --username ""
+		chaosctl config set-account  --endpoint "" --access_id "" --access_key ""
 
 		#use an existing account from the config file
-		chaosctl config use-account  --endpoint "" --username ""
+		chaosctl config use-account  --endpoint "" --access_id ""
 
 		#get all accounts in the config file
 		chaosctl config get-accounts

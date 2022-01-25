@@ -28,8 +28,8 @@ import (
 // useAccountCmd represents the useAccount command
 var useAccountCmd = &cobra.Command{
 	Use:   "use-account",
-	Short: "Sets the current-account and current-username in a chaosconfig file",
-	Long:  `Sets the current-account and current-username in a chaosconfig file`,
+	Short: "Sets the current-account and current-accessID in a chaosconfig file",
+	Long:  `Sets the current-account and current-accessID in a chaosconfig file`,
 	Run: func(cmd *cobra.Command, args []string) {
 		configFilePath := utils.GetLitmusConfigPath(cmd)
 
@@ -88,7 +88,7 @@ var useAccountCmd = &cobra.Command{
 			}
 		}
 
-		username, err := cmd.Flags().GetString("username")
+		username, err := cmd.Flags().GetString("access_id")
 		utils.PrintError(err)
 
 		if username == "" {
@@ -109,7 +109,7 @@ var useAccountCmd = &cobra.Command{
 		}
 
 		if username == "" || endpoint == "" {
-			utils.Red.Println("endpoint or username is not set")
+			utils.Red.Println("endpoint or accessID is not set")
 			os.Exit(1)
 		}
 
@@ -142,6 +142,6 @@ var useAccountCmd = &cobra.Command{
 
 func init() {
 	ConfigCmd.AddCommand(useAccountCmd)
-	useAccountCmd.Flags().StringP("username", "u", "", "Help message for toggle")
+	useAccountCmd.Flags().String("access_id", "", "Help message for toggle")
 	useAccountCmd.Flags().StringP("endpoint", "e", "", "Help message for toggle")
 }
