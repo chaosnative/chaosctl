@@ -145,6 +145,7 @@ AGENT_NAME:
 		if ok := utils.CheckKeyValueFormat(newAgent.NodeSelector); !ok {
 			os.Exit(1)
 		}
+
 		if err != nil {
 			utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 			os.Exit(1)

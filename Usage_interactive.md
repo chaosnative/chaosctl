@@ -29,21 +29,24 @@ chaosctl supports both interactive and non-interactive(flag based) modes.
 chaosctl config set-account
 ```
 
-Next, you need to enter ChaosCenter details to login into your ChaosCenter account. Fields to be filled in:
+Next, you need to enter CLC/CLE details to login into your account. Fields to be filled in:
 
-**ChaosCenter URL:** Enter the URL used to access the ChaosCenter.
+**What's the product name:** Select the product name .
 
 > Example, https://preview.litmuschaos.io/
 
-**Username:** Enter your ChaosCenter username. <br />
-**Password:** Enter your ChaosCenter password.
+**AccessID:** What's the AccessID?: <br />
+**AccessKey:** What's the AccessKey?:
 
 ```
-Host endpoint where litmus is installed: https://preview.litmuschaos.io/
-Username [Default: admin]: admin
+? What's the product name?: 
+  ▸ ChaosNative Cloud
+    ChaosNative Enterprise
+    
+What's the AccessID?: Raj60163RjxQE
+What's the AccessKey?: ***************
 
-Password:
-account.username/admin configured
+account.accessID/admin configured
 ```
 
 - To create an agent in a cluster mode
@@ -55,15 +58,13 @@ chaosctl create agent
 There will be a list of existing projects displayed on the terminal. Select the desired project by entering the sequence number indicated against it.
 
 ```
-Project list:
-1.  Project-Admin
-
-Select a project [Range: 1-1]: 1
+? Select a project from the list: 
+  ▸ Raj60163's project
 ```
 
 Next, select the installation mode based on your requirement by entering the sequence number indicated against it.
 
-Chaosctl can install an agent in two different modes.
+It can install an agent in two different modes.
 
 - cluster mode: With this mode, the agent can run the chaos in any namespace. It installs appropriate cluster roles and cluster role bindings to achieve this mode.
 
@@ -72,11 +73,9 @@ Chaosctl can install an agent in two different modes.
 Note: With namespace mode, the user needs to create the namespace to install the agent as a prerequisite.
 
 ```
-Installation Modes:
-1. Cluster
-2. Namespace
-
-Select Mode [Default: cluster] [Range: 1-2]: 1
+? What's the installation mode?: 
+  ▸ Cluster
+    Namespace
 
 🏃 Running prerequisites check....
 🔑 clusterrole ✅
@@ -120,24 +119,28 @@ Fields to be filled in <br />
 
 ```
 Enter the details of the agent
+✔ What's the Agent Name?: new-agent
 
-Agent Name: New-Agent
+✔ Add your agent description: new-agent█
 
-Agent Description: This is a new agent
+? Do you want NodeSelectors added to the agent deployments?: 
+    Yes
+  ▸ No
 
-Do you want NodeSelector to be added in the agent deployments (Y/N) (Default: N): N
+? Do you want Tolerations added in the agent deployments??: 
+    Yes
+  ▸ No
 
-Platform List:
-1. AWS
-2. GKE
-3. Openshift
-4. Rancher
-5. Others
+? What's your Kubernetes Platform?: 
+  ▸ Others
+    AWS Elastic Kubernetes Service
+    Google Kubernetes Service
+    OpenShift
+    Rancher
 
-Select a platform [Default: Others] [Range: 1-5]: 5
+✔ Enter a new or existing namespace [Default: litmus ]: new-ns
 
-Enter the namespace (new or existing namespace) [Default: litmus]:
-👍 Continuing with litmus namespace
+✔ Enter a service account [Default: litmus ]:
 ```
 
 Once, all these steps are implemented you will be able to see a summary of all the entered fields.
@@ -152,10 +155,12 @@ Agent Description: This is a new agent
 Platform Name: Others
 Namespace:  litmus
 Service Account:  litmus (new)
-
 Installation Mode: cluster
 
-🤷 Do you want to continue with the above details? [Y/N]: Y
+? Do you want to continue with the above details?: 
+  ▸ Yes
+    No
+
 👍 Continuing agent connection!!
 Applying YAML:
 https://preview.litmuschaos.io/api/file/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVzdGVyX2lkIjoiMDUyZmFlN2UtZGM0MS00YmU4LWJiYTgtMmM4ZTYyNDFkN2I0In0.i31QQDG92X5nD6P_-7TfeAAarZqLvUTFfnAghJYXPiM.yaml
@@ -208,7 +213,7 @@ chaosctl config get-accounts
 **Output:**
 
 ```
-CURRENT  ENDPOINT                         USERNAME  EXPIRESIN
+CURRENT  ENDPOINT                         ACCESSID  EXPIRESIN
          https://preview.litmuschaos.io   admin     2021-07-22 01:20:27 +0530 IST
 *        https://preview.litmuschaos.io   raj       2021-07-22 14:33:22 +0530 IST
 ```
@@ -218,9 +223,11 @@ CURRENT  ENDPOINT                         USERNAME  EXPIRESIN
 ```shell
 chaosctl config use-account
 
-Host endpoint where litmus is installed: https://preview.litmuschaos.io
-
-Username: admin
+? What's the product name?: 
+  ▸ ChaosNative Cloud
+    ChaosNative Enterprise
+    
+What's the AccessID?: Raj60163RjxQE
 ```
 
 - To create a project, apply the following command :

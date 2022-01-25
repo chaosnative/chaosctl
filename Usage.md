@@ -29,7 +29,7 @@ Note: With namespace mode, the user needs to create the namespace to install the
 
 * To setup an account with chaosctl
 ```shell
-chaosctl config set-account --endpoint="" --username="" --password=""
+chaosctl config set-account --endpoint="" --access_id="" --access_key=""
 ```
 
 * To create an agent without a project
@@ -168,14 +168,14 @@ chaosctl config get-accounts
 **Output:**
 
 ```
-CURRENT  ENDPOINT                         USERNAME  EXPIRESIN
+CURRENT  ENDPOINT                         ACCESSID  EXPIRESIN
          https://preview.litmuschaos.io   admin     2021-07-22 01:20:27 +0530 IST
 *        https://preview.litmuschaos.io   raj       2021-07-22 14:33:22 +0530 IST
 ```
 
-* To alter the current account use the `use-account` command with the --endpoint and --username flags:
+* To alter the current account use the `use-account` command with the --endpoint and --access_id flags:
 ```shell
-chaosctl config use-account --endpoint="" --username=""
+chaosctl config use-account --endpoint="" --access_id=""
 ```
 
 * To create a project, apply the following command with the `--name` flag:
