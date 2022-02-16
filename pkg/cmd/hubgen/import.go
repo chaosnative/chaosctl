@@ -143,6 +143,9 @@ func generateChaosHub(generatedCharts map[string][]string, importPath string, ex
 		if err != nil {
 			fmt.Errorf("Error while creating " + chart + " directory")
 		}
+		iconCmd := exec.Command("cp", "--recursive", importPath+"/"+chart+"/icons", updatedExportPath+"/"+chart+"/icons")
+		iconCmd.Run()
+
 		for _, experiment := range generatedCharts[chart] {
 			cmd := exec.Command("cp", "--recursive", importPath+"/"+chart+"/"+experiment, updatedExportPath+"/"+chart+"/"+experiment)
 			cmd.Run()
