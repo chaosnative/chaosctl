@@ -54,9 +54,13 @@ var generateCmd = &cobra.Command{
 
 	LOOP:
 		generatedChart = listChartsAndExperiments(names, hubPath, generatedChart)
-		utils.White_B.Print("\n📦 Experiments added successfully, do you generate the ChaosHub? [Y/N] \n " +
-			"Y to generate the ChaosHub / N to add more charts and experiments: ")
-		fmt.Scanln(&confirm)
+		fmt.Printf("\n")
+		confirmPromptLabel := "📦 Experiments added successfully, do you generate the ChaosHub? [Y/N] " +
+			"Y to generate the ChaosHub / N to add more charts and experiments "
+		promptConfirm := promptui.Prompt{
+			Label: confirmPromptLabel,
+		}
+		confirm, _ = promptConfirm.Run()
 		if strings.ToLower(confirm) == "n" {
 			goto LOOP
 		} else if strings.ToLower(confirm) == "y" {
@@ -135,12 +139,12 @@ func listChartsAndExperiments(names []string, hubPath string, generatedCharts ma
 
 	//Select the available charts
 	utils.White_B.Print("\n📝 Select the charts: ")
-	chartPrompt := promptui.Select{
+	prompt := promptui.Select{
 		Label: "Available charts",
 		Items: names,
 		Size:  len(names),
 	}
-	_, chartName, err = chartPrompt.Run()
+	_, chartName, err = prompt.Run()
 	if err != nil {
 		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 		os.Exit(1)
@@ -160,10 +164,13 @@ func listChartsAndExperiments(names []string, hubPath string, generatedCharts ma
 	for index, expName := range expNames {
 		fmt.Printf("%d.  %s\n", index+1, expName)
 	}
-
+	fmt.Printf("\n")
 	//Select the list of experiments with comma separation
-	utils.White_B.Print("\n✅ Select experiments from " + chartName + " charts: Range[1- " + fmt.Sprintf("%d", len(expNames)) + "] ex: 1,4,7: ")
-	fmt.Scanln(&expIndex)
+	expPromptLabel := "✅ Select experiments from " + chartName + " charts: Range[1- " + fmt.Sprintf("%d", len(expNames)) + "] ex: 1,4,7 "
+	promptExpIndex := promptui.Prompt{
+		Label: expPromptLabel,
+	}
+	expIndex, _ = promptExpIndex.Run()
 
 	//Split the user input string with commas and push the same in expIndex array
 	res := strings.Split(expIndex, ",")

@@ -14,6 +14,10 @@ var getHubCmd = &cobra.Command{
 	Short: "Imports the local ChaosHub with it's path and generates the configured ChaosHub",
 	Long:  "Imports the local ChaosHub with it's path and generates the configured ChaosHub",
 	Run: func(cmd *cobra.Command, args []string) {
+
+		commitDepth, err := cmd.Flags().GetInt("commit-depth")
+		utils.PrintError(err)
+
 		hubPath, err := cmd.Flags().GetString("hub-path")
 		utils.PrintError(err)
 
@@ -31,7 +35,7 @@ var getHubCmd = &cobra.Command{
 			repoUrl = "https://github.com/litmuschaos/chaos-charts"
 		}
 
-		err = cloneRepo(repoUrl, hubPath)
+		err = cloneRepo(repoUrl, hubPath, commitDepth)
 		if err != nil {
 			utils.PrintError(err)
 		}
@@ -53,10 +57,11 @@ func validateDir(path string) error {
 }
 
 //cloneRepo is used to clone a git repo using repo URL and directory path
-func cloneRepo(repoUrl string, clonePath string) error {
+func cloneRepo(repoUrl string, clonePath string, commitDepth int) error {
 	_, err := git.PlainClone(clonePath, false, &git.CloneOptions{
 		URL:      repoUrl,
 		Progress: os.Stdout,
+		Depth:    commitDepth,
 	})
 	if err != nil {
 		return err
@@ -68,4 +73,5 @@ func init() {
 	HubgenCmd.AddCommand(getHubCmd)
 	getHubCmd.Flags().String("hub-path", "", "Path to clone the default ChaosHub")
 	getHubCmd.Flags().String("repo-url", "", "Repository URL of ChaosHub to clone")
+	getHubCmd.Flags().Int("commit-depth", 1, "This is used to limit the fetching of specified number of commits")
 }
