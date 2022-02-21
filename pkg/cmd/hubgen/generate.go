@@ -1,26 +1,34 @@
 package hubgen
 
 import (
+	"archive/zip"
 	"errors"
 	"fmt"
 	"github.com/chaosnative/chaosctl/pkg/utils"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
+	"io"
+	"io/fs"
 	"io/ioutil"
+	"log"
 	"os"
-	"os/exec"
+	"path/filepath"
 	"strconv"
 	"strings"
 )
 
-var importCmd = &cobra.Command{
+var generateCmd = &cobra.Command{
 	Use:   "generate",
-	Short: "Imports the local ChaosHub with it's path",
-	Long:  "Imports the local ChaosHub with it's path",
+	Short: "Imports the local ChaosHub with it's path and generates the configured ChaosHub",
+	Long:  "Imports the local ChaosHub with it's path and generates the configured ChaosHub",
 	Run: func(cmd *cobra.Command, args []string) {
 		//User input to generate hub with current changes or add more charts
 		var confirm string
 		generatedChart := make(map[string][]string)
+
+		//CLI input for the generated hub name
+		hubName, err := cmd.Flags().GetString("hubname")
+		utils.PrintError(err)
 
 		//CLI input for the import-path of local chaos hub
 		hubPath, err := cmd.Flags().GetString("import-path")
@@ -34,6 +42,9 @@ var importCmd = &cobra.Command{
 		//CLI input for the export-path of generated hub
 		exportPath, err := cmd.Flags().GetString("export-path")
 		utils.PrintError(err)
+		if exportPath[len(exportPath)-1:] != "/" {
+			exportPath = exportPath + "/" + hubName
+		}
 
 		//Read the directories present in the local ChaosHub
 		names, err := readDir(hubPath)
@@ -42,13 +53,13 @@ var importCmd = &cobra.Command{
 		}
 
 	LOOP:
-		generatedChart = ListChartsAndExperiments(names, hubPath, generatedChart)
-		utils.White_B.Print("\n📦 Experiments added successfully, do you want to add more charts and experiments? [Y/N] \n " +
-			"Y to add new chart and experiments / N to generate the current configured ChaosHub: ")
+		generatedChart = listChartsAndExperiments(names, hubPath, generatedChart)
+		utils.White_B.Print("\n📦 Experiments added successfully, do you generate the ChaosHub? [Y/N] \n " +
+			"Y to generate the ChaosHub / N to add more charts and experiments: ")
 		fmt.Scanln(&confirm)
-		if strings.ToLower(confirm) == "y" {
+		if strings.ToLower(confirm) == "n" {
 			goto LOOP
-		} else if strings.ToLower(confirm) == "n" {
+		} else if strings.ToLower(confirm) == "y" {
 			err = generateChaosHub(generatedChart, hubPath, exportPath)
 			if err != nil {
 				utils.PrintError(err)
@@ -61,7 +72,59 @@ var importCmd = &cobra.Command{
 	},
 }
 
-func ListChartsAndExperiments(names []string, hubPath string, generatedCharts map[string][]string) map[string][]string {
+//copyDir is used to copy directory and its content using source and destination path
+func copyDir(src string, dest string) error {
+	f, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+
+	file, err := f.Stat()
+	if err != nil {
+		return err
+	}
+	if !file.IsDir() {
+		return fmt.Errorf("Source " + file.Name() + " is not a directory!")
+	}
+
+	err = os.Mkdir(dest, file.Mode())
+	if err != nil {
+		return err
+	}
+
+	files, err := ioutil.ReadDir(src)
+	if err != nil {
+		return err
+	}
+
+	for _, f := range files {
+		if f.IsDir() {
+			err = copyDir(src+"/"+f.Name(), dest+"/"+f.Name())
+			if err != nil {
+				return err
+			}
+		}
+
+		if !f.IsDir() {
+			content, err := ioutil.ReadFile(src + "/" + f.Name())
+			if err != nil {
+				return err
+
+			}
+			err = ioutil.WriteFile(dest+"/"+f.Name(), content, f.Mode())
+			if err != nil {
+				return err
+
+			}
+
+		}
+
+	}
+	return nil
+}
+
+//listChartsAndExperiments is used to list the charts and its related experiments
+func listChartsAndExperiments(names []string, hubPath string, generatedCharts map[string][]string) map[string][]string {
 	var (
 		chartName   string
 		err         error
@@ -126,8 +189,9 @@ func ListChartsAndExperiments(names []string, hubPath string, generatedCharts ma
 	return generatedCharts
 }
 
+//generateChaosHub is used to generate the configured ChaosHub
 func generateChaosHub(generatedCharts map[string][]string, importPath string, exportPath string) error {
-	updatedExportPath := exportPath + "/chaos-charts/charts"
+	updatedExportPath := exportPath + "/charts"
 	sourceInfo, err := os.Stat(importPath)
 	if err != nil {
 		return err
@@ -143,17 +207,24 @@ func generateChaosHub(generatedCharts map[string][]string, importPath string, ex
 		if err != nil {
 			fmt.Errorf("Error while creating " + chart + " directory")
 		}
-		iconCmd := exec.Command("cp", "--recursive", importPath+"/"+chart+"/icons", updatedExportPath+"/"+chart+"/icons")
-		iconCmd.Run()
-
-		for _, experiment := range generatedCharts[chart] {
-			cmd := exec.Command("cp", "--recursive", importPath+"/"+chart+"/"+experiment, updatedExportPath+"/"+chart+"/"+experiment)
-			cmd.Run()
+		err = copyDir(importPath+"/"+chart+"/icons", updatedExportPath+"/"+chart+"/icons")
+		if err != nil {
+			fmt.Errorf(err.Error())
 		}
+		for _, experiment := range generatedCharts[chart] {
+			err = copyDir(importPath+"/"+chart+"/"+experiment, updatedExportPath+"/"+chart+"/"+experiment)
+			if err != nil {
+				fmt.Errorf(err.Error())
+			}
+		}
+	}
+	if err := zipSource(exportPath); err != nil {
+		log.Fatal(err)
 	}
 	return err
 }
 
+//readDir is used to read the directory from a specific path
 func readDir(path string) ([]string, error) {
 	var names []string
 	files, err := ioutil.ReadDir(path)
@@ -170,8 +241,59 @@ func readDir(path string) ([]string, error) {
 	return names, nil
 }
 
+//zipSource is used to zip a directory from a specific path
+func zipSource(zipPath string) error {
+	//Create a zip of the specific dir
+	f, err := os.Create(zipPath + ".zip")
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	writer := zip.NewWriter(f)
+	defer writer.Close()
+
+	//walk through the filepath and call each folder and file in the filepath
+	return filepath.Walk(zipPath, func(path string, info fs.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		header, err := zip.FileInfoHeader(info)
+		if err != nil {
+			return err
+		}
+		header.Method = zip.Deflate
+		header.Name, err = filepath.Rel(filepath.Dir(zipPath), path)
+		if err != nil {
+			return err
+		}
+		if info.IsDir() {
+			header.Name += "/"
+		}
+		headerWriter, err := writer.CreateHeader(header)
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			return nil
+		}
+
+		f, err := os.Open(path)
+		if err != nil {
+			return err
+		}
+		defer f.Close()
+
+		_, err = io.Copy(headerWriter, f)
+		return err
+	})
+}
+
 func init() {
-	HubgenCmd.AddCommand(importCmd)
-	importCmd.Flags().String("import-path", "", "Hub Path of local ChaosHub")
-	importCmd.Flags().String("export-path", "", "Path to save the generated Chaos Hub")
+	HubgenCmd.AddCommand(generateCmd)
+	generateCmd.Flags().String("hubname", "", "Name of the generated ChaosHub")
+	generateCmd.Flags().String("import-path", "", "Hub Path of local ChaosHub")
+	generateCmd.Flags().String("export-path", "", "Path to save the generated Chaos Hub")
 }
