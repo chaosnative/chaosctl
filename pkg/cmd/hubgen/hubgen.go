@@ -6,10 +6,10 @@ var HubgenCmd = &cobra.Command{
 	Use: "hubgen",
 	Short: `Create customized ChaosHub for CLC and CLE.
 		Examples:
-		#Get local hub path
-		chaosctl hubgen import --hubpath="./chaos-hub" 
+		#Generate a ChaosHub
+		chaosctl hubgen generate --hubname="my-hub-name" --import-path="./my-directory" --export-path="./my-export-path" 
 
-		#export a hub
-		chaosctl hubgen generate --exportpath="./my-directory"
+		#Clone a ChaosHub using repo url
+		chaosctl hubgen get-charts --hub-path="./my-directory" --repo-url="my-repo-url"
 	`,
 }
