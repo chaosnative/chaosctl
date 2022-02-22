@@ -55,10 +55,12 @@ var generateCmd = &cobra.Command{
 	LOOP:
 		generatedChart = listChartsAndExperiments(names, hubPath, generatedChart)
 		fmt.Printf("\n")
-		confirmPromptLabel := "📦 Experiments added successfully, do you generate the ChaosHub? [Y/N] " +
+
+		confirmPromptLabel := "📦 Experiments added successfully, do you generate the ChaosHub? " +
 			"Y to generate the ChaosHub / N to add more charts and experiments "
 		promptConfirm := promptui.Prompt{
-			Label: confirmPromptLabel,
+			Label:     confirmPromptLabel,
+			IsConfirm: true,
 		}
 		confirm, _ = promptConfirm.Run()
 		if strings.ToLower(confirm) == "n" {
