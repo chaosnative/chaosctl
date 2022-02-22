@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/chaosnative/chaosctl/pkg/cmd/hubgen"
+
 	"github.com/chaosnative/chaosctl/pkg/cmd/upgrade"
 	"github.com/chaosnative/chaosctl/pkg/cmd/version"
 	"github.com/chaosnative/chaosctl/pkg/utils"
@@ -55,6 +57,7 @@ func init() {
 	rootCmd.AddCommand(get.GetCmd)
 	rootCmd.AddCommand(version.VersionCmd)
 	rootCmd.AddCommand(upgrade.UpgradeCmd)
+	rootCmd.AddCommand(hubgen.HubgenCmd)
 
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
