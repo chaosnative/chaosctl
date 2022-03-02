@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/Azure/go-autorest/autorest v0.11.18 // indirect
 	github.com/fatih/color v1.12.0
+	github.com/ghodss/yaml v1.0.0
 	github.com/go-git/go-git/v5 v5.4.2
 	github.com/golang-jwt/jwt v3.2.1+incompatible
 	github.com/manifoldco/promptui v0.9.0

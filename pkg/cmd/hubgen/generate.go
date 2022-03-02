@@ -4,7 +4,9 @@ import (
 	"archive/zip"
 	"errors"
 	"fmt"
+	"github.com/chaosnative/chaosctl/pkg/types"
 	"github.com/chaosnative/chaosctl/pkg/utils"
+	"github.com/ghodss/yaml"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 	"io"
@@ -56,8 +58,7 @@ var generateCmd = &cobra.Command{
 		generatedChart = listChartsAndExperiments(names, hubPath, generatedChart)
 		fmt.Printf("\n")
 
-		confirmPromptLabel := "📦 Experiments added successfully, do you generate the ChaosHub? " +
-			"Y to generate the ChaosHub / N to add more charts and experiments "
+		confirmPromptLabel := "📦 Experiments added successfully, select Y to generate the ChaosHub or N to add more charts"
 		promptConfirm := promptui.Prompt{
 			Label:     confirmPromptLabel,
 			IsConfirm: true,
@@ -216,6 +217,10 @@ func generateChaosHub(generatedCharts map[string][]string, importPath string, ex
 		if err != nil {
 			fmt.Println(fmt.Errorf("Error while creating " + chart + " directory"))
 		}
+		err = generateCSV(updatedExportPath, chart, generatedCharts)
+		if err != nil {
+			fmt.Println(fmt.Errorf("error while creating CSV file"))
+		}
 		err = copyDir(importPath+"/"+chart+"/icons", updatedExportPath+"/"+chart+"/icons")
 		if err != nil {
 			fmt.Println(err.Error())
@@ -231,6 +236,35 @@ func generateChaosHub(generatedCharts map[string][]string, importPath string, ex
 		log.Fatal(err)
 	}
 	return err
+}
+
+//generateCSV is used to generate the CSV for a specific chart
+func generateCSV(updatedExportPath string, chart string, generatedCharts map[string][]string) error {
+	var experiments []string
+	for _, experiment := range generatedCharts[chart] {
+		experiments = append(experiments, experiment)
+	}
+	CSV := &types.CSV{
+		ApiVersion: "litmuchaos.io/v1alpha1",
+		Kind:       "ChartServiceVersion",
+		Metadata:   types.Metadata{Name: chart},
+		Spec:       types.Spec{DisplayName: chart + "chaos", Experiments: experiments},
+	}
+	CSVYaml, err := yaml.Marshal(CSV)
+	if err != nil {
+		fmt.Errorf(err.Error())
+	}
+	f, err := os.Create(updatedExportPath + "/" + chart + "/" + chart + ".chartserviceversion.yaml")
+	if err != nil {
+		fmt.Println(fmt.Errorf("error while creating CSV file"))
+	}
+	defer f.Close()
+
+	_, err = f.Write(CSVYaml)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 //readDir is used to read the directory from a specific path
