@@ -241,18 +241,16 @@ func generateChaosHub(generatedCharts map[string][]string, importPath string, ex
 //generateCSV is used to generate the CSV for a specific chart
 func generateCSV(updatedExportPath string, chart string, generatedCharts map[string][]string) error {
 	var experiments []string
-	for _, experiment := range generatedCharts[chart] {
-		experiments = append(experiments, experiment)
-	}
+	experiments = append(experiments, generatedCharts[chart]...)
 	CSV := &types.CSV{
 		ApiVersion: "litmuchaos.io/v1alpha1",
 		Kind:       "ChartServiceVersion",
 		Metadata:   types.Metadata{Name: chart},
-		Spec:       types.Spec{DisplayName: chart + "chaos", Experiments: experiments},
+		Spec:       types.Spec{DisplayName: chart + " chaos", Experiments: experiments},
 	}
 	CSVYaml, err := yaml.Marshal(CSV)
 	if err != nil {
-		fmt.Errorf(err.Error())
+		fmt.Println(err.Error())
 	}
 	f, err := os.Create(updatedExportPath + "/" + chart + "/" + chart + ".chartserviceversion.yaml")
 	if err != nil {
