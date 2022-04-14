@@ -17,12 +17,13 @@ package config
 
 import (
 	"errors"
+	"os"
+
 	"github.com/chaosnative/chaosctl/pkg/config"
 	"github.com/chaosnative/chaosctl/pkg/types"
 	"github.com/chaosnative/chaosctl/pkg/utils"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 // useAccountCmd represents the useAccount command
@@ -50,7 +51,7 @@ var useAccountCmd = &cobra.Command{
 			}
 
 			if result == "ChaosNative Cloud" {
-				endpoint = utils.ChaosNativeCloudEndpoint
+				endpoint = utils.HarnessChaosEngineeringCloudEndpoint
 			} else if result == "ChaosNative Enterprise" {
 				validate := func(input string) error {
 					if utils.IsValidUrl(input) {
