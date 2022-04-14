@@ -59,5 +59,5 @@ const (
 	// Auth server api path
 	AuthAPIPath = "/auth"
 
-	ChaosNativeCloudEndpoint = "https://cloud.chaosnative.com"
+	HarnessChaosEngineeringCloudEndpoint = "https://cloud.chaosnative.com"
 )

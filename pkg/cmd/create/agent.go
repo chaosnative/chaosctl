@@ -221,8 +221,6 @@ var agentCmd = &cobra.Command{
 
 		agent.Summary(newAgent, &kubeconfig)
 
-		utils.White_B.Printf("\nYAML to be applied: %s\n")
-
 		if !nonInteractive {
 			agent.ConfirmInstallation()
 		}
