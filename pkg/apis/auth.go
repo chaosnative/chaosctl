@@ -27,14 +27,14 @@ import (
 )
 
 type Payload struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+	AccessID  string `json:"access_id"`
+	AccessKey string `json:"access_key"`
 }
 
 func Auth(input types.AuthInput) (types.AuthResponse, error) {
 	payloadBytes, err := json.Marshal(Payload{
-		Username: input.Username,
-		Password: input.Password,
+		AccessID:  input.AccessID,
+		AccessKey: input.AccessKey,
 	})
 
 	if err != nil {
@@ -42,7 +42,7 @@ func Auth(input types.AuthInput) (types.AuthResponse, error) {
 	}
 
 	// Sending token as empty because auth server doesn't need Authorization token to validate.
-	resp, err := SendRequest(SendRequestParams{input.Endpoint + utils.AuthAPIPath + "/login", ""}, payloadBytes, string(types.Post))
+	resp, err := SendRequest(SendRequestParams{input.Endpoint + utils.AuthAPIPath + "/login/ctl", ""}, payloadBytes, string(types.Post))
 	if err != nil {
 		return types.AuthResponse{}, err
 	}

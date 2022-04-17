@@ -18,11 +18,12 @@ package config
 import (
 	"errors"
 	"fmt"
-	"github.com/manifoldco/promptui"
 	"net/url"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/manifoldco/promptui"
 
 	"github.com/chaosnative/chaosctl/pkg/apis"
 	"github.com/chaosnative/chaosctl/pkg/config"
@@ -52,16 +53,16 @@ var setAccountCmd = &cobra.Command{
 		authInput.Endpoint, err = cmd.Flags().GetString("endpoint")
 		utils.PrintError(err)
 
-		authInput.Username, err = cmd.Flags().GetString("access_id")
+		authInput.AccessID, err = cmd.Flags().GetString("access_id")
 		utils.PrintError(err)
 
-		authInput.Password, err = cmd.Flags().GetString("access_key")
+		authInput.AccessKey, err = cmd.Flags().GetString("access_key")
 		utils.PrintError(err)
 
 		if authInput.Endpoint == "" {
 			prompt := promptui.Select{
 				Label: "What's the product name?",
-				Items: []string{"ChaosNative Cloud", "ChaosNative Enterprise"},
+				Items: []string{"Harness Chaos Engineering Cloud", "Harness Chaos Engineering OnPrem"},
 			}
 
 			_, result, err := prompt.Run()
@@ -71,9 +72,9 @@ var setAccountCmd = &cobra.Command{
 				return
 			}
 
-			if result == "ChaosNative Cloud" {
-				authInput.Endpoint = utils.ChaosNativeCloudEndpoint
-			} else if result == "ChaosNative Enterprise" {
+			if result == "Harness Chaos Engineering Cloud" {
+				authInput.Endpoint = utils.HarnessChaosEngineeringCloudEndpoint
+			} else if result == "Harness Chaos Engineering OnPrem" {
 				validate := func(input string) error {
 					if utils.IsValidUrl(input) {
 						return nil
@@ -90,7 +91,7 @@ var setAccountCmd = &cobra.Command{
 				}
 
 				prompt := promptui.Prompt{
-					Label:     "ChaosNative Enterprise Endpoint",
+					Label:     "Harness Chaos Engineering OnPrem Endpoint",
 					Templates: templates,
 					Validate:  validate,
 				}
@@ -117,42 +118,42 @@ var setAccountCmd = &cobra.Command{
 			authInput.Endpoint = newUrl.String()
 		}
 
-		if authInput.Username == "" {
+		if authInput.AccessID == "" {
 			prompt := promptui.Prompt{
 				Label: "What's the AccessID?",
 			}
 
-			authInput.Username, err = prompt.Run()
+			authInput.AccessID, err = prompt.Run()
 			if err != nil {
 				utils.Red.Println(err)
 				os.Exit(1)
 			}
 
-			if authInput.Username == "" {
+			if authInput.AccessID == "" {
 				utils.Red.Println("\n⛔ AccessID cannot be empty!")
 				return
 			}
 		}
 
-		if authInput.Password == "" {
+		if authInput.AccessKey == "" {
 			prompt := promptui.Prompt{
 				Label: "What's the AccessKey?",
 				Mask:  '*',
 			}
 
-			authInput.Password, err = prompt.Run()
+			authInput.AccessKey, err = prompt.Run()
 			if err != nil {
 				utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 				return
 			}
 
-			if authInput.Password == "" {
+			if authInput.AccessKey == "" {
 				utils.Red.Println("\n⛔ AccessKey cannot be empty!")
 				return
 			}
 		}
 
-		if authInput.Endpoint != "" && authInput.Username != "" && authInput.Password != "" {
+		if authInput.Endpoint != "" && authInput.AccessID != "" && authInput.AccessKey != "" {
 			exists := config.FileExists(configFilePath)
 			var lgt int
 			if exists {
