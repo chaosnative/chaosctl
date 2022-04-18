@@ -4,11 +4,6 @@ import (
 	"archive/zip"
 	"errors"
 	"fmt"
-	"github.com/chaosnative/chaosctl/pkg/types"
-	"github.com/chaosnative/chaosctl/pkg/utils"
-	"github.com/ghodss/yaml"
-	"github.com/manifoldco/promptui"
-	"github.com/spf13/cobra"
 	"io"
 	"io/fs"
 	"io/ioutil"
@@ -17,6 +12,12 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+
+	"github.com/chaosnative/chaosctl/pkg/types"
+	"github.com/chaosnative/chaosctl/pkg/utils"
+	"github.com/ghodss/yaml"
+	"github.com/manifoldco/promptui"
+	"github.com/spf13/cobra"
 )
 
 var generateCmd = &cobra.Command{
@@ -250,11 +251,12 @@ func generateCSV(updatedExportPath string, chart string, generatedCharts map[str
 	}
 	CSVYaml, err := yaml.Marshal(CSV)
 	if err != nil {
-		fmt.Println(err.Error())
+		utils.PrintError(err)
 	}
 	f, err := os.Create(updatedExportPath + "/" + chart + "/" + chart + ".chartserviceversion.yaml")
 	if err != nil {
-		fmt.Println(fmt.Errorf("error while creating CSV file"))
+		err = fmt.Errorf("error while creating CSV file")
+		utils.PrintError(err)
 	}
 	defer f.Close()
 
