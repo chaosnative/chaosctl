@@ -216,20 +216,20 @@ func generateChaosHub(generatedCharts map[string][]string, importPath string, ex
 	for chart := range generatedCharts {
 		err = os.MkdirAll(updatedExportPath+"/"+chart, sourceInfo.Mode())
 		if err != nil {
-			fmt.Println(fmt.Errorf("Error while creating " + chart + " directory"))
+			utils.PrintError(fmt.Errorf("Error while creating " + chart + " directory"))
 		}
 		err = generateCSV(updatedExportPath, chart, generatedCharts)
 		if err != nil {
-			fmt.Println(fmt.Errorf("error while creating CSV file"))
+			utils.PrintError(fmt.Errorf("error while creating CSV file"))
 		}
 		err = copyDir(importPath+"/"+chart+"/icons", updatedExportPath+"/"+chart+"/icons")
 		if err != nil {
-			fmt.Println(err.Error())
+			utils.PrintError(err)
 		}
 		for _, experiment := range generatedCharts[chart] {
 			err = copyDir(importPath+"/"+chart+"/"+experiment, updatedExportPath+"/"+chart+"/"+experiment)
 			if err != nil {
-				fmt.Println(err.Error())
+				utils.PrintError(err)
 			}
 		}
 	}
