@@ -70,11 +70,6 @@ func GetAgentList(c types.Credentials, pid string) (AgentData, error) {
 			utils.Red.Println("Error in getting agent list: ", err)
 			os.Exit(1)
 		}
-
-		if len(agent.Errors) > 0 {
-			return AgentData{}, errors.New(agent.Errors[0].Message)
-		}
-
 		return agent, nil
 	} else {
 		return AgentData{}, err
