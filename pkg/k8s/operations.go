@@ -20,11 +20,12 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"github.com/manifoldco/promptui"
 	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
+
+	"github.com/manifoldco/promptui"
 
 	"k8s.io/client-go/util/homedir"
 
@@ -207,7 +208,7 @@ func WatchPod(params WatchPodParams, kubeconfig *string) {
 		if !ok {
 			log.Fatal("unexpected type")
 		}
-		utils.White_B.Println("💡 Connecting agent to Litmus Portal.")
+		utils.White_B.Println("💡 Connecting agent to Chaos Center.")
 		if p.Status.Phase == "Running" {
 			utils.White_B.Println("🏃 Agents are running!!")
 			watch.Stop()

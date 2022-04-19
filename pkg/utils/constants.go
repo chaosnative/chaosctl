@@ -51,7 +51,7 @@ const (
 	// Chaos agent connection yaml path
 	ChaosYamlPath = "api/file"
 
-	ChaosAgentPath = "targets"
+	ChaosAgentPath = "agents"
 
 	// Graphql server api path
 	GQLAPIPath = "/api/query"
