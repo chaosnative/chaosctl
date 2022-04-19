@@ -39,10 +39,10 @@ Next, you need to enter CLC/CLE details to login into your account. Fields to be
 **AccessKey:** What's the AccessKey?:
 
 ```
-? What's the product name?: 
+? What's the product name?:
   ▸ ChaosNative Cloud
     ChaosNative Enterprise
-    
+
 What's the AccessID?: Raj60163RjxQE
 What's the AccessKey?: ***************
 
@@ -58,7 +58,7 @@ chaosctl create agent
 There will be a list of existing projects displayed on the terminal. Select the desired project by entering the sequence number indicated against it.
 
 ```
-? Select a project from the list: 
+? Select a project from the list:
   ▸ Raj60163's project
 ```
 
@@ -73,7 +73,7 @@ It can install an agent in two different modes.
 Note: With namespace mode, the user needs to create the namespace to install the agent as a prerequisite.
 
 ```
-? What's the installation mode?: 
+? What's the installation mode?:
   ▸ Cluster
     Namespace
 
@@ -123,15 +123,15 @@ Enter the details of the agent
 
 ✔ Add your agent description: new-agent█
 
-? Do you want NodeSelectors added to the agent deployments?: 
+? Do you want NodeSelectors added to the agent deployments?:
     Yes
   ▸ No
 
-? Do you want Tolerations added in the agent deployments??: 
+? Do you want Tolerations added in the agent deployments??:
     Yes
   ▸ No
 
-? What's your Kubernetes Platform?: 
+? What's your Kubernetes Platform?:
   ▸ Others
     AWS Elastic Kubernetes Service
     Google Kubernetes Service
@@ -157,7 +157,7 @@ Namespace:  litmus
 Service Account:  litmus (new)
 Installation Mode: cluster
 
-? Do you want to continue with the above details?: 
+? Do you want to continue with the above details?:
   ▸ Yes
     No
 
@@ -165,11 +165,11 @@ Installation Mode: cluster
 Applying YAML:
 https://preview.litmuschaos.io/api/file/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVzdGVyX2lkIjoiMDUyZmFlN2UtZGM0MS00YmU4LWJiYTgtMmM4ZTYyNDFkN2I0In0.i31QQDG92X5nD6P_-7TfeAAarZqLvUTFfnAghJYXPiM.yaml
 
-💡 Connecting agent to Litmus Portal.
+💡 Connecting agent to Chaos Center.
 🏃 Agents are running!!
 
 🚀 Agent Connection Successful!! 🎉
-👉 Litmus agents can be accessed here: https://preview.litmuschaos.io/targets
+👉 Litmus agents can be accessed here: https://cloud.chaosnative.com/agents
 ```
 
 #### Verify the new Agent Connection\*\*
@@ -223,10 +223,10 @@ CURRENT  ENDPOINT                         ACCESSID  EXPIRESIN
 ```shell
 chaosctl config use-account
 
-? What's the product name?: 
+? What's the product name?:
   ▸ ChaosNative Cloud
     ChaosNative Enterprise
-    
+
 What's the AccessID?: Raj60163RjxQE
 ```
 

@@ -29,13 +29,13 @@ import (
 )
 
 type createProjectResponse struct {
-	Data struct {
+	Message string `json:"message"`
+	Data    struct {
 		Name string `json:"name"`
 		ID   string `json:"id"`
 	} `json:"data"`
 	Errors []struct {
-		Message string   `json:"message"`
-		Path    []string `json:"path"`
+		Path []string `json:"path"`
 	} `json:"errors"`
 }
 
@@ -70,10 +70,6 @@ func CreateProjectRequest(userID string, projectName string, cred types.Credenti
 		err = json.Unmarshal(bodyBytes, &project)
 		if err != nil {
 			return createProjectResponse{}, err
-		}
-
-		if len(project.Errors) > 0 {
-			return createProjectResponse{}, errors.New(project.Errors[0].Message)
 		}
 
 		utils.White_B.Println("project/" + project.Data.Name + " created")
@@ -115,11 +111,6 @@ func ListProject(cred types.Credentials) (listProjectResponse, error) {
 		if err != nil {
 			return listProjectResponse{}, err
 		}
-
-		if len(data.Errors) > 0 {
-			return listProjectResponse{}, errors.New(data.Errors[0].Message)
-		}
-
 		return data, nil
 	} else {
 		return listProjectResponse{}, errors.New("Unmatched status code:" + string(bodyBytes))
