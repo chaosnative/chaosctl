@@ -169,7 +169,7 @@ https://preview.litmuschaos.io/api/file/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ
 🏃 Agents are running!!
 
 🚀 Agent Connection Successful!! 🎉
-👉 Litmus agents can be accessed here: https://cloud.chaosnative.com/targets
+👉 Litmus agents can be accessed here: https://cloud.chaosnative.com/agents
 ```
 
 #### Verify the new Agent Connection\*\*
