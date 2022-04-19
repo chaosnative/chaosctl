@@ -224,18 +224,16 @@ var agentCmd = &cobra.Command{
 		if !nonInteractive {
 			agent.ConfirmInstallation()
 		}
-
 		agent, err := apis.ConnectAgent(newAgent, credentials)
 		if err != nil {
 			utils.Red.Println("\n❌ Agent connection failed: " + err.Error() + "\n")
 			os.Exit(1)
 		}
-
 		if agent.Data.UserAgentReg.Token != "" {
 			path := fmt.Sprintf("%s/%s/%s.yaml", credentials.Endpoint, utils.ChaosYamlPath, agent.Data.UserAgentReg.Token)
 			utils.White_B.Print("Applying YAML:\n", path)
 		} else {
-			utils.Red.Print("\n🚫 Token Generation failed, Agent installation failed:  " + agent.Errors[0].Message + "\n")
+			utils.Red.Print("\n🚫 Token Generation failed, Agent installation failed\n")
 			os.Exit(1)
 		}
 

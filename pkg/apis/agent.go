@@ -124,7 +124,6 @@ func ConnectAgent(agent types.Agent, cred types.Credentials) (AgentConnectionDat
 	if err != nil {
 		return AgentConnectionData{}, errors.New("Error in registering agent: " + err.Error())
 	}
-
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	if err != nil {
@@ -136,10 +135,6 @@ func ConnectAgent(agent types.Agent, cred types.Credentials) (AgentConnectionDat
 		err = json.Unmarshal(bodyBytes, &connectAgent)
 		if err != nil {
 			return AgentConnectionData{}, errors.New("Error in registering agent: " + err.Error())
-		}
-
-		if len(connectAgent.Errors) > 0 {
-			return AgentConnectionData{}, errors.New(connectAgent.Errors[0].Message)
 		}
 		return connectAgent, nil
 	} else {
