@@ -22,45 +22,54 @@ To install the latest version of chaosctl follow the below steps:
   <th>Platforms</th>
   <th>main(Unreleased)</th>
   <th>v0.1.0</th>
+  <th>v0.2.0</th>
   <tr>
     <td>chaosctl-darwin-amd64 (MacOS)</td>
     <td><a href="https://chaosctl.chaosnative.com/chaosctl-darwin-amd64-main.tar.gz">Click here</a></td>
     <td><a href="https://chaosctl.chaosnative.com/chaosctl-darwin-amd64-v0.1.0.tar.gz">Click here</a></td>
+    <td><a href="https://chaosctl.chaosnative.com/chaosctl-darwin-amd64-v0.2.0.tar.gz">Click here</a></td>
   </tr>
   <tr>
     <td>chaosctl-linux-386</td>
     <td><a href="https://chaosctl.chaosnative.com/chaosctl-linux-386-main.tar.gz">Click here</a></td>
     <td><a href="https://chaosctl.chaosnative.com/chaosctl-linux-386-v0.1.0.tar.gz">Click here</a></td>
+    <td><a href="https://chaosctl.chaosnative.com/chaosctl-linux-386-v0.2.0.tar.gz">Click here</a></td>
   </tr>
   <tr>
     <td>chaosctl-linux-amd64</td>
     <td><a href="https://chaosctl.chaosnative.com/chaosctl-linux-amd64-main.tar.gz">Click here</a></td>
     <td><a href="https://chaosctl.chaosnative.com/chaosctl-linux-amd64-v0.1.0.tar.gz">Click here</a></td>
+    <td><a href="https://chaosctl.chaosnative.com/chaosctl-linux-amd64-v0.2.0.tar.gz">Click here</a></td>
   </tr>
   <tr>
     <td>chaosctl-linux-arm</td>
     <td><a href="https://chaosctl.chaosnative.com/chaosctl-linux-arm-main.tar.gz">Click here</a></td>
     <td><a href="https://chaosctl.chaosnative.com/chaosctl-linux-arm-v0.1.0.tar.gz">Click here</a></td>
+    <td><a href="https://chaosctl.chaosnative.com/chaosctl-linux-arm-v0.2.0.tar.gz">Click here</a></td>
   </tr>
   <tr>
     <td>chaosctl-linux-arm64</td>
     <td><a href="https://chaosctl.chaosnative.com/chaosctl-linux-arm64-main.tar.gz">Click here</a></td>
     <td><a href="https://chaosctl.chaosnative.com/chaosctl-linux-arm64-v0.1.0.tar.gz">Click here</a></td>
+    <td><a href="https://chaosctl.chaosnative.com/chaosctl-linux-arm64-v0.2.0.tar.gz">Click here</a></td>
   </tr>
   <tr>
     <td>chaosctl-windows-386</td>
     <td><a href="https://chaosctl.chaosnative.com/chaosctl-windows-386-main.tar.gz">Click here</a></td>
     <td><a href="https://chaosctl.chaosnative.com/chaosctl-windows-386-v0.1.0.tar.gz">Click here</a></td>
+    <td><a href="https://chaosctl.chaosnative.com/chaosctl-windows-386-v0.2.0.tar.gz">Click here</a></td>
   </tr>
    <tr>
     <td>chaosctl-windows-amd64</td>
     <td><a href="https://chaosctl.chaosnative.com/chaosctl-windows-amd64-main.tar.gz">Click here</a></td>
     <td><a href="https://chaosctl.chaosnative.com/chaosctl-windows-amd64-v0.1.0.tar.gz">Click here</a></td>
+     <td><a href="https://chaosctl.chaosnative.com/chaosctl-windows-amd64-v0.2.0.tar.gz">Click here</a></td>
   </tr>
   <tr>
     <td>chaosctl-windows-arm</td>
     <td><a href="https://chaosctl.chaosnative.com/chaosctl-windows-arm-main.tar.gz">Click here</a></td>
     <td><a href="https://chaosctl.chaosnative.com/chaosctl-windows-arm-v0.1.0.tar.gz">Click here</a></td>
+    <td><a href="https://chaosctl.chaosnative.com/chaosctl-windows-arm-v0.2.0.tar.gz">Click here</a></td>
   </tr>
 </table>
 
