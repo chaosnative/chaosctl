@@ -245,6 +245,7 @@ var agentCmd = &cobra.Command{
 		}, kubeconfig, false)
 		if err != nil {
 			utils.Red.Print("\n❌ Failed in applying connection yaml: \n" + yamlOutput)
+			utils.Red.Print("\n Error: \n" + err.Error())
 			os.Exit(1)
 		}
 
