@@ -10,13 +10,13 @@ tag=$2
 
 platforms=(
  "darwin/amd64"
-#  "linux/386"
-#  "linux/amd64"
-#  "linux/arm"
-#  "linux/arm64"
-#  "windows/386"
-#  "windows/amd64"
-#  "windows/arm"
+ "linux/386"
+ "linux/amd64"
+ "linux/arm"
+ "linux/arm64"
+ "windows/386"
+ "windows/amd64"
+ "windows/arm"
 )
 
 rm -rf platforms-$tag/*
