@@ -99,6 +99,10 @@ Fields to be filled in <br />
         <td>Agent Description:</td>
         <td>Fill in details about the agent</td>
     </tr>
+     <tr>
+        <td>Skip SSL verification</td>
+        <td>Choose whether agent will skip SSL/TLS verification</td>
+    </tr>
     <tr>
         <td>Node Selector:</td>
         <td>To deploy the agent on a particular node based on the node selector labels</td>
@@ -121,7 +125,9 @@ Fields to be filled in <br />
 Enter the details of the agent
 ✔ What's the Agent Name?: new-agent
 
-✔ Add your agent description: new-agent█
+✔ Add your agent description: new-agent
+
+✔ Do you want Agent to skip SSL/TLS check (Y/N) (Default: N): n
 
 ? Do you want NodeSelectors added to the agent deployments?:
     Yes
