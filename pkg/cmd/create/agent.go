@@ -59,14 +59,13 @@ var agentCmd = &cobra.Command{
 
 		userDetails, err := apis.GetProjectDetails(credentials)
 		utils.PrintError(err)
-
 		// If projectID is not passed, then it creates a random project
 		if newAgent.ProjectId == "" {
 			var projectExists = false
 		outerloop:
 			for _, project := range userDetails.Data.Projects {
 				for _, member := range project.Members {
-					if (member.UserID == userDetails.Data.ID) && (member.Role == "Admin" || member.Role == "Editor") {
+					if (member.UserID == userDetails.Data.ID) && (member.Role == "Owner" || member.Role == "Editor") {
 						projectExists = true
 						break outerloop
 					}
