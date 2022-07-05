@@ -65,7 +65,7 @@ var agentCmd = &cobra.Command{
 		outerloop:
 			for _, project := range userDetails.Data.Projects {
 				for _, member := range project.Members {
-					if (member.UserID == userDetails.Data.ID) && (member.Role == "Owner" || member.Role == "Editor") {
+					if (member.UserID == userDetails.Data.ID) && (member.Role == "Owner" || member.Role == "Editor" || member.Role == "Admin") {
 						projectExists = true
 						break outerloop
 					}
