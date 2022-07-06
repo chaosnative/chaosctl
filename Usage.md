@@ -1,66 +1,76 @@
 # Usage: ChaosCTL v0.2.0 (Non-Interactive mode)
 
 ### chaosctl Syntax
+
 `chaosctl` has a syntax to use as follows:
 
 ```shell
 chaosctl [command] [TYPE] [flags]
 ```
-* Command: refers to what you do want to perform (create, get and config)
-* Type: refers to the feature type you are performing a command against (agent, project etc.)
-* Flags: It takes some additional information for resource operations. For example, `--installation-mode` allows you to specify an installation mode.
+
+- Command: refers to what you do want to perform (create, get and config)
+- Type: refers to the feature type you are performing a command against (agent, project etc.)
+- Flags: It takes some additional information for resource operations. For example, `--installation-mode` allows you to specify an installation mode.
 
 chaosctl is using the `.chaosconfig` config file to manage multiple accounts
+
 1. If the --config flag is set, then only the given file is loaded. The flag may only be set once and no merging takes place.
 2. Otherwise, the ${HOME}/.chaosconfig file is used, and no merging takes place.
 
 chaosctl supports both interactive and non-interactive(flag based) modes.
-> Only `chaosctl create agent`  command needs --non-interactive flag, other commands don't need this flag to be in non-interactive mode. If mandatory flags aren't passed, then chaosctl takes input in an interactive mode.
+
+> Only `chaosctl create agent` command needs --non-interactive flag, other commands don't need this flag to be in non-interactive mode. If mandatory flags aren't passed, then chaosctl takes input in an interactive mode.
 
 ### Installation modes
+
 chaosctl can install an agent in two different modes.
-* cluster mode: With this mode, the agent can run the chaos in any namespace. It installs appropriate cluster roles and cluster role bindings to achieve this mode. It can be enabled by passing a flag `--installation-mode=cluster`
 
-* namespace mode: With this mode, the agent can run the chaos in its namespace. It installs appropriate roles and role bindings to achieve this mode. It can be enabled by passing a flag `--installation-mode=namespace`
+- cluster mode: With this mode, the agent can run the chaos in any namespace. It installs appropriate cluster roles and cluster role bindings to achieve this mode. It can be enabled by passing a flag `--installation-mode=cluster`
 
-Note: With namespace mode, the user needs to create the namespace to install the agent and user must have the admin privileges to setup [CRDs](https://raw.githubusercontent.com/litmuschaos/litmus/master/litmus-portal/litmus-portal-crds.yml) as a prerequisite.
+- namespace mode: With this mode, the agent can run the chaos in its namespace. It installs appropriate roles and role bindings to achieve this mode. It can be enabled by passing a flag `--installation-mode=namespace`
 
+Note: With namespace mode, the user needs to create the namespace to install the agent and user must have the admin privileges to setup [CRDs](https://github.com/chaosnative/hce-charts/blob/main/k8s-manifests/ci/hce-crds.yaml) as a prerequisite.
 
 #### Prerequisite steps(For namespace mode)
-* Create namespace to install the agnet
+
+- Create namespace to install the agnet
+
 ```shell
 kubectl create ns <namespace_name>
 ```
 
-* Setup CRDs
+- Setup CRDs
+
 ```shell
 kubectl apply -f https://raw.githubusercontent.com/litmuschaos/litmus/master/litmus-portal/litmus-portal-crds.yml
 ```
 
-
 ### Minimal steps to create an agent
 
-* To setup an account with chaosctl
+- To setup an account with chaosctl
+
 ```shell
 chaosctl config set-account --endpoint="" --access_id="" --access_key=""
 ```
 
-* To create an agent without a project
->Note: If the user doesn't have any project, it will create a random project and add the agent in that random project.
+- To create an agent without a project
+  > Note: If the user doesn't have any project, it will create a random project and add the agent in that random project.
+
 ```shell
 chaosctl create agent --agent-name="" --non-interactive
 ```
 
 ### Or,
 
-* To create an agent with an existing project
-> Note: To get `project-id`. Apply `chaosctl get projects`
+- To create an agent with an existing project
+  > Note: To get `project-id`. Apply `chaosctl get projects`
 
 ```shell
 chaosctl create agent --agent-name="" --project-id="" --non-interactive
 ```
 
 ### Flags for `create agent` command
+
 <table>
 <tr>
     <th>Flag</th>
@@ -78,6 +88,12 @@ chaosctl create agent --agent-name="" --project-id="" --non-interactive
         <td></td>
         <td>String</td>
         <td>Set the cluster-type to external for external agents | Supported=external/internal (default "external")</td>
+    </tr>
+        <tr>
+        <td>--skip-agent-ssl</td>
+        <td></td>
+        <td>Boolean</td>
+        <td>Set whether agent will skip ssl/tls check (can be used for self-signed certs, if cert is not provided in portal) (default false)</td>
     </tr>
     <tr>
         <td>--cluster-type</td>
@@ -147,15 +163,16 @@ chaosctl create agent --agent-name="" --project-id="" --non-interactive
     </tr>
 </table>
 
-
 ### Additional commands
 
-* To view the current configuration of `.chaosconfig`, type:
+- To view the current configuration of `.chaosconfig`, type:
+
 ```shell
 chaosctl config view
 ```
 
 **Output:**
+
 ```
 accounts:
 - users:
@@ -172,7 +189,7 @@ current-user: litmus-user
 kind: Config
 ```
 
-* To get an overview of the accounts available within `.chaosconfig`, use the `config get-accounts` command:
+- To get an overview of the accounts available within `.chaosconfig`, use the `config get-accounts` command:
 
 ```shell
 chaosctl config get-accounts
@@ -186,17 +203,20 @@ CURRENT  ENDPOINT                         ACCESSID  EXPIRESIN
 *        https://preview.litmuschaos.io   raj       2021-07-22 14:33:22 +0530 IST
 ```
 
-* To alter the current account use the `use-account` command with the --endpoint and --access_id flags:
+- To alter the current account use the `use-account` command with the --endpoint and --access_id flags:
+
 ```shell
 chaosctl config use-account --endpoint="" --access_id=""
 ```
 
-* To create a project, apply the following command with the `--name` flag:
+- To create a project, apply the following command with the `--name` flag:
+
 ```shell
 chaosctl create project --name=""
 ```
 
-* To view all the projects with the user, use the `get projects` command.
+- To view all the projects with the user, use the `get projects` command.
+
 ```shell
 chaosctl get projects
 ```
@@ -205,12 +225,12 @@ chaosctl get projects
 
 ```
 PROJECT ID                                PROJECT NAME       CREATEDAT
-50addd40-8767-448c-a91a-5071543a2d8e      Developer Project  2021-07-21 14:38:51 +0530 IST     
-7a4a259a-1ae5-4204-ae83-89a8838eaec3      DevOps Project     2021-07-21 14:39:14 +0530 IST     
+50addd40-8767-448c-a91a-5071543a2d8e      Developer Project  2021-07-21 14:38:51 +0530 IST
+7a4a259a-1ae5-4204-ae83-89a8838eaec3      DevOps Project     2021-07-21 14:39:14 +0530 IST
 ```
 
+- To get an overview of the agents available within a project, issue the following command.
 
-* To get an overview of the agents available within a project, issue the following command.
 ```shell
 chaosctl get agents --project-id=""
 ```
@@ -218,12 +238,11 @@ chaosctl get agents --project-id=""
 **Output:**
 
 ```
-AGENTID                                AGENTNAME          STATUS 
-55ecc7f2-2754-43aa-8e12-6903e4c6183a   agent-1            ACTIVE 
+AGENTID                                AGENTNAME          STATUS
+55ecc7f2-2754-43aa-8e12-6903e4c6183a   agent-1            ACTIVE
 13dsf3d1-5324-54af-4g23-5331g5v2364f   agent-2            INACTIVE
 ```
 
-
 For more information related to flags, Use `chaosctl --help`.
 
-----
+---

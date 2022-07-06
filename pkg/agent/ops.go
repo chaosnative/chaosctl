@@ -17,13 +17,14 @@ package agent
 
 import (
 	"errors"
+	"os"
+	"strconv"
+
 	"github.com/chaosnative/chaosctl/pkg/apis"
 	"github.com/chaosnative/chaosctl/pkg/k8s"
 	"github.com/chaosnative/chaosctl/pkg/types"
 	"github.com/chaosnative/chaosctl/pkg/utils"
 	"github.com/manifoldco/promptui"
-	"os"
-	"strconv"
 )
 
 // GetProject display list of projects and returns the project id based on input
@@ -126,12 +127,29 @@ AGENT_NAME:
 		os.Exit(1)
 	}
 
+	sslCheck := promptui.Select{
+		Label: "Do you want Agent to skip SSL/TLS check?",
+		Items: []string{"Yes", "No"},
+	}
+
+	counter, _, err := sslCheck.Run()
+	if err != nil {
+		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
+		os.Exit(1)
+	}
+
+	if counter == 0 {
+		newAgent.SkipSSL = true
+	} else if counter == 1 {
+		newAgent.SkipSSL = false
+	}
+
 	nodeSelector := promptui.Select{
 		Label: "Do you want NodeSelectors added to the agent deployments?",
 		Items: []string{"Yes", "No"},
 	}
 
-	counter, _, err := nodeSelector.Run()
+	counter, _, err = nodeSelector.Run()
 	if err != nil {
 		utils.Red.Println(errors.New("Prompt err:" + err.Error()))
 		os.Exit(1)
@@ -153,7 +171,7 @@ AGENT_NAME:
 	}
 
 	toleration := promptui.Select{
-		Label: "Do you want Tolerations added in the agent deployments??",
+		Label: "Do you want Tolerations added in the agent deployments?",
 		Items: []string{"Yes", "No"},
 	}
 
@@ -290,7 +308,7 @@ func ValidateSAPermissions(mode string, kubeconfig *string) {
 
 // Summary display the agent details based on input
 func Summary(agent types.Agent, kubeconfig *string) {
-	utils.White_B.Printf("\n📌 Summary \nAgent Name: %s\nAgent Description: %s\nPlatform Name: %s\n", agent.AgentName, agent.Description, agent.PlatformName)
+	utils.White_B.Printf("\n📌 Summary \nAgent Name: %s\nAgent Description: %s\nAgent SSL/TLS Skip: %t\nPlatform Name: %s\n ", agent.AgentName, agent.Description, agent.SkipSSL, agent.PlatformName)
 	if ok, _ := k8s.NsExists(agent.Namespace, kubeconfig); ok {
 		utils.White_B.Println("Namespace: ", agent.Namespace)
 	} else {
