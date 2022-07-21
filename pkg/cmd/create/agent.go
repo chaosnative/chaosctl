@@ -32,7 +32,7 @@ import (
 // agentCmd represents the agent command
 var agentCmd = &cobra.Command{
 	Use: "agent",
-	Short: `Create an external agent.
+	Short: `Create an external Chaos Delegate.
 	Example(s):
 	#create an agent
 	chaosctl create agent --agent-name="new-agent" --non-interactive
@@ -235,7 +235,7 @@ var agentCmd = &cobra.Command{
 			path := fmt.Sprintf("%s/%s/%s.yaml", credentials.Endpoint, utils.ChaosYamlPath, agent.Data.UserAgentReg.Token)
 			utils.White_B.Print("Applying YAML:\n", path)
 		} else {
-			utils.Red.Print("\n🚫 Token Generation failed, Agent installation failed\n")
+			utils.Red.Print("\n🚫 Token Generation failed, Chaos Delegate installation failed\n")
 			os.Exit(1)
 		}
 
@@ -256,8 +256,8 @@ var agentCmd = &cobra.Command{
 		// Watch subscriber pod status
 		k8s.WatchPod(k8s.WatchPodParams{Namespace: newAgent.Namespace, Label: utils.ChaosAgentLabel}, &kubeconfig)
 
-		utils.White_B.Println("\n🚀 Agent Connection Successful!! 🎉")
-		utils.White_B.Println("👉 Agents can be accessed here: " + fmt.Sprintf("%s/%s", credentials.Endpoint, utils.ChaosAgentPath))
+		utils.White_B.Println("\n🚀 Chaos Delegate Connection Successful!! 🎉")
+		utils.White_B.Println("👉 Chaos Delegates can be accessed here: " + fmt.Sprintf("%s/%s", credentials.Endpoint, utils.ChaosAgentPath))
 	},
 }
 

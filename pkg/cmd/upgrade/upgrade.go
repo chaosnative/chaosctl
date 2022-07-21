@@ -23,7 +23,7 @@ import (
 var UpgradeCmd = &cobra.Command{
 	Use: "upgrade",
 	Short: `Examples:
-		#upgrade version of your agent
+		#upgrade version of your chaos delegate
 		chaosctl upgrade agent --cluster-id="4cc25543-36c8-4373-897b-2e5dbbe87bcf" --project-id="d861b650-1549-4574-b2ba-ab754058dd04" --non-interactive
 
 		Note: The default location of the config file is $HOME/.chaosconfig, and can be overridden by a --config flag

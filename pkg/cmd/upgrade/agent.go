@@ -18,8 +18,9 @@ package upgrade
 import (
 	"context"
 	"errors"
-	"github.com/manifoldco/promptui"
 	"os"
+
+	"github.com/manifoldco/promptui"
 
 	"github.com/chaosnative/chaosctl/pkg/apis"
 	"github.com/chaosnative/chaosctl/pkg/utils"
@@ -29,7 +30,7 @@ import (
 // createCmd represents the create command
 var agentCmd = &cobra.Command{
 	Use:   "agent",
-	Short: `Upgrades the ChaosNative Cloud agent plane.`,
+	Short: `Upgrades the ChaosNative Cloud chaos delegate plane.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		credentials, err := utils.GetCredentials(cmd)
 		utils.PrintError(err)
