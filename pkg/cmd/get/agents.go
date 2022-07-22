@@ -16,19 +16,20 @@ limitations under the License.
 package get
 
 import (
+	"os"
+	"text/tabwriter"
+
 	"github.com/chaosnative/chaosctl/pkg/apis"
 	"github.com/chaosnative/chaosctl/pkg/utils"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
-	"os"
-	"text/tabwriter"
 )
 
 // agentsCmd represents the agents command
 var agentsCmd = &cobra.Command{
 	Use:   "agents",
-	Short: "Display list of agents within the project",
-	Long:  `Display list of agents within the project`,
+	Short: "Display list of chaos delegates within the project",
+	Long:  `Display list of chaos delegates within the project`,
 	Run: func(cmd *cobra.Command, args []string) {
 		credentials, err := utils.GetCredentials(cmd)
 		utils.PrintError(err)

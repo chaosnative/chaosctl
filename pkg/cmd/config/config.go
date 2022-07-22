@@ -22,7 +22,7 @@ import (
 // configCmd represents the config command
 var ConfigCmd = &cobra.Command{
 	Use: "config",
-	Short: `It manages multiple litmusportal accounts within a system. 
+	Short: `It manages multiple ChaosCenter accounts within a system. 
 		Examples(s)
 		#set a new account
 		chaosctl config set-account  --endpoint "" --access_id "" --access_key ""

@@ -49,7 +49,7 @@ func GetProjectID(u apis.ProjectDetails) string {
 	return u.Data.Projects[counter].ID
 }
 
-// GetMode gets mode of agent installation as input
+// GetMode gets mode of chaos delegate installation as input
 func GetModeType() string {
 	prompt := promptui.Select{
 		Label: "What's the installation mode?",
@@ -72,19 +72,19 @@ func GetModeType() string {
 	return utils.DefaultMode
 }
 
-// GetAgentDetails take details of agent as input
+// GetAgentDetails take details of chaos delegate as input
 func GetAgentDetails(mode string, pid string, c types.Credentials, kubeconfig *string) (types.Agent, error) {
 	var (
 		newAgent types.Agent
 		err      error
 	)
-	// Get agent name as input
-	utils.White_B.Println("\nEnter the details of the agent")
+	// Get chaos delegate name as input
+	utils.White_B.Println("\nEnter the details of the chaos delegate")
 	// Label for goto statement in case of invalid agent name
 
 AGENT_NAME:
 	prompt := promptui.Prompt{
-		Label: "What's the Agent Name?",
+		Label: "What's the Chaos Delegate Name?",
 	}
 
 	newAgent.AgentName, err = prompt.Run()
@@ -94,11 +94,11 @@ AGENT_NAME:
 	}
 
 	if newAgent.AgentName == "" {
-		utils.Red.Println("⛔ Agent name cannot be empty. Please enter a valid name.")
+		utils.Red.Println("⛔ Chaos Delegate name cannot be empty. Please enter a valid name.")
 		goto AGENT_NAME
 	}
 
-	// Check if agent with the given name already exists
+	// Check if chaos delegate with the given name already exists
 	agent, err := apis.GetAgentList(c, pid)
 	if err != nil {
 		return types.Agent{}, err
@@ -116,9 +116,9 @@ AGENT_NAME:
 		goto AGENT_NAME
 	}
 
-	// Get agent description as input
+	// Get chaos delegate description as input
 	prompt = promptui.Prompt{
-		Label: "Add your agent description",
+		Label: "Add your chaos delegate description",
 	}
 
 	newAgent.Description, err = prompt.Run()
@@ -128,7 +128,7 @@ AGENT_NAME:
 	}
 
 	sslCheck := promptui.Select{
-		Label: "Do you want Agent to skip SSL/TLS check?",
+		Label: "Do you want Chaos Delegate to skip SSL/TLS check?",
 		Items: []string{"Yes", "No"},
 	}
 
@@ -145,7 +145,7 @@ AGENT_NAME:
 	}
 
 	nodeSelector := promptui.Select{
-		Label: "Do you want NodeSelectors added to the agent deployments?",
+		Label: "Do you want NodeSelectors added to the chaos delegate deployments?",
 		Items: []string{"Yes", "No"},
 	}
 
@@ -171,7 +171,7 @@ AGENT_NAME:
 	}
 
 	toleration := promptui.Select{
-		Label: "Do you want Tolerations added in the agent deployments?",
+		Label: "Do you want Tolerations added in the chaos delegate deployments?",
 		Items: []string{"Yes", "No"},
 	}
 
@@ -266,7 +266,7 @@ AGENT_NAME:
 
 	// Get platform name as input
 	newAgent.PlatformName = GetPlatformName(kubeconfig)
-	// Set agent type
+	// Set chaos delegate type
 	newAgent.ClusterType = utils.AgentType
 	// Set project id
 	newAgent.ProjectId = pid
@@ -303,12 +303,12 @@ func ValidateSAPermissions(mode string, kubeconfig *string) {
 		}
 	}
 
-	utils.White_B.Println("\n🌟 Sufficient permissions. Installing the Agent...")
+	utils.White_B.Println("\n🌟 Sufficient permissions. Installing the Chaos Delegate...")
 }
 
-// Summary display the agent details based on input
+// Summary display the chaos delegate details based on input
 func Summary(agent types.Agent, kubeconfig *string) {
-	utils.White_B.Printf("\n📌 Summary \nAgent Name: %s\nAgent Description: %s\nAgent SSL/TLS Skip: %t\nPlatform Name: %s\n ", agent.AgentName, agent.Description, agent.SkipSSL, agent.PlatformName)
+	utils.White_B.Printf("\n📌 Summary \nChaos Delegate Name: %s\nChaos Delegate Description: %s\nChaos Delegate SSL/TLS Skip: %t\nPlatform Name: %s\n ", agent.AgentName, agent.Description, agent.SkipSSL, agent.PlatformName)
 	if ok, _ := k8s.NsExists(agent.Namespace, kubeconfig); ok {
 		utils.White_B.Println("Namespace: ", agent.Namespace)
 	} else {
@@ -338,9 +338,9 @@ func ConfirmInstallation() {
 	}
 
 	if decision == 0 {
-		utils.White_B.Println("👍 Continuing agent connection!!")
+		utils.White_B.Println("👍 Continuing chaos delegate connection!!")
 	} else {
-		utils.Red.Println("✋ Exiting agent connection!!")
+		utils.Red.Println("✋ Exiting chaos delegate connection!!")
 		os.Exit(1)
 	}
 }
