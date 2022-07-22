@@ -175,7 +175,7 @@ https://preview.litmuschaos.io/api/file/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ
 🏃 Chaos Delegates are running!!
 
 🚀 Chaos Delegate Connection Successful!! 🎉
-👉 Litmus chaos delegates can be accessed here: https://cloud.chaosnative.com/agents
+👉 Litmus chaos delegates can be accessed here: https://cloud.chaosnative.com/delegates
 ```
 
 #### Verify the new chaos delegate Connection\*\*
