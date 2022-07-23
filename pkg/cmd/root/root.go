@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/chaosnative/chaosctl/pkg/cmd/connect"
 	"github.com/chaosnative/chaosctl/pkg/cmd/hubgen"
 
 	"github.com/chaosnative/chaosctl/pkg/cmd/upgrade"
@@ -39,8 +40,8 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "chaosctl",
-	Short: "ChaosCTL controls the ChaosNative cloud agent plane",
-	Long:  `ChaosCTL controls the ChaosNative cloud agent plane. ` + "\n" + ` Find more information at: https://github.com/chaosnative/chaosctl`,
+	Short: "ChaosCTL controls the ChaosNative cloud chaos delegate plane",
+	Long:  `ChaosCTL controls the ChaosNative cloud chaos delegate plane. ` + "\n" + ` Find more information at: https://github.com/chaosnative/chaosctl`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -54,6 +55,7 @@ func init() {
 
 	rootCmd.AddCommand(config.ConfigCmd)
 	rootCmd.AddCommand(create.CreateCmd)
+	rootCmd.AddCommand(connect.ConnectCmd)
 	rootCmd.AddCommand(get.GetCmd)
 	rootCmd.AddCommand(version.VersionCmd)
 	rootCmd.AddCommand(upgrade.UpgradeCmd)

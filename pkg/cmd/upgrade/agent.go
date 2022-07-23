@@ -18,8 +18,9 @@ package upgrade
 import (
 	"context"
 	"errors"
-	"github.com/manifoldco/promptui"
 	"os"
+
+	"github.com/manifoldco/promptui"
 
 	"github.com/chaosnative/chaosctl/pkg/apis"
 	"github.com/chaosnative/chaosctl/pkg/utils"
@@ -28,8 +29,8 @@ import (
 
 // createCmd represents the create command
 var agentCmd = &cobra.Command{
-	Use:   "agent",
-	Short: `Upgrades the ChaosNative Cloud agent plane.`,
+	Use:   "chaos-delegate",
+	Short: `Upgrades the ChaosNative Cloud Chaos Delegate plane.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		credentials, err := utils.GetCredentials(cmd)
 		utils.PrintError(err)
@@ -49,12 +50,12 @@ var agentCmd = &cobra.Command{
 			}
 		}
 
-		cluster_id, err := cmd.Flags().GetString("cluster-id")
+		cluster_id, err := cmd.Flags().GetString("chaos-delegate-id")
 		utils.PrintError(err)
 
 		if cluster_id == "" {
 			prompt := promptui.Prompt{
-				Label: "What's the ClusterID?",
+				Label: "What's the Chaos Delegate ID?",
 			}
 
 			cluster_id, err = prompt.Run()
@@ -72,5 +73,5 @@ var agentCmd = &cobra.Command{
 func init() {
 	UpgradeCmd.AddCommand(agentCmd)
 	agentCmd.Flags().String("project-id", "", "Enter the project ID")
-	agentCmd.Flags().String("cluster-id", "", "Enter the cluster ID")
+	agentCmd.Flags().String("chaos-delegate-id", "", "Enter the Chaos Delegate ID")
 }
