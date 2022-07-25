@@ -84,7 +84,7 @@ func GetAgentDetails(mode string, pid string, c types.Credentials, kubeconfig *s
 
 AGENT_NAME:
 	prompt := promptui.Prompt{
-		Label: "What's the chaos delegate Name?",
+		Label: "What's the chaos delegate name?",
 	}
 
 	newAgent.AgentName, err = prompt.Run()

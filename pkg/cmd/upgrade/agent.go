@@ -30,7 +30,7 @@ import (
 // createCmd represents the create command
 var agentCmd = &cobra.Command{
 	Use:   "chaos-delegate",
-	Short: `Upgrades the ChaosNative Cloud Chaos Delegate plane.`,
+	Short: `Upgrades the Harness Chaos Engineering Cloud Chaos Delegate plane.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		credentials, err := utils.GetCredentials(cmd)
 		utils.PrintError(err)

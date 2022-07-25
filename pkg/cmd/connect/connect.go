@@ -24,10 +24,10 @@ var ConnectCmd = &cobra.Command{
 	Use: "connect",
 	Short: `connect resources for ChaosCenter chaos delegate plane.
 		Examples:
-		#connect an chaos-delegate
+		#connect a chaos-delegate
 		chaosctl connect chaos-delegate --chaos-delegate-name="new-chaos-delegate" --non-interactive
 
-		#connect an chaos-delegate within a project
+		#connect a chaos-delegate within a project
 		chaosctl connect chaos-delegate --chaos-delegate-name="new-chaos-delegate" --project-id="d861b650-1549-4574-b2ba-ab754058dd04" --non-interactive
 		
 		Note: The default location of the config file is $HOME/.chaosconfig, and can be overridden by a --config flag

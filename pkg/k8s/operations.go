@@ -169,7 +169,7 @@ start:
 	}
 	if ok {
 		if podExists(podExistsParams{namespace, label}, kubeconfig) {
-			utils.Red.Println("\n🚫 There is an chaos delegate already present in this namespace. Please enter a different namespace")
+			utils.Red.Println("\n🚫 There is a chaos delegate already present in this namespace. Please enter a different namespace")
 			goto start
 		} else {
 			nsExists = true

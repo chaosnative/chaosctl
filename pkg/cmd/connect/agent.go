@@ -34,10 +34,10 @@ var agentCmd = &cobra.Command{
 	Use: "chaos-delegate",
 	Short: `connect an external chaos delegate.
 	Example(s):
-	#connect an chaos delegate
+	#connect a chaos delegate
 	chaosctl connect chaos-delegate --chaos-delegate-name="new-chaos-delegate" --non-interactive
 
-	#connect an chaos delegate within a project
+	#connect a chaos delegate within a project
 	chaosctl connect chaos-delegate --chaos-delegate-name="new-chaos-delegate" --project-id="d861b650-1549-4574-b2ba-ab754058dd04" --non-interactive
 	
 	Note: The default location of the config file is $HOME/.chaosconfig, and can be overridden by a --config flag
@@ -233,7 +233,7 @@ var agentCmd = &cobra.Command{
 			path := fmt.Sprintf("%s/%s/%s.yaml", credentials.Endpoint, utils.ChaosYamlPath, agent.Data.UserAgentReg.Token)
 			utils.White_B.Print("Applying YAML:\n", path)
 		} else {
-			utils.Red.Print("\n🚫 Token Generation failed, Chaos Delegate installation failed\n")
+			utils.Red.Print("\n🚫 Token Generation failed, chaos delegate installation failed\n")
 			os.Exit(1)
 		}
 

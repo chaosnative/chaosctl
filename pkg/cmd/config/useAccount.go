@@ -40,7 +40,7 @@ var useAccountCmd = &cobra.Command{
 		if endpoint == "" {
 			prompt := promptui.Select{
 				Label: "What's the product name?",
-				Items: []string{"ChaosNative Cloud", "ChaosNative Enterprise"},
+				Items: []string{"Harness Chaos Engineering Cloud", "Harness Chaos Engineering Enterprise"},
 			}
 
 			_, result, err := prompt.Run()
@@ -50,9 +50,9 @@ var useAccountCmd = &cobra.Command{
 				return
 			}
 
-			if result == "ChaosNative Cloud" {
+			if result == "Harness Chaos Engineering Cloud" {
 				endpoint = utils.HarnessChaosEngineeringCloudEndpoint
-			} else if result == "ChaosNative Enterprise" {
+			} else if result == "Harness Chaos Engineering Enterprise" {
 				validate := func(input string) error {
 					if utils.IsValidUrl(input) {
 						return nil
@@ -69,7 +69,7 @@ var useAccountCmd = &cobra.Command{
 				}
 
 				prompt := promptui.Prompt{
-					Label:     "ChaosNative Enterprise Endpoint",
+					Label:     "Harness Chaos Engineering Enterprise Endpoint",
 					Templates: templates,
 					Validate:  validate,
 				}

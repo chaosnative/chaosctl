@@ -21,7 +21,7 @@ chaosctl supports both interactive and non-interactive(flag based) modes.
 
 > Only `chaosctl connect chaos-delegate` command needs --non-interactive flag, other commands don't need this flag to be in non-interactive mode. If mandatory flags aren't passed, then chaosctl takes input in an interactive mode.
 
-### Steps to create an chaos delegate
+### Steps to connect a chaos delegate
 
 - To setup an account with chaosctl
 
@@ -40,8 +40,8 @@ Next, you need to enter CLC/CLE details to login into your account. Fields to be
 
 ```
 ? What's the product name?:
-  ▸ ChaosNative Cloud
-    ChaosNative Enterprise
+  ▸ Harness Chaos Engineering Cloud
+    Harness Chaos Engineering Enterprise
 
 What's the AccessID?: Raj60163RjxQE
 What's the AccessKey?: ***************
@@ -49,7 +49,7 @@ What's the AccessKey?: ***************
 account.accessID/admin configured
 ```
 
-- To connect an chaos delegate in a cluster mode
+- To connect a chaos delegate in a cluster mode
 
 ```shell
 chaosctl connect chaos-delegate
@@ -64,7 +64,7 @@ There will be a list of existing projects displayed on the terminal. Select the 
 
 Next, select the installation mode based on your requirement by entering the sequence number indicated against it.
 
-It can install an chaos delegate in two different modes.
+It can install a chaos delegate in two different modes.
 
 - cluster mode: With this mode, the chaos delegate can run the chaos in any namespace. It installs appropriate cluster roles and cluster role bindings to achieve this mode.
 
@@ -119,7 +119,7 @@ Fields to be filled in <br />
 
 ```
 Enter the details of the chaos delegate
-✔ What's the chaos delegate Name?: new-chaos-delegate
+✔ What's the chaos delegate name?: new-chaos-delegate
 
 ✔ Add your chaos delegate description: This is a new chaos-delegate
 
@@ -224,8 +224,8 @@ CURRENT  ENDPOINT                         ACCESSID  EXPIRESIN
 chaosctl config use-account
 
 ? What's the product name?:
-  ▸ ChaosNative Cloud
-    ChaosNative Enterprise
+  ▸ Harness Chaos Engineering Cloud
+    Harness Chaos Engineering Enterprise
 
 What's the AccessID?: Raj60163RjxQE
 ```
