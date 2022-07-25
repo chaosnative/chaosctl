@@ -9,7 +9,7 @@ chaosctl [command] [TYPE] [flags]
 ```
 
 - Command: refers to what you do want to perform (create, get and config)
-- Type: refers to the feature type you are performing a command against (agent, project etc.)
+- Type: refers to the feature type you are performing a command against (chaos delegate, project etc.)
 - Flags: It takes some additional information for resource operations. For example, `--installation-mode` allows you to specify an installation mode.
 
 chaosctl is using the `.chaosconfig` config file to manage multiple accounts
@@ -19,9 +19,9 @@ chaosctl is using the `.chaosconfig` config file to manage multiple accounts
 
 chaosctl supports both interactive and non-interactive(flag based) modes.
 
-> Only `chaosctl create agent` command needs --non-interactive flag, other commands don't need this flag to be in non-interactive mode. If mandatory flags aren't passed, then chaosctl takes input in an interactive mode.
+> Only `chaosctl connect chaos-delegate` command needs --non-interactive flag, other commands don't need this flag to be in non-interactive mode. If mandatory flags aren't passed, then chaosctl takes input in an interactive mode.
 
-### Steps to create an agent
+### Steps to connect a chaos delegate
 
 - To setup an account with chaosctl
 
@@ -40,8 +40,8 @@ Next, you need to enter CLC/CLE details to login into your account. Fields to be
 
 ```
 ? What's the product name?:
-  ▸ ChaosNative Cloud
-    ChaosNative Enterprise
+  ▸ Harness Chaos Engineering Cloud
+    Harness Chaos Engineering Enterprise
 
 What's the AccessID?: Raj60163RjxQE
 What's the AccessKey?: ***************
@@ -49,10 +49,10 @@ What's the AccessKey?: ***************
 account.accessID/admin configured
 ```
 
-- To create an agent in a cluster mode
+- To connect a chaos delegate in a cluster mode
 
 ```shell
-chaosctl create agent
+chaosctl connect chaos-delegate
 ```
 
 There will be a list of existing projects displayed on the terminal. Select the desired project by entering the sequence number indicated against it.
@@ -64,13 +64,13 @@ There will be a list of existing projects displayed on the terminal. Select the 
 
 Next, select the installation mode based on your requirement by entering the sequence number indicated against it.
 
-It can install an agent in two different modes.
+It can install a chaos delegate in two different modes.
 
-- cluster mode: With this mode, the agent can run the chaos in any namespace. It installs appropriate cluster roles and cluster role bindings to achieve this mode.
+- cluster mode: With this mode, the chaos delegate can run the chaos in any namespace. It installs appropriate cluster roles and cluster role bindings to achieve this mode.
 
-- namespace mode: With this mode, the agent can run the chaos in its namespace. It installs appropriate roles and role bindings to achieve this mode.
+- namespace mode: With this mode, the chaos delegate can run the chaos in its namespace. It installs appropriate roles and role bindings to achieve this mode.
 
-Note: With namespace mode, the user needs to create the namespace to install the agent as a prerequisite.
+Note: With namespace mode, the user needs to create the namespace to install the chaos delegate as a prerequisite.
 
 ```
 ? What's the installation mode?:
@@ -80,11 +80,11 @@ Note: With namespace mode, the user needs to create the namespace to install the
 🏃 Running prerequisites check....
 🔑 clusterrole ✅
 🔑 clusterrolebinding ✅
-🌟 Sufficient permissions. Installing the Agent...
+🌟 Sufficient permissions. Installing the chaos delegate...
 
 ```
 
-Next, enter the details of the new agent.
+Next, enter the details of the new chaos delegate.
 
 Fields to be filled in <br />
 
@@ -92,20 +92,20 @@ Fields to be filled in <br />
     <th>Field</th>
     <th>Description</th>
     <tr>
-        <td>Agent Name:</td>
-        <td>Enter a name of the agent which needs to be unique across the project</td>
+        <td>Chaos Delegate Name:</td>
+        <td>Enter a name of the chaos delegate which needs to be unique across the project</td>
     </tr>
     <tr>
-        <td>Agent Description:</td>
-        <td>Fill in details about the agent</td>
+        <td>Chaos Delegate Description:</td>
+        <td>Fill in details about the chaos delegate</td>
     </tr>
     <tr>
         <td>Node Selector:</td>
-        <td>To deploy the agent on a particular node based on the node selector labels</td>
+        <td>To deploy the chaos delegate on a particular node based on the node selector labels</td>
     </tr>
     <tr>
         <td>Platform Name:</td>
-        <td>Enter the platform name on which this agent is hosted. For example, AWS, GCP, Rancher etc.</td>
+        <td>Enter the platform name on which this chaos delegate is hosted. For example, AWS, GCP, Rancher etc.</td>
     </tr>
     <tr>
         <td>Enter the namespace:</td>
@@ -118,16 +118,16 @@ Fields to be filled in <br />
 </table>
 
 ```
-Enter the details of the agent
-✔ What's the Agent Name?: new-agent
+Enter the details of the chaos delegate
+✔ What's the chaos delegate name?: new-chaos-delegate
 
-✔ Add your agent description: new-agent█
+✔ Add your chaos delegate description: This is a new chaos-delegate
 
-? Do you want NodeSelectors added to the agent deployments?:
+? Do you want NodeSelectors added to the chaos delegate deployments?:
     Yes
   ▸ No
 
-? Do you want Tolerations added in the agent deployments??:
+? Do you want Tolerations added in the chaos delegate deployments??:
     Yes
   ▸ No
 
@@ -144,14 +144,14 @@ Enter the details of the agent
 ```
 
 Once, all these steps are implemented you will be able to see a summary of all the entered fields.
-After verification of these details, you can proceed with the connection of the agent by entering Y. The process of connection might take up to a few seconds.
+After verification of these details, you can proceed with the connection of the chaos delegate by entering Y. The process of connection might take up to a few seconds.
 
 ```
 Enter service account [Default: litmus]:
 
 📌 Summary
-Agent Name: New-Agent
-Agent Description: This is a new agent
+Chaos Delegate Name: new-chaos-delegate
+Chaos Delegate Description: This is a new chaos-delegate
 Platform Name: Others
 Namespace:  litmus
 Service Account:  litmus (new)
@@ -161,20 +161,20 @@ Installation Mode: cluster
   ▸ Yes
     No
 
-👍 Continuing agent connection!!
+👍 Continuing chaos delegate connection!!
 Applying YAML:
 https://preview.litmuschaos.io/api/file/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHVzdGVyX2lkIjoiMDUyZmFlN2UtZGM0MS00YmU4LWJiYTgtMmM4ZTYyNDFkN2I0In0.i31QQDG92X5nD6P_-7TfeAAarZqLvUTFfnAghJYXPiM.yaml
 
-💡 Connecting agent to Chaos Center.
-🏃 Agents are running!!
+💡 Connecting chaos delegate to Chaos Center.
+🏃 Chaos Delegates are running!!
 
-🚀 Agent Connection Successful!! 🎉
-👉 Litmus agents can be accessed here: https://cloud.chaosnative.com/agents
+🚀 Chaos Delegate Connection Successful!! 🎉
+👉 Litmus chaos delegates can be accessed here: https://cloud.chaosnative.com/delegates
 ```
 
-#### Verify the new Agent Connection\*\*
+#### Verify the new Chaos Delegate Connection\*\*
 
-To verify, if the connection process was successful you can view the list of connected agents from the Targets section on your ChaosCenter and ensure that the connected agent is in Active State.
+To verify, if the connection process was successful you can view the list of connected chaos delegates from the Targets section on your ChaosCenter and ensure that the connected chaos delegate is in Active State.
 
 ---
 
@@ -224,8 +224,8 @@ CURRENT  ENDPOINT                         ACCESSID  EXPIRESIN
 chaosctl config use-account
 
 ? What's the product name?:
-  ▸ ChaosNative Cloud
-    ChaosNative Enterprise
+  ▸ Harness Chaos Engineering Cloud
+    Harness Chaos Engineering Enterprise
 
 What's the AccessID?: Raj60163RjxQE
 ```
@@ -252,10 +252,10 @@ PROJECT ID                                PROJECT NAME       CREATEDAT
 7a4a259a-1ae5-4204-ae83-89a8838eaec3      DevOps Project     2021-07-21 14:39:14 +0530 IST
 ```
 
-- To get an overview of the agents available within a project, issue the following command.
+- To get an overview of the chaos delegates available within a project, issue the following command.
 
 ```shell
-chaosctl get agents
+chaosctl get chaos-delegates
 
 Enter the Project ID: 50addd40-8767-448c-a91a-5071543a2d8e
 ```
@@ -263,9 +263,9 @@ Enter the Project ID: 50addd40-8767-448c-a91a-5071543a2d8e
 **Output:**
 
 ```
-AGENTID                                AGENTNAME          STATUS
-55ecc7f2-2754-43aa-8e12-6903e4c6183a   agent-1            ACTIVE
-13dsf3d1-5324-54af-4g23-5331g5v2364f   agent-2            INACTIVE
+CHAOS DELEGATE ID                                CHAOS DELEGATE NAME          STATUS
+55ecc7f2-2754-43aa-8e12-6903e4c6183a   chaos-delagate-1            ACTIVE
+13dsf3d1-5324-54af-4g23-5331g5v2364f   chaos-delegate-2            INACTIVE
 ```
 
 For more information related to flags, Use `chaosctl --help`.

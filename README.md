@@ -1,5 +1,5 @@
 # ChaosCTL
-The CLC command-line tool, chaosctl, allows you to manage CLC's agent plane. You can use chaosctl to create agents, project, and manage multiple CLC accounts. 
+The CLC command-line tool, chaosctl, allows you to manage CLC's chaos delegate plane. You can use chaosctl to create chaos delegates, project, and manage multiple CLC accounts. 
 
 ## Usage
 * For more information including a complete list of chaosctl operations, see the chaosctl reference documentation. 
@@ -10,7 +10,7 @@ The CLC command-line tool, chaosctl, allows you to manage CLC's agent plane. You
 
 The chaosctl CLI requires the following things:
 
-- kubeconfig - chaosctl needs the kubeconfig of the k8s cluster where we need to connect CLC agents. The CLI currently uses the default path of kubeconfig i.e. `~/.kube/config`.
+- kubeconfig - chaosctl needs the kubeconfig of the k8s cluster where we need to connect CLC chaos delegates. The CLI currently uses the default path of kubeconfig i.e. `~/.kube/config`.
 - kubectl- chaosctl is using kubectl under the hood to apply the manifest. To install kubectl, follow:  [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 
 

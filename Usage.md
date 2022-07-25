@@ -7,7 +7,7 @@
 chaosctl [command] [TYPE] [flags]
 ```
 * Command: refers to what you do want to perform (create, get and config)
-* Type: refers to the feature type you are performing a command against (agent, project etc.)
+* Type: refers to the feature type you are performing a command against (chaos delegate, project etc.)
 * Flags: It takes some additional information for resource operations. For example, `--installation-mode` allows you to specify an installation mode.
 
 chaosctl is using the `.chaosconfig` config file to manage multiple accounts
@@ -15,39 +15,39 @@ chaosctl is using the `.chaosconfig` config file to manage multiple accounts
 2. Otherwise, the ${HOME}/.chaosconfig file is used, and no merging takes place.
 
 chaosctl supports both interactive and non-interactive(flag based) modes.
-> Only `chaosctl create agent`  command needs --non-interactive flag, other commands don't need this flag to be in non-interactive mode. If mandatory flags aren't passed, then chaosctl takes input in an interactive mode.
+> Only `chaosctl connect chaos-delegate`  command needs --non-interactive flag, other commands don't need this flag to be in non-interactive mode. If mandatory flags aren't passed, then chaosctl takes input in an interactive mode.
 
 ### Installation modes
-chaosctl can install an agent in two different modes.
-* cluster mode: With this mode, the agent can run the chaos in any namespace. It installs appropriate cluster roles and cluster role bindings to achieve this mode. It can be enabled by passing a flag `--installation-mode=cluster`
+chaosctl can install a chaos delegate in two different modes.
+* cluster mode: With this mode, the chaos delegate can run the chaos in any namespace. It installs appropriate cluster roles and cluster role bindings to achieve this mode. It can be enabled by passing a flag `--installation-mode=cluster`
 
-* namespace mode: With this mode, the agent can run the chaos in its namespace. It installs appropriate roles and role bindings to achieve this mode. It can be enabled by passing a flag `--installation-mode=namespace`
+* namespace mode: With this mode, the chaos delegate can run the chaos in its namespace. It installs appropriate roles and role bindings to achieve this mode. It can be enabled by passing a flag `--installation-mode=namespace`
 
-Note: With namespace mode, the user needs to create the namespace to install the agent as a prerequisite.
+Note: With namespace mode, the user needs to create the namespace to install the chaos delegate as a prerequisite.
 
-### Minimal steps to create an agent
+### Minimal steps to connect a chaos delegate
 
 * To setup an account with chaosctl
 ```shell
 chaosctl config set-account --endpoint="" --access_id="" --access_key=""
 ```
 
-* To create an agent without a project
->Note: If the user doesn't have any project, it will create a random project and add the agent in that random project.
+* To connect a chaos delegate without a project
+>Note: If the user doesn't have any project, it will create a random project and add the chaos delegate in that random project.
 ```shell
-chaosctl create agent --agent-name="" --non-interactive
+chaosctl connect chaos-delegate --chaos-delegate-name="" --non-interactive
 ```
 
 ### Or,
 
-* To create an agent with an existing project
+* To connect a chaos delegate with an existing project
 > Note: To get `project-id`. Apply `chaosctl get projects`
 
 ```shell
-chaosctl create agent --agent-name="" --project-id="" --non-interactive
+chaosctl connect chaos-delegate --chaos-delegate-name="" --project-id="" --non-interactive
 ```
 
-### Flags for `create agent` command
+### Flags for `connect chaos-delegate` command
 <table>
 <tr>
     <th>Flag</th>
@@ -55,28 +55,28 @@ chaosctl create agent --agent-name="" --project-id="" --non-interactive
     <th>Type</th>
     <th>Description</th>
     <tr>
-        <td>--agent-description</td>
+        <td>--chaos-delegate-description</td>
         <td></td>
         <td>String</td>
-        <td>Set the agent description (default "---")</td>
+        <td>Set the chaos delegate description (default "---")</td>
     </tr>
     <tr>
-        <td>--agent-name</td>
+        <td>--chaos-delegate-name</td>
         <td></td>
         <td>String</td>
-        <td>Set the cluster-type to external for external agents | Supported=external/internal (default "external")</td>
+        <td>Set the cluster-type to external for external chaos delegates | Supported=external/internal (default "external")</td>
     </tr>
     <tr>
         <td>--cluster-type</td>
         <td></td>
         <td>String</td>
-        <td>Set the cluster-type to external for external agents | Supported=external/internal (default "external")</td>
+        <td>Set the cluster-type to external for external chaos delegates | Supported=external/internal (default "external")</td>
     </tr>
     <tr>
         <td>--installation-mode</td>
         <td></td>
         <td>String</td>
-        <td>Set the installation mode for the kind of agent | Supported=cluster/namespace (default "cluster")</td>
+        <td>Set the installation mode for the kind of chaos delegate | Supported=cluster/namespace (default "cluster")</td>
     </tr>
     <tr>
         <td>--kubeconfig</td>
@@ -88,13 +88,13 @@ chaosctl create agent --agent-name="" --project-id="" --non-interactive
         <td>--namespace</td>
         <td></td>
         <td>String</td>
-        <td>Set the namespace for the agent installation (default "litmus")</td>
+        <td>Set the namespace for the chaos delegate installation (default "litmus")</td>
     </tr>
     <tr>
         <td>--node-selector</td>
         <td></td>
         <td>String</td>
-        <td>Set the node-selector for agent components | Format: key1=value1,key2=value2)
+        <td>Set the node-selector for chaos delegate components | Format: key1=value1,key2=value2)
     </tr>
     <tr>
         <td>--non-interactive</td>
@@ -124,7 +124,7 @@ chaosctl create agent --agent-name="" --project-id="" --non-interactive
         <td>--service-account</td>
         <td></td>
         <td>String</td>
-        <td>Set the service account to be used by the agent (default "litmus")</td>
+        <td>Set the service account to be used by the chaos delegate (default "litmus")</td>
     </tr>
     <tr>
         <td>--config</td>
@@ -197,17 +197,17 @@ PROJECT ID                                PROJECT NAME       CREATEDAT
 ```
 
 
-* To get an overview of the agents available within a project, issue the following command.
+* To get an overview of the chaos delegates available within a project, issue the following command.
 ```shell
-chaosctl get agents --project-id=""
+chaosctl get chaos-delegates --project-id=""
 ```
 
 **Output:**
 
 ```
-AGENTID                                AGENTNAME          STATUS 
-55ecc7f2-2754-43aa-8e12-6903e4c6183a   agent-1            ACTIVE 
-13dsf3d1-5324-54af-4g23-5331g5v2364f   agent-2            INACTIVE
+CHAOS DELEGATE ID                                CHAOS DELEGATE NAME          STATUS 
+55ecc7f2-2754-43aa-8e12-6903e4c6183a   chaos-delegate-1            ACTIVE 
+13dsf3d1-5324-54af-4g23-5331g5v2364f   chaos-delegate-2            INACTIVE
 ```
 
 

@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package create
+package connect
 
 import (
 	"encoding/json"
@@ -29,16 +29,16 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// agentCmd represents the agent command
+// agentCmd represents the chaos delegate command
 var agentCmd = &cobra.Command{
-	Use: "agent",
-	Short: `Create an external agent.
+	Use: "chaos-delegate",
+	Short: `connect an external chaos delegate.
 	Example(s):
-	#create an agent
-	chaosctl create agent --agent-name="new-agent" --non-interactive
+	#connect a chaos delegate
+	chaosctl connect chaos-delegate --chaos-delegate-name="new-chaos-delegate" --non-interactive
 
-	#create an agent within a project
-	chaosctl create agent --agent-name="new-agent" --project-id="d861b650-1549-4574-b2ba-ab754058dd04" --non-interactive
+	#connect a chaos delegate within a project
+	chaosctl connect chaos-delegate --chaos-delegate-name="new-chaos-delegate" --project-id="d861b650-1549-4574-b2ba-ab754058dd04" --non-interactive
 	
 	Note: The default location of the config file is $HOME/.chaosconfig, and can be overridden by a --config flag
 `,
@@ -89,15 +89,15 @@ var agentCmd = &cobra.Command{
 				os.Exit(1)
 			}
 
-			newAgent.AgentName, err = cmd.Flags().GetString("agent-name")
+			newAgent.AgentName, err = cmd.Flags().GetString("chaos-delegate-name")
 			utils.PrintError(err)
 
 			if newAgent.AgentName == "" {
-				utils.Red.Print("Error: --agent-name flag is empty")
+				utils.Red.Print("Error: --chaos-delegate-name flag is empty")
 				os.Exit(1)
 			}
 
-			newAgent.Description, err = cmd.Flags().GetString("agent-description")
+			newAgent.Description, err = cmd.Flags().GetString("chaos-delegate-description")
 			utils.PrintError(err)
 
 			newAgent.PlatformName, err = cmd.Flags().GetString("platform-name")
@@ -226,14 +226,14 @@ var agentCmd = &cobra.Command{
 		}
 		agent, err := apis.ConnectAgent(newAgent, credentials)
 		if err != nil {
-			utils.Red.Println("\n❌ Agent connection failed: " + err.Error() + "\n")
+			utils.Red.Println("\n❌ Chaos Delegate connection failed: " + err.Error() + "\n")
 			os.Exit(1)
 		}
 		if agent.Data.UserAgentReg.Token != "" {
 			path := fmt.Sprintf("%s/%s/%s.yaml", credentials.Endpoint, utils.ChaosYamlPath, agent.Data.UserAgentReg.Token)
 			utils.White_B.Print("Applying YAML:\n", path)
 		} else {
-			utils.Red.Print("\n🚫 Token Generation failed, Agent installation failed\n")
+			utils.Red.Print("\n🚫 Token Generation failed, chaos delegate installation failed\n")
 			os.Exit(1)
 		}
 
@@ -253,27 +253,27 @@ var agentCmd = &cobra.Command{
 		// Watch subscriber pod status
 		k8s.WatchPod(k8s.WatchPodParams{Namespace: newAgent.Namespace, Label: utils.ChaosAgentLabel}, &kubeconfig)
 
-		utils.White_B.Println("\n🚀 Agent Connection Successful!! 🎉")
-		utils.White_B.Println("👉 Agents can be accessed here: " + fmt.Sprintf("%s/%s", credentials.Endpoint, utils.ChaosAgentPath))
+		utils.White_B.Println("\n🚀 Chaos Delegate Connection Successful!! 🎉")
+		utils.White_B.Println("👉 Chaos Delegates can be accessed here: " + fmt.Sprintf("%s/%s", credentials.Endpoint, utils.ChaosAgentPath))
 	},
 }
 
 func init() {
-	CreateCmd.AddCommand(agentCmd)
+	ConnectCmd.AddCommand(agentCmd)
 
 	agentCmd.Flags().BoolP("non-interactive", "n", false, "Set it to true for non interactive mode | Note: Always set the boolean flag as --non-interactive=Boolean")
 	agentCmd.Flags().StringP("kubeconfig", "k", "", "Set to pass kubeconfig file if it is not in the default location ($HOME/.kube/config)")
 	agentCmd.Flags().String("tolerations", "", "Set to pass kubeconfig file if it is not in the default location ($HOME/.kube/config)")
 
-	agentCmd.Flags().String("project-id", "", "Set the project-id to install agent for the particular project. To see the projects, apply chaosctl get projects")
-	agentCmd.Flags().String("installation-mode", "cluster", "Set the installation mode for the kind of agent | Supported=cluster/namespace")
-	agentCmd.Flags().String("agent-name", "", "Set the agent name")
-	agentCmd.Flags().String("agent-description", "---", "Set the agent description")
+	agentCmd.Flags().String("project-id", "", "Set the project-id to install chaos-delegate for the particular project. To see the projects, apply chaosctl get projects")
+	agentCmd.Flags().String("installation-mode", "cluster", "Set the installation mode for the kind of chaos-delegate | Supported=cluster/namespace")
+	agentCmd.Flags().String("chaos-delegate-name", "", "Set the chaos-delegate name")
+	agentCmd.Flags().String("chaos-delegate-description", "---", "Set the chaos-delegate description")
 	agentCmd.Flags().String("platform-name", "Others", "Set the platform name. Supported- AWS/GKE/Openshift/Rancher/Others")
-	agentCmd.Flags().String("cluster-type", "external", "Set the cluster-type to external for external agents | Supported=external/internal")
-	agentCmd.Flags().String("node-selector", "", "Set the node-selector for agent components | Format: \"key1=value1,key2=value2\")")
-	agentCmd.Flags().String("namespace", "litmus", "Set the namespace for the agent installation")
-	agentCmd.Flags().String("service-account", "litmus", "Set the service account to be used by the agent")
+	agentCmd.Flags().String("cluster-type", "external", "Set the cluster-type to external for external chaos-delegates | Supported=external/internal")
+	agentCmd.Flags().String("node-selector", "", "Set the node-selector for chaos-delegate components | Format: \"key1=value1,key2=value2\")")
+	agentCmd.Flags().String("namespace", "litmus", "Set the namespace for the chaos-delegate installation")
+	agentCmd.Flags().String("service-account", "litmus", "Set the service account to be used by the chaos-delegate")
 	agentCmd.Flags().Bool("ns-exists", false, "Set the --ns-exists=false if the namespace mentioned in the --namespace flag is not existed else set it to --ns-exists=true | Note: Always set the boolean flag as --ns-exists=Boolean")
 	agentCmd.Flags().Bool("sa-exists", false, "Set the --sa-exists=false if the service-account mentioned in the --service-account flag is not existed else set it to --sa-exists=true | Note: Always set the boolean flag as --sa-exists=Boolean\"\n")
 }

@@ -16,19 +16,20 @@ limitations under the License.
 package get
 
 import (
+	"os"
+	"text/tabwriter"
+
 	"github.com/chaosnative/chaosctl/pkg/apis"
 	"github.com/chaosnative/chaosctl/pkg/utils"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
-	"os"
-	"text/tabwriter"
 )
 
-// agentsCmd represents the agents command
+// agentsCmd represents the chaos delegates command
 var agentsCmd = &cobra.Command{
-	Use:   "agents",
-	Short: "Display list of agents within the project",
-	Long:  `Display list of agents within the project`,
+	Use:   "chaos-delegates",
+	Short: "Display list of chaos delegates within the project",
+	Long:  `Display list of chaos delegates within the project`,
 	Run: func(cmd *cobra.Command, args []string) {
 		credentials, err := utils.GetCredentials(cmd)
 		utils.PrintError(err)
@@ -69,7 +70,7 @@ var agentsCmd = &cobra.Command{
 		case "":
 
 			writer := tabwriter.NewWriter(os.Stdout, 4, 8, 1, '\t', 0)
-			utils.White_B.Fprintln(writer, "AGENTID\tAGENTNAME\tSTATUS\t")
+			utils.White_B.Fprintln(writer, "CHAOS DELEGATE\tCHAOS DELEGATE NAME\tSTATUS\t")
 
 			for _, agent := range agents.Data.GetAgent {
 				var status string

@@ -47,19 +47,19 @@ type AgentList struct {
 	GetAgent []AgentDetails `json:"getCluster"`
 }
 
-// GetAgentList lists the agent connected to the specified project
+// GetAgentList lists the chaos delegate connected to the specified project
 func GetAgentList(c types.Credentials, pid string) (AgentData, error) {
 	query := `{"query":"query{\n  getCluster(project_id: \"` + pid + `\"){\n  cluster_id cluster_name is_active \n  }\n}"}`
 	resp, err := SendRequest(SendRequestParams{Endpoint: c.Endpoint + utils.GQLAPIPath, Token: c.Token}, []byte(query), string(types.Post))
 	if err != nil {
-		utils.Red.Println("Error in getting agent list: ", err)
+		utils.Red.Println("Error in getting chaos delegate list: ", err)
 		os.Exit(1)
 	}
 
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	if err != nil {
-		utils.Red.Println("Error in getting agent list: ", err)
+		utils.Red.Println("Error in getting chaos delegate list: ", err)
 		os.Exit(1)
 	}
 
@@ -67,7 +67,7 @@ func GetAgentList(c types.Credentials, pid string) (AgentData, error) {
 		var agent AgentData
 		err = json.Unmarshal(bodyBytes, &agent)
 		if err != nil {
-			utils.Red.Println("Error in getting agent list: ", err)
+			utils.Red.Println("Error in getting chaos delegate list: ", err)
 			os.Exit(1)
 		}
 		return agent, nil
@@ -99,7 +99,7 @@ type UserAgentReg struct {
 	Token       string `json:"token"`
 }
 
-// ConnectAgent connects the agent with the given details
+// ConnectAgent connects the chaos delegate with the given details
 func ConnectAgent(agent types.Agent, cred types.Credentials) (AgentConnectionData, error) {
 	query := `{"query":"mutation {\n  userClusterReg(clusterInput: \n    { \n    cluster_name: \"` + agent.AgentName + `\", \n    description: \"` + agent.Description + `\",\n  \tplatform_name: \"` + agent.PlatformName + `\",\n    project_id: \"` + agent.ProjectId + `\",\n    cluster_type: \"` + agent.ClusterType + `\",\n  agent_scope: \"` + agent.Mode + `\",\n    agent_namespace: \"` + agent.Namespace + `\",\n    serviceaccount: \"` + agent.ServiceAccount + `\",\n    agent_ns_exists: ` + fmt.Sprintf("%t", agent.NsExists) + `,\n    agent_sa_exists: ` + fmt.Sprintf("%t", agent.SAExists) + `,\n  }){\n    cluster_id\n    cluster_name\n    token\n  }\n}"}`
 
@@ -117,19 +117,19 @@ func ConnectAgent(agent types.Agent, cred types.Credentials) (AgentConnectionDat
 
 	resp, err := SendRequest(SendRequestParams{Endpoint: cred.Endpoint + utils.GQLAPIPath, Token: cred.Token}, []byte(query), string(types.Post))
 	if err != nil {
-		return AgentConnectionData{}, errors.New("Error in registering agent: " + err.Error())
+		return AgentConnectionData{}, errors.New("Error in registering chaos delegate: " + err.Error())
 	}
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	if err != nil {
-		return AgentConnectionData{}, errors.New("Error in registering agent: " + err.Error())
+		return AgentConnectionData{}, errors.New("Error in registering chaos delegate: " + err.Error())
 	}
 
 	if resp.StatusCode == http.StatusOK {
 		var connectAgent AgentConnectionData
 		err = json.Unmarshal(bodyBytes, &connectAgent)
 		if err != nil {
-			return AgentConnectionData{}, errors.New("Error in registering agent: " + err.Error())
+			return AgentConnectionData{}, errors.New("Error in registering chaos delegate: " + err.Error())
 		}
 		return connectAgent, nil
 	} else {
