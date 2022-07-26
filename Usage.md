@@ -45,7 +45,7 @@ kubectl create ns <namespace_name>
 kubectl apply -f https://raw.githubusercontent.com/litmuschaos/litmus/master/litmus-portal/litmus-portal-crds.yml
 ```
 
-### Minimal steps to create an chaos delegate
+### Minimal steps to connect a chaos delegate
 
 - To setup an account with chaosctl
 
@@ -53,7 +53,7 @@ kubectl apply -f https://raw.githubusercontent.com/litmuschaos/litmus/master/lit
 chaosctl config set-account --endpoint="" --access_id="" --access_key=""
 ```
 
-- To connect an chaos delegate without a project
+- To connect a chaos delegate without a project
   > Note: If the user doesn't have any project, it will create a random project and add the chaos delegate in that random project.
 
 ```shell
@@ -62,7 +62,7 @@ chaosctl connect chaos-delegate --name="" --non-interactive
 
 ### Or,
 
-- To connect an chaos delegate with an existing project
+- To connect a chaos delegate with an existing project
   > Note: To get `project-id`. Apply `chaosctl get projects`
 
 ```shell

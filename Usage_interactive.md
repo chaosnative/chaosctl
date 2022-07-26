@@ -21,7 +21,7 @@ chaosctl supports both interactive and non-interactive(flag based) modes.
 
 > Only `chaosctl connect chaos-delegate` command needs --non-interactive flag, other commands don't need this flag to be in non-interactive mode. If mandatory flags aren't passed, then chaosctl takes input in an interactive mode.
 
-### Steps to connect to an chaos delegate
+### Steps to connect to a chaos delegate
 
 - To setup an account with chaosctl
 
@@ -64,7 +64,7 @@ There will be a list of existing projects displayed on the terminal. Select the 
 
 Next, select the installation mode based on your requirement by entering the sequence number indicated against it.
 
-It can install an chaos delegate in two different modes.
+It can install a chaos delegate in two different modes.
 
 - cluster mode: With this mode, the chaos delegate can run the chaos in any namespace. It installs appropriate cluster roles and cluster role bindings to achieve this mode.
 

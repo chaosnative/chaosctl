@@ -200,7 +200,7 @@ var agentCmd = &cobra.Command{
 			}
 
 			if isAgentExist {
-				utils.Red.Print("Chaoss Delegate name already exist")
+				utils.Red.Print("Chaos delegate name already exist")
 				os.Exit(1)
 			}
 
@@ -229,7 +229,7 @@ var agentCmd = &cobra.Command{
 		}
 		agent, err := apis.ConnectAgent(newAgent, credentials)
 		if err != nil {
-			utils.Red.Println("\n❌ Chaos Delegate connection failed: " + err.Error() + "\n")
+			utils.Red.Println("\n❌ Chaos delegate connection failed: " + err.Error() + "\n")
 			os.Exit(1)
 		}
 		if agent.Data.UserAgentReg.Token != "" {
