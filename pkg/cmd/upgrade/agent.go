@@ -29,7 +29,7 @@ import (
 
 // createCmd represents the create command
 var agentCmd = &cobra.Command{
-	Use:   "agent",
+	Use:   "chaos-delegate",
 	Short: `Upgrades the ChaosNative Cloud chaos delegate plane.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		credentials, err := utils.GetCredentials(cmd)
@@ -50,12 +50,12 @@ var agentCmd = &cobra.Command{
 			}
 		}
 
-		cluster_id, err := cmd.Flags().GetString("cluster-id")
+		cluster_id, err := cmd.Flags().GetString("chaos-delegate-id")
 		utils.PrintError(err)
 
 		if cluster_id == "" {
 			prompt := promptui.Prompt{
-				Label: "What's the ClusterID?",
+				Label: "What's the chaos delegate ID?",
 			}
 
 			cluster_id, err = prompt.Run()
@@ -73,5 +73,5 @@ var agentCmd = &cobra.Command{
 func init() {
 	UpgradeCmd.AddCommand(agentCmd)
 	agentCmd.Flags().String("project-id", "", "Enter the project ID")
-	agentCmd.Flags().String("cluster-id", "", "Enter the cluster ID")
+	agentCmd.Flags().String("chaos-delegate-id", "", "Enter the chaos delegate ID")
 }

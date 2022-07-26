@@ -27,7 +27,7 @@ import (
 
 // agentsCmd represents the agents command
 var agentsCmd = &cobra.Command{
-	Use:   "agents",
+	Use:   "chaos-delegates",
 	Short: "Display list of chaos delegates within the project",
 	Long:  `Display list of chaos delegates within the project`,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -70,7 +70,7 @@ var agentsCmd = &cobra.Command{
 		case "":
 
 			writer := tabwriter.NewWriter(os.Stdout, 4, 8, 1, '\t', 0)
-			utils.White_B.Fprintln(writer, "AGENTID\tAGENTNAME\tSTATUS\t")
+			utils.White_B.Fprintln(writer, "CHAOS DELEGATE ID\tCHAOS DELEGATE NAME\tSTATUS\t")
 
 			for _, agent := range agents.Data.GetAgent {
 				var status string

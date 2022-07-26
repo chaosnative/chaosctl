@@ -27,7 +27,7 @@ var GetCmd = &cobra.Command{
 		chaosctl get projects
 
 		#get list of chaos delegates within the project
-		chaosctl get agents --project-id=""
+		chaosctl get chaos-delegates --project-id=""
 
 		Note: The default location of the config file is $HOME/.chaosconfig, and can be overridden by a --config flag
 	`,
