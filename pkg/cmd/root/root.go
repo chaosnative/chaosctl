@@ -23,6 +23,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/chaosnative/chaosctl/pkg/cmd/connect"
 	"github.com/chaosnative/chaosctl/pkg/cmd/hubgen"
 
 	"github.com/chaosnative/chaosctl/pkg/cmd/upgrade"
@@ -58,6 +59,7 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	rootCmd.AddCommand(config.ConfigCmd)
+	rootCmd.AddCommand(connect.ConnectCmd)
 	rootCmd.AddCommand(create.CreateCmd)
 	rootCmd.AddCommand(get.GetCmd)
 	rootCmd.AddCommand(version.VersionCmd)
@@ -69,7 +71,7 @@ func init() {
 	// will be global for your application.
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.chaosconfig)")
-	rootCmd.PersistentFlags().BoolVar(&config2.SkipSSLVerify, "skipSSL", false, "skipSSL, litmusctl will skip ssl/tls verification while communicating with portal")
+	rootCmd.PersistentFlags().BoolVar(&config2.SkipSSLVerify, "skip-ssl", false, "skip-ssl, chaosctl will skip ssl/tls verification while communicating with portal")
 	rootCmd.PersistentFlags().StringVar(&config2.CACert, "cacert", "", "cacert <path_to_crt_file> , custom ca certificate used for communicating with portal")
 }
 

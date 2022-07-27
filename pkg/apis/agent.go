@@ -124,14 +124,14 @@ func ConnectAgent(agent types.Agent, cred types.Credentials) (AgentConnectionDat
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	if err != nil {
-		return AgentConnectionData{}, errors.New("Error in registering Chaos Delegate: " + err.Error())
+		return AgentConnectionData{}, errors.New("Error in registering chaos delegate: " + err.Error())
 	}
 
 	if resp.StatusCode == http.StatusOK {
 		var connectAgent AgentConnectionData
 		err = json.Unmarshal(bodyBytes, &connectAgent)
 		if err != nil {
-			return AgentConnectionData{}, errors.New("Error in registering Chaos Delegate: " + err.Error())
+			return AgentConnectionData{}, errors.New("Error in registering chaos delegate: " + err.Error())
 		}
 
 		if len(connectAgent.Errors) > 0 {

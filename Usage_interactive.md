@@ -8,7 +8,7 @@
 chaosctl [command] [TYPE] [flags]
 ```
 
-- Command: refers to what you do want to perform (create, get and config)
+- Command: refers to what you do want to perform (connect, create, get and config)
 - Type: refers to the feature type you are performing a command against (chaos-delegate, project etc.)
 - Flags: It takes some additional information for resource operations. For example, `--installation-mode` allows you to specify an installation mode.
 
@@ -19,9 +19,9 @@ chaosctl is using the `.chaosconfig` config file to manage multiple accounts
 
 chaosctl supports both interactive and non-interactive(flag based) modes.
 
-> Only `chaosctl create agent` command needs --non-interactive flag, other commands don't need this flag to be in non-interactive mode. If mandatory flags aren't passed, then chaosctl takes input in an interactive mode.
+> Only `chaosctl connect chaos-delegate` command needs --non-interactive flag, other commands don't need this flag to be in non-interactive mode. If mandatory flags aren't passed, then chaosctl takes input in an interactive mode.
 
-### Steps to connect to an chaos delegate
+### Steps to connect to a chaos delegate
 
 - To setup an account with chaosctl
 
@@ -29,7 +29,7 @@ chaosctl supports both interactive and non-interactive(flag based) modes.
 chaosctl config set-account
 ```
 
-Next, you need to enter CLC/CLE details to login into your account. Fields to be filled in:
+Next, you need to enter Harness Chaos Engineering Cloud/Harness Chaos Engineering Enterprise details to login into your account. Fields to be filled in:
 
 **What's the product name:** Select the product name .
 
@@ -40,8 +40,8 @@ Next, you need to enter CLC/CLE details to login into your account. Fields to be
 
 ```
 ? What's the product name?:
-  ▸ ChaosNative Cloud
-    ChaosNative Enterprise
+  ▸ Harness Chaos Engineering Cloud
+    Harness Chaos Engineering Enterprise
 
 What's the AccessID?: Raj60163RjxQE
 What's the AccessKey?: ***************
@@ -49,10 +49,10 @@ What's the AccessKey?: ***************
 account.accessID/admin configured
 ```
 
-- To connect an chaos delegate in a cluster mode
+- To connect a chaos delegate in a cluster mode
 
 ```shell
-chaosctl create agent
+chaosctl connect chaos-delegate
 ```
 
 There will be a list of existing projects displayed on the terminal. Select the desired project by entering the sequence number indicated against it.
@@ -64,7 +64,7 @@ There will be a list of existing projects displayed on the terminal. Select the 
 
 Next, select the installation mode based on your requirement by entering the sequence number indicated against it.
 
-It can install an chaos delegate in two different modes.
+It can install a chaos delegate in two different modes.
 
 - cluster mode: With this mode, the chaos delegate can run the chaos in any namespace. It installs appropriate cluster roles and cluster role bindings to achieve this mode.
 
@@ -92,11 +92,11 @@ Fields to be filled in <br />
     <th>Field</th>
     <th>Description</th>
     <tr>
-        <td>Chaos Delegate Name:</td>
+        <td>Name:</td>
         <td>Enter a name of the chaos delegate which needs to be unique across the project</td>
     </tr>
     <tr>
-        <td>Chaos Delegate Description:</td>
+        <td>Description:</td>
         <td>Fill in details about the chaos delegate</td>
     </tr>
      <tr>
@@ -230,8 +230,8 @@ CURRENT  ENDPOINT                         ACCESSID  EXPIRESIN
 chaosctl config use-account
 
 ? What's the product name?:
-  ▸ ChaosNative Cloud
-    ChaosNative Enterprise
+  ▸ Harness Chaos Engineering Cloud
+    Harness Chaos Engineering Enterprise
 
 What's the AccessID?: Raj60163RjxQE
 ```
@@ -261,7 +261,7 @@ PROJECT ID                                PROJECT NAME       CREATEDAT
 - To get an overview of the chaos delegates available within a project, issue the following command.
 
 ```shell
-chaosctl get agents
+chaosctl get chaos-delegates
 
 Enter the Project ID: 50addd40-8767-448c-a91a-5071543a2d8e
 ```
@@ -269,9 +269,9 @@ Enter the Project ID: 50addd40-8767-448c-a91a-5071543a2d8e
 **Output:**
 
 ```
-AGENTID                                AGENTNAME          STATUS
-55ecc7f2-2754-43aa-8e12-6903e4c6183a   agent-1            ACTIVE
-13dsf3d1-5324-54af-4g23-5331g5v2364f   agent-2            INACTIVE
+CHAOS DELEGATE ID                                CHAOS DELEGATE NAME          STATUS
+55ecc7f2-2754-43aa-8e12-6903e4c6183a   chaos-delegate-1            ACTIVE
+13dsf3d1-5324-54af-4g23-5331g5v2364f   chaos-delegate-2            INACTIVE
 ```
 
 For more information related to flags, Use `chaosctl --help`.

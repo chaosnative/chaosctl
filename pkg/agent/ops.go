@@ -27,7 +27,7 @@ import (
 	"github.com/manifoldco/promptui"
 )
 
-// GetProject display list of projects and returns the project id based on input
+// GetProjectID display list of projects and returns the project id based on input
 func GetProjectID(u apis.ProjectDetails) string {
 	var projectNames []string
 	for _, v := range u.Data.Projects {
@@ -49,7 +49,7 @@ func GetProjectID(u apis.ProjectDetails) string {
 	return u.Data.Projects[counter].ID
 }
 
-// GetMode gets mode of chaos delegate installation as input
+// GetModeType gets mode of chaos delegate installation as input
 func GetModeType() string {
 	prompt := promptui.Select{
 		Label: "What's the installation mode?",
@@ -80,11 +80,11 @@ func GetAgentDetails(mode string, pid string, c types.Credentials, kubeconfig *s
 	)
 	// Get chaos delegate name as input
 	utils.White_B.Println("\nEnter the details of the chaos delegate")
-	// Label for goto statement in case of invalid agent name
+	// Label for goto statement in case of invalid chaos delegate name
 
 AGENT_NAME:
 	prompt := promptui.Prompt{
-		Label: "What's the Chaos Delegate Name?",
+		Label: "What's the chaos delegate name?",
 	}
 
 	newAgent.AgentName, err = prompt.Run()
