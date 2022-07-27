@@ -70,9 +70,10 @@ func NsExists(namespace string, kubeconfig *string) (bool, error) {
 }
 
 type CheckSAPermissionsParams struct {
-	Verb     string
-	Resource string
-	Print    bool
+	Verb      string
+	Resource  string
+	Print     bool
+	Namespace string
 }
 
 func CheckSAPermissions(params CheckSAPermissionsParams, kubeconfig *string) (bool, error) {
@@ -80,6 +81,7 @@ func CheckSAPermissions(params CheckSAPermissionsParams, kubeconfig *string) (bo
 	var o CanIOptions
 	o.Verb = params.Verb
 	o.Resource.Resource = params.Resource
+	o.Namespace = params.Namespace
 	client, err := ClientSet(kubeconfig)
 	if err != nil {
 		return false, err
@@ -176,7 +178,7 @@ start:
 			utils.White_B.Println("👍 Continuing with", namespace, "namespace")
 		}
 	} else {
-		if val, _ := CheckSAPermissions(CheckSAPermissionsParams{"create", "namespace", false}, kubeconfig); !val {
+		if val, _ := CheckSAPermissions(CheckSAPermissionsParams{"create", "namespace", false, namespace}, kubeconfig); !val {
 			utils.Red.Println("🚫 You don't have permissions to create a namespace.\n Please enter an existing namespace.")
 			goto start
 		}
