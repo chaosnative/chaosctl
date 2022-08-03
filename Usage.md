@@ -53,15 +53,6 @@ kubectl apply -f https://raw.githubusercontent.com/litmuschaos/litmus/master/lit
 chaosctl config set-account --endpoint="" --access_id="" --access_key=""
 ```
 
-- To connect a chaos delegate without a project
-  > Note: If the user doesn't have any project, it will create a random project and add the chaos delegate in that random project.
-
-```shell
-chaosctl connect chaos-delegate --name="" --non-interactive
-```
-
-### Or,
-
 - To connect a chaos delegate with an existing project
   > Note: To get `project-id`. Apply `chaosctl get projects`
 
