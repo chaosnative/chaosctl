@@ -1,5 +1,3 @@
-# Usage: ChaosCTL v0.2.0 (Non-Interactive mode)
-
 ### chaosctl Syntax
 
 `chaosctl` has a syntax to use as follows:
