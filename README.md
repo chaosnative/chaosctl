@@ -15,7 +15,7 @@ The chaosctl CLI requires the following things:
 
 ## Compatibility matrix
 
-To check compatibility of chaosctl wiht products
+To check compatibility of chaosctl with products
 
 <table>
   <th>Chaosctl version</th>
