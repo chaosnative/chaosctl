@@ -34,7 +34,7 @@ To check compatibility of chaosctl wiht products
   </tr>
     <tr>
     <td>0.4.0</td>
-    <td>2.11.0</td>
+    <td>2.11.0 and above</td>
     <td>Not supported</td>
   </tr>
 </table>
