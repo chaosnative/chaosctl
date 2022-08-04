@@ -27,7 +27,7 @@ To check compatibility of chaosctl wiht products
   </tr>
     <tr>
     <td>0.3.1</td>
-    <td>Harness Chaos Engineering SaaS v0.4.0 and above</td>
+    <td>Harness Chaos Engineering SaaS</td>
   </tr>
     <tr>
     <td>0.4.0</td>
