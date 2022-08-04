@@ -19,19 +19,23 @@ To check compatibility of chaosctl wiht products
 
 <table>
   <th>Chaosctl version</th>
-  <th>Product</th>
+  <th>HCE Onprem</th>
+  <th>HCE SaaS</th>
 
   <tr>
     <td>0.2.0</td>
-    <td>Harness Chaos Engineering Enterprise v2.8.0</td>
+    <td>2.8.0</td>
+    <td>Not supported</td>
   </tr>
     <tr>
     <td>0.3.1</td>
-    <td>Harness Chaos Engineering SaaS</td>
+    <td>Not supported</td>
+    <td>Supported</td>
   </tr>
     <tr>
     <td>0.4.0</td>
-    <td>Harness Chaos Engineering Enterprise v2.11.0 and above</td>
+    <td>2.11.0</td>
+    <td>Not supported</td>
   </tr>
 </table>
 
