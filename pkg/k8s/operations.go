@@ -16,6 +16,7 @@ limitations under the License.
 package k8s
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"flag"
@@ -316,12 +317,26 @@ func ApplyYaml(params ApplyYamlPrams, kubeconfig string, isLocal bool) (output s
 		args = []string{"kubectl", "apply", "-f", path}
 	}
 
-	stdout, err := exec.Command(args[0], args[1:]...).CombinedOutput()
+	cmd := exec.Command(args[0], args[1:]...)
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+	err = cmd.Run()
+	outStr, errStr := string(stdout.Bytes()), string(stderr.Bytes())
+
+	// err, can have exit status 1
 	if err != nil {
-		return string(stdout), err
+		// if we get standard error then, return the same
+		if errStr != "" {
+			return "", fmt.Errorf(errStr)
+		}
+
+		// if not standard error found, return error
+		return "", err
 	}
 
-	return string(stdout), err
+	// If no error found, return standard output
+	return outStr, nil
 }
 
 // GetConfigMap returns config map for a given name and namespace
