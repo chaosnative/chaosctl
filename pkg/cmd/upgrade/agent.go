@@ -70,7 +70,7 @@ var agentCmd = &cobra.Command{
 
 		output, err := apis.UpgradeAgent(context.Background(), credentials, projectID, cluster_id, kubeconfig)
 		if err != nil {
-			utils.Red.Print("\n❌ Failed in upgrading agent: \n" + err.Error())
+			utils.Red.Print("\n❌ Failed in upgrading agent: \n" + err.Error() + "\n")
 			os.Exit(1)
 		}
 		utils.White_B.Print("\n", output)
