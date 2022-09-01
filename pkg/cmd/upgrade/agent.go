@@ -65,13 +65,21 @@ var agentCmd = &cobra.Command{
 			}
 		}
 
-		_, err = apis.UpgradeAgent(context.Background(), credentials, projectID, cluster_id)
+		kubeconfig, err := cmd.Flags().GetString("kubeconfig")
 		utils.PrintError(err)
+
+		output, err := apis.UpgradeAgent(context.Background(), credentials, projectID, cluster_id, kubeconfig)
+		if err != nil {
+			utils.Red.Print("\n❌ Failed in upgrading agent: \n" + err.Error() + "\n")
+			os.Exit(1)
+		}
+		utils.White_B.Print("\n", output)
 	},
 }
 
 func init() {
 	UpgradeCmd.AddCommand(agentCmd)
 	agentCmd.Flags().String("project-id", "", "Enter the project ID")
+	agentCmd.Flags().String("kubeconfig", "", "Enter the kubeconfig path(default: $HOME/.kube/config))")
 	agentCmd.Flags().String("chaos-delegate-id", "", "Enter the chaos delegate ID")
 }

@@ -18,7 +18,11 @@ import (
 )
 
 type manifestData struct {
-	Data data `json:"data"`
+	Data   data `json:"data"`
+	Errors []struct {
+		Message string   `json:"message"`
+		Path    []string `json:"path"`
+	} `json:"errors"`
 }
 
 type data struct {
@@ -26,7 +30,11 @@ type data struct {
 }
 
 type ClusterData struct {
-	Data GetAgentDetails `json:"data"`
+	Data   GetAgentDetails `json:"data"`
+	Errors []struct {
+		Message string   `json:"message"`
+		Path    []string `json:"path"`
+	} `json:"errors"`
 }
 
 type GetAgentDetails struct {
@@ -39,7 +47,7 @@ type ClusterDetails struct {
 	AgentNamespace *string `json:"agentNamespace"`
 }
 
-func UpgradeAgent(c context.Context, cred types.Credentials, projectID string, clusterID string) (string, error) {
+func UpgradeAgent(c context.Context, cred types.Credentials, projectID string, clusterID string, kubeconfig string) (string, error) {
 
 	// Query to fetch agent details from server
 	query := `{"query":"query {\n getAgentDetails(clusterID : \"` + clusterID + `\", \n projectID : \"` + projectID + `\"){\n agentNamespace accessKey clusterID \n}}"}`
@@ -61,6 +69,11 @@ func UpgradeAgent(c context.Context, cred types.Credentials, projectID string, c
 		if err != nil {
 			return "", err
 		}
+		if len(agent.Errors) > 0 {
+			return "", errors.New(agent.Errors[0].Message)
+		}
+	} else {
+		return "", errors.New(resp.Status)
 	}
 
 	// Query to fetch upgraded manifest from the server
@@ -85,6 +98,10 @@ func UpgradeAgent(c context.Context, cred types.Credentials, projectID string, c
 			return "", err
 		}
 
+		if len(manifest.Errors) > 0 {
+			return "", errors.New(manifest.Errors[0].Message)
+		}
+
 		// To write the manifest data into a temporary file
 		err = ioutil.WriteFile("agent-manifest.yaml", []byte(manifest.Data.GetManifest), 0644)
 		if err != nil {
@@ -96,6 +113,7 @@ func UpgradeAgent(c context.Context, cred types.Credentials, projectID string, c
 		if err != nil {
 			return "", err
 		}
+
 		var configMapString string
 
 		metadata := new(bytes.Buffer)
@@ -119,11 +137,12 @@ func UpgradeAgent(c context.Context, cred types.Credentials, projectID string, c
 			Token:    cred.Token,
 			Endpoint: cred.Endpoint,
 			YamlPath: "agent-manifest.yaml",
-		}, "", true)
+		}, kubeconfig, true)
 
 		if err != nil {
-			return yamlOutput, err
+			return "", err
 		}
+
 		utils.White.Print("\n", yamlOutput)
 
 		err = os.Remove("agent-manifest.yaml")
