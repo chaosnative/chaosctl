@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_chaosnative_chaosctl_1729486319782-push-trigger-input-set
+  identifier: Build_chaosnative_chaosctl_1729486319782pushtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: gsdf
+  pipeline:
+    identifier: Build_chaosnative_chaosctl_1729486319782
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
